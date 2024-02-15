@@ -1,4 +1,4 @@
-# Creationg of the new collection from Robust
+# Creation of the new collection
 
 
 # Implementation of Minhash
