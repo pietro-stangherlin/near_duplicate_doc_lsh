@@ -5,7 +5,7 @@ def TextToShinglesArray(text: str,
                         shingle_len: int,
                         hash_fun: Callable) -> np.array:
     '''Compute all the shingles of size shingle_len, hash them 
-        and save the result in an numpy array
+        and save the result in a numpy array
 
     Examples:
         >>> TextToShinglesArray("abcdf", 3, lambda x : sum([ord(c) for c in x]) % 5)
