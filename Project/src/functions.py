@@ -1,5 +1,4 @@
 from typing import Callable
-import hashlib as hsl
 import numpy as np
 
 # --------------------- Shingles --------------------------#
@@ -11,8 +10,8 @@ def TextToShinglesArray(text: str,
         and save the result in an numpy array
 
     Examples:
-        >>> TextToShinglesArray("abcdf", 3, lambda x : hash(x) % 5)
-        array([0, 1, 2], dtype=int16)
+        >>> TextToShinglesArray("abcdf", 3, lambda x : sum([ord(c) for c in x]) % 5)
+        array([4, 2, 1], dtype=int16)
 
     Args:
         text: text from which to compute she shingles
@@ -40,8 +39,8 @@ def TextToShinglesSet(text: str,
         and save the result in an set
 
     Examples:
-        >>> TextToShinglesSet("abcdf", 3, lambda x : hash(x) % 5)
-        {0, 1, 2}
+        >>> TextToShinglesSet("abcdf", 3, lambda x : sum([ord(c) for c in x]) % 5)
+        {1, 2, 4}
 
     Args:
         text: text from which to compute she shingles
