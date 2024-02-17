@@ -1,4 +1,3 @@
-from functions_shingles import TextToShinglesArray, TextToShinglesSet
 import numpy as np
 import json
 
@@ -15,4 +14,6 @@ import json
 # 1) precision wise: save each signature
 # in the central memory or, if it's not feasible in storage memory
 # 2) after each signatures is used for LSH delete it
+
+#------------------ Hash dictionary Minhash ---------------------#
 
