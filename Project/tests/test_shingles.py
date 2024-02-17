@@ -1,4 +1,4 @@
-from src import functions as funs
+from src import functions_shingles as funs
 
 # ---------------- Array Shingles ----------------#
 def Test_TextToShinglesArray():

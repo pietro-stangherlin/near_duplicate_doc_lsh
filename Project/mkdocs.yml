@@ -1,0 +1,14 @@
+site_name: Near Duplicate Document LSH Docs
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings
+
+nav:
+  - Near Duplicate Document LSH Docs: index.md
+  - tutorials.md
+  - How-To Guides: how-to-guides.md
+  - reference.md
+  - explanation.md

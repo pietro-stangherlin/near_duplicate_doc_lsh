@@ -1,8 +1,6 @@
 from typing import Callable
 import numpy as np
 
-# --------------------- Shingles --------------------------#
-
 def TextToShinglesArray(text: str,
                         shingle_len: int,
                         hash_fun: Callable) -> np.array:
@@ -15,13 +13,13 @@ def TextToShinglesArray(text: str,
 
     Args:
         text: text from which to compute she shingles
-        shingle_len: each shingle lenght
+        shingle_len: each shingle length
         hash_fun: hash function applied to each shingle
 
     Returns:
         np.array of ints of hashed shingles
     '''
-    # number of possibile consecutive shingles of the chosen lenght
+    # number of possibile consecutive shingles of the chosen length
     shingles_num = len(text) - shingle_len + 1
     # allocate empty array
     shingles_array = np.empty(shape= shingles_num, dtype= np.int16)
@@ -44,13 +42,13 @@ def TextToShinglesSet(text: str,
 
     Args:
         text: text from which to compute she shingles
-        shingle_len: each shingle lenght
+        shingle_len: each shingle length
         hash_fun: hash function applied to each shingle
 
     Returns:
         set of ints of hashed shingles
     '''
-    # number of possibile consecutive shingles of the chosen lenght
+    # number of possibile consecutive shingles of the chosen length
     shingles_num = len(text) - shingle_len + 1
     # allocate empty set
     shingles_set = set()
