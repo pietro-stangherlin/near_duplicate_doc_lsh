@@ -12,9 +12,9 @@ def TextToShinglesArray(text: str,
         array([4, 2, 1], dtype=int16)
 
     Args:
-        text: text from which to compute she shingles
-        shingle_len: each shingle length
-        hash_fun: hash function applied to each shingle
+        - text: text from which to compute she shingles
+        - shingle_len: each shingle length
+        - hash_fun: hash function applied to each shingle
 
     Returns:
         np.array of ints of hashed shingles
@@ -41,9 +41,9 @@ def TextToShinglesSet(text: str,
         {1, 2, 4}
 
     Args:
-        text: text from which to compute she shingles
-        shingle_len: each shingle length
-        hash_fun: hash function applied to each shingle
+        - text: text from which to compute she shingles
+        - shingle_len: each shingle length
+        - hash_fun: hash function applied to each shingle
 
     Returns:
         set of ints of hashed shingles
