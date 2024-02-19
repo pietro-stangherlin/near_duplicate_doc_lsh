@@ -72,7 +72,7 @@ def GenerateSignature(shingles_array: np.array,
                                     value = np.array of k values (int) where
                                     each value is the result of the j-th
                                     hash function on key
-        - int_type: type of integere used in the numpy array
+        - int_type: type of integer used in the numpy array
 
     Returns:
         signature_vector: np.array of k values (int) where

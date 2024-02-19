@@ -1,4 +1,4 @@
-from src import functions_minhash_lsh as funs
+from src import functions_minhash as funs
 import unittest
 import numpy as np
 
