@@ -18,12 +18,16 @@ hash_dict = dict()
 
 class TestSignatures(unittest.TestCase):
     
-    # to check: wrong results
+    def test_ComputeHashValues(self):
+        expected = np.array([1, 1, 1], dtype = INT_TYPE)
+        
+        result = funs.ComputeHashValues(1, hash_funs_list, INT_TYPE)
+        
+        np.testing.assert_array_equal(result, expected)
+    
+    
     def test_HashDictionary(self):
-        hash_dict.clear()
-        
         shingles_array_1 = np.array([1, 2, 3, 4, 5], dtype = INT_TYPE)
-        
         
         expected_hash_dictionary = {1 : np.array([1, 1, 1], dtype = INT_TYPE),
                                     2 : np.array([2, 2, 2], dtype = INT_TYPE),
@@ -35,6 +39,8 @@ class TestSignatures(unittest.TestCase):
                                 hash_funs_list,
                                 hash_dict,
                                 int_type = INT_TYPE)
+        
+        print(hash_dict)
         
         result_hash_dictionary = hash_dict
     

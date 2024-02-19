@@ -83,18 +83,26 @@ def GenerateSignature(shingles_array: np.array,
 
     hash_num = len(hash_functions_list)
 
-    signature = np.empty(shape= hash_num, dtype= int_type)
+    first_value = shingles_array[0]
+    signature = np.full(shape= hash_num,
+                        fill_value = first_value,
+                        dtype= int_type)
 
     # first fill
-    for j in range(hash_num):
-        signature[j] = shingles_array[0]
     
-    if shingles_array[0] in hash_functions_dictionary:
-        positions = hash_functions_dictionary[shingles_array[0]]
+    if first_value in hash_functions_dictionary:
+        positions = hash_functions_dictionary[first_value]
+
     else:
-        positions = ComputeHashValues(shingles_array[0],
-                                      hash_functions_list)
-        hash_functions_dictionary[shingles_array[0]] = positions
+        positions = ComputeHashValues(first_value,
+                                      hash_functions_list,
+                                      int_type)
+        # copy the array in a new array
+        # or the change in positions will be reflected 
+        # on the hash_functions_dictionary array
+        hash_functions_dictionary[first_value] = np.array(positions,
+                                                          dtype = int_type)
+        
     
     # other shingles
     for i in range(1, len(shingles_array)):
@@ -105,8 +113,10 @@ def GenerateSignature(shingles_array: np.array,
             temp_pos = hash_functions_dictionary[value]
         else:
             temp_pos = ComputeHashValues(value,
-                                      hash_functions_list)
+                                      hash_functions_list,
+                                      int_type)
             hash_functions_dictionary[value] = temp_pos
+        
         
         # confront and eventually update positions
         for j in range(hash_num):
@@ -114,6 +124,6 @@ def GenerateSignature(shingles_array: np.array,
                 positions[j] = temp_pos[j]
                 signature[j] = value
 
-
+    
     return signature
 
