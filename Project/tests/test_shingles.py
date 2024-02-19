@@ -1,23 +1,45 @@
 from src import functions_shingles as funs
+import unittest
+import numpy as np
 
-# ---------------- Array Shingles ----------------#
-def Test_TextToShinglesArray():
-    w1 = "abcdefg"
-    t1 = funs.TextToShinglesArray(w1, 3, lambda x : hash(x) % 5)
-    print(t1)
+INT_TYPE = np.int16
 
-# ------------ Set Shingles ---------------# 
-def Test_TextToShinglesSet():
-    w1 = "abcdefg"
-    t1 = funs.TextToShinglesSet(w1, 3, lambda x : hash(x) % 5)
-    print(t1)
+def HashFunction1(text):
+    return sum([ord(char) for char in text]) % 10
+
+class TestShingles(unittest.TestCase):
+
+    # ---------------- Array Shingles ----------------#
+    def test_TextToShinglesArray(self):
+        text = "abcdefg"
+        # shingles of len 3
+        text_list = ["abc", "bcd", "cde", "def", "efg"]
+        shingles_list = [HashFunction1(x) for x in text_list]
+        
+        expected = np.array(shingles_list, dtype= INT_TYPE)
+        result = funs.TextToShinglesArray(text, 3, HashFunction1, INT_TYPE)
+        
+        np.testing.assert_array_equal(result, expected)
+
+    # ------------ Set Shingles ---------------# 
+    def test_TextToShinglesSet(self):
+        text = "abcdefg"
+        # shingles of len 3
+        text_list = ["abc", "bcd", "cde", "def", "efg"]
+        shingles_list = [HashFunction1(x) for x in text_list]
+        
+        expected = set(shingles_list)
+        result = funs.TextToShinglesSet(text, 3, HashFunction1)
+        
+        self.assertEqual(result, expected)
+        
+        
+        
+        
 
 # Warning: this script has to be executed 
 # from the (external) project directory as 
-# python -m tests.test_shingles 
+# python -m unittest tests.test_shingles 
 
 if __name__ == "__main__":
-    # -------- Array Shingles ------------#
-    Test_TextToShinglesArray() # ok
-    # -------- Set Shingles --------------#
-    Test_TextToShinglesSet() # ok
+    unittest.main()

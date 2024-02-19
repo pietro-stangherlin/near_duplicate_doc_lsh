@@ -3,7 +3,8 @@ import numpy as np
 
 def TextToShinglesArray(text: str,
                         shingle_len: int,
-                        hash_fun: Callable) -> np.array:
+                        hash_fun: Callable,
+                        int_type = np.int16) -> np.array:
     '''Compute all the shingles of size shingle_len, hash them 
         and save the result in a numpy array
 
@@ -15,6 +16,7 @@ def TextToShinglesArray(text: str,
         - text: text from which to compute she shingles
         - shingle_len: each shingle length
         - hash_fun: hash function applied to each shingle
+        - int_type: type of integere used in the numpy array
 
     Returns:
         np.array of ints of hashed shingles
@@ -22,7 +24,7 @@ def TextToShinglesArray(text: str,
     # number of possibile consecutive shingles of the chosen length
     shingles_num = len(text) - shingle_len + 1
     # allocate empty array
-    shingles_array = np.empty(shape= shingles_num, dtype= np.int16)
+    shingles_array = np.empty(shape= shingles_num, dtype= int_type)
     
     for i in range(shingles_num):
         shingles_array[i] = hash_fun(text[i:i + shingle_len])

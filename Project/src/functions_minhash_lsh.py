@@ -17,7 +17,8 @@ import numpy as np
 #------------------ Generate Signature ---------------------#
 def GenerateSignature(shingles_array: np.array,
                       hash_functions_list: list,
-                      hash_functions_dictionary: dict) -> np.array:
+                      hash_functions_dictionary: dict,
+                      int_type = np.int16) -> np.array:
     '''Generate signature from shingles array.
 
         Let k be the number of hash functions in the hash_functions_list.
@@ -46,6 +47,7 @@ def GenerateSignature(shingles_array: np.array,
                                     value = np.array of k values (int) where
                                     each value is the result of the j-th
                                     hash function on key
+        - int_type: type of integere used in the numpy array
 
     Returns:
         signature_vector: np.array of k values (int) where
@@ -56,7 +58,7 @@ def GenerateSignature(shingles_array: np.array,
 
     hash_num = len(hash_functions_list)
 
-    signature = np.empty(shape= k, dtype= np.int16)
+    signature = np.empty(shape= hash_num, dtype= int_type)
 
     # first fill
     for j in range(hash_num):
@@ -94,12 +96,14 @@ def GenerateSignature(shingles_array: np.array,
 
 
 def ComputeHashValues(shingle: int,
-                      hash_functions_list: list) -> np.array:
+                      hash_functions_list: list,
+                      int_type = np.int16) -> np.array:
     '''Compute array of hash values of shingle.
 
     Args:
         - shingle:
         - hash_functions_list:
+        - int_type: type of integere used in the numpy array
     
     Returns:
         hash_values_array:
@@ -107,7 +111,7 @@ def ComputeHashValues(shingle: int,
     '''
     k = len(hash_functions_list)
 
-    values = np.empty(shape= k, dtype= np.int16)
+    values = np.empty(shape= k, dtype= int_type)
 
     for i in range(k):
         values[i] = hash_functions_list[i](shingle)
