@@ -14,6 +14,31 @@ import numpy as np
 # in the central memory or, if it's not feasible in storage memory
 # 2) after each signatures is used for LSH delete it
 
+
+def ComputeHashValues(integer: int,
+                      hash_functions_list: list,
+                      int_type = np.int16) -> np.array:
+    '''Compute array of hash values of shingle.
+
+    Args:
+        - integer
+        - hash_functions_list: list of hash functions objects
+        having input both as input and output
+        - int_type: type of integer used in the numpy array
+    
+    Returns:
+        hash_values_array: array of all the hash values
+
+    '''
+    k = len(hash_functions_list)
+
+    values = np.empty(shape= k, dtype= int_type)
+
+    for i in range(k):
+        values[i] = hash_functions_list[i](integer)
+    
+    return values
+
 #------------------ Generate Signature ---------------------#
 def GenerateSignature(shingles_array: np.array,
                       hash_functions_list: list,
@@ -27,15 +52,15 @@ def GenerateSignature(shingles_array: np.array,
         first shingles_array element, the other
         contains the position of the signature elements
         determined by each hash function (permutation).
-        Conditionally on each hash function for each shingles_array element
-        check its permuted position, if its smaller than the position stored 
-        in the position array update that osition with it and, in the signature array
+        Conditionally on each hash function, for each shingles_array element
+        check its permuted position, if smaller than the position stored 
+        in the position array -> update that position with it and, in the signature array,
         substitute the corresponding shingle with the current one. 
 
         Implementation details.
-        For each shingles_array element checks its presence as a key
+        For each shingles_array element check its presence as a key
         in hash_permutations_dictionary:
-        if it is present then use those values, if not computes the k hashes and
+        if present then use those values, if not computes the k hashes and
         updates hash_permutations_dictionary adding the array
         to it with the shingle as a key.
     
@@ -73,47 +98,22 @@ def GenerateSignature(shingles_array: np.array,
     
     # other shingles
     for i in range(1, len(shingles_array)):
-        el = shingles_array[i]
+        value = shingles_array[i]
 
         # get positions
-        if el in hash_functions_dictionary:
-            temp_pos = hash_functions_dictionary[el]
+        if value in hash_functions_dictionary:
+            temp_pos = hash_functions_dictionary[value]
         else:
-            temp_pos = ComputeHashValues(el,
+            temp_pos = ComputeHashValues(value,
                                       hash_functions_list)
-            hash_functions_dictionary[el] = temp_pos
+            hash_functions_dictionary[value] = temp_pos
         
         # confront and eventually update positions
         for j in range(hash_num):
             if temp_pos[j] < positions[j]:
                 positions[j] = temp_pos[j]
-                signature[j] = el
+                signature[j] = value
 
 
     return signature
 
-
-
-
-def ComputeHashValues(shingle: int,
-                      hash_functions_list: list,
-                      int_type = np.int16) -> np.array:
-    '''Compute array of hash values of shingle.
-
-    Args:
-        - shingle:
-        - hash_functions_list:
-        - int_type: type of integere used in the numpy array
-    
-    Returns:
-        hash_values_array:
-
-    '''
-    k = len(hash_functions_list)
-
-    values = np.empty(shape= k, dtype= int_type)
-
-    for i in range(k):
-        values[i] = hash_functions_list[i](shingle)
-    
-    return values
