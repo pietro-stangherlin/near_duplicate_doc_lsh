@@ -74,6 +74,12 @@ with open(file_name, 'r') as file:
                                                        INT_TYPE)
             # print(signature_temp)
             # LSH for each band
+            # PROBLEM: K is actually useless
+            # beacuse it is derived from the len of the hash function list
+            # That problem is also present in LSH
+            # maybe I should insert some kind type of check
+            # or think better about the classes
+            
             step = K // B
             band_index = 0
             for i in range(0, K, step):
