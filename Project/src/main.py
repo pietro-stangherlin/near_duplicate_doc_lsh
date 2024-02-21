@@ -1,4 +1,4 @@
-from functions_shingles import TextToShinglesArray
+from src.shingling import TextToShinglesArray
 import ijson
 import sys 
 from BTrees.IOBTree import IOBTree

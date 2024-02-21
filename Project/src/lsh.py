@@ -9,7 +9,7 @@ from typing import Callable
 
 
 def ComputeHashBand(signature: np.array,
-             band_inf_index : int,
+             band_inf_index: int,
              band_sup_index: int,
              doc_id: int,
              hash_fun: Callable) -> tuple:
@@ -39,10 +39,30 @@ class LSHOneBandBucketsNaive:
         self.buckets = dict()
     
     def insert(self, key: int, value: int) -> None:
+        '''Insert value in the bucket associated with key
+        
+        Args:
+            - key: should be the hash of a band
+            - value: should be the document id
+        '''
         if key in self.buckets:
             self.buckets[key].append(value)
         else:
              self.buckets[key] = [value]
+    
+    def iter(self):
+        '''Iterator that yield all buckets (lists)
+        '''
+        for key in self.buckets:
+            yield self.buckets[key]
+    
+    def iter_more_than_one(self):
+        '''Iterator that yield all buckets (lists) with more than one element
+        '''
+        for key in self.buckets:
+            if len(self.buckets[key]) > 1:
+                yield self.buckets[key]
+    
     
     def __str__(self) -> str:
         return_string = ""
@@ -51,6 +71,7 @@ class LSHOneBandBucketsNaive:
         
         return return_string
     
+    
 
 class LSHAllBandsBucketsNaive:
     '''
@@ -58,12 +79,10 @@ class LSHAllBandsBucketsNaive:
     '''
     
     def __init__(self, bands_number : int) -> None:
-        self.bands_list = [LSHOneBandBucketsNaive() for _ in bands_number]
+        self.bands_number = bands_number
+        self.bands_list = [LSHOneBandBucketsNaive() for _ in range(bands_number)]
     
-    def __str__(self):
-        return str(self.bands_list)
-    
-    def update (self, band: int, key: int, value: int) -> None:
+    def insert (self, band: int, key: int, value: int) -> None:
         '''
         In the specified band, add the value to its key corresponding bucket
         
@@ -75,3 +94,26 @@ class LSHAllBandsBucketsNaive:
         '''
         self.bands_list[band].insert(key, value)
     
+    def iter_band(self, band : int):
+        '''Iterator that yield all buckets (lists) in the band
+        '''
+        return self.bands_list[band].iter()
+    
+    def iter_band_more_than_one(self, band : int):
+        '''Iterator that yield all buckets (lists) with more than one element
+            in the band
+        '''
+        return self.bands_list[band].iter_more_than_one()
+    
+    def iter_all_bands(self) -> list:
+        '''return list of the iterators for all bands'''
+        return [self.iter_band(band) for band in range(self.bands_number)]
+
+    def iter_more_than_one_all_bands(self) -> list:
+        '''return list of the iterators for all bands with buckets with more 
+        than one element'''
+        return [self.iter_band_more_than_one(band) for band in range(self.bands_number)]
+        
+    
+    def __str__(self):
+        return str(self.bands_list)

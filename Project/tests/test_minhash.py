@@ -1,4 +1,4 @@
-from src import functions_minhash as funs
+from src import minhash
 import unittest
 import numpy as np
 
@@ -21,7 +21,7 @@ class TestSignatures(unittest.TestCase):
     def test_ComputeHashValues(self):
         expected = np.array([1, 1, 1], dtype = INT_TYPE)
         
-        result = funs.ComputeHashValues(1, hash_funs_list, INT_TYPE)
+        result = minhash.ComputeHashValues(1, hash_funs_list, INT_TYPE)
         
         np.testing.assert_array_equal(result, expected)
     
@@ -35,7 +35,7 @@ class TestSignatures(unittest.TestCase):
                                     4 : np.array([1, 0, 4], dtype = INT_TYPE),
                                     5 : np.array([2, 1, 0], dtype = INT_TYPE)}
         
-        funs.GenerateSignature(shingles_array_1,
+        minhash.GenerateSignature(shingles_array_1,
                                 hash_funs_list,
                                 hash_dict,
                                 int_type = INT_TYPE)
@@ -64,7 +64,7 @@ class TestSignatures(unittest.TestCase):
         signature_expected = np.array([3, 4, 5], dtype = INT_TYPE)
         
         # tested function result
-        result_function = funs.GenerateSignature(shingles_array_1,
+        result_function = minhash.GenerateSignature(shingles_array_1,
                                                  hash_funs_list,
                                                  hash_dict,
                                                  int_type = INT_TYPE)
@@ -89,7 +89,7 @@ class TestSignatures(unittest.TestCase):
         signature_expected = np.array([1, 4, 5], dtype = INT_TYPE)
         
         # tested function result
-        result_function = funs.GenerateSignature(shingles_array_1,
+        result_function = minhash.GenerateSignature(shingles_array_1,
                                                  hash_funs_list,
                                                  hash_dict,
                                                 int_type = INT_TYPE)

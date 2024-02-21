@@ -1,4 +1,4 @@
-from src import functions_shingles as funs
+from src import shingling
 import unittest
 import numpy as np
 
@@ -17,7 +17,7 @@ class TestShingles(unittest.TestCase):
         shingles_list = [HashFunction1(x) for x in text_list]
         
         expected = np.array(shingles_list, dtype= INT_TYPE)
-        result = funs.TextToShinglesArray(text, 3, HashFunction1, INT_TYPE)
+        result = shingling.TextToShinglesArray(text, 3, HashFunction1, INT_TYPE)
         
         np.testing.assert_array_equal(result, expected)
 
@@ -29,7 +29,7 @@ class TestShingles(unittest.TestCase):
         shingles_list = [HashFunction1(x) for x in text_list]
         
         expected = set(shingles_list)
-        result = funs.TextToShinglesSet(text, 3, HashFunction1)
+        result = shingling.TextToShinglesSet(text, 3, HashFunction1)
         
         self.assertEqual(result, expected)
         
