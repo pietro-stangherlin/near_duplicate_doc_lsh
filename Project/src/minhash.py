@@ -19,11 +19,13 @@ def ComputeHashValues(integer: int,
                       hash_functions_list: list,
                       int_type = np.int16) -> np.array:
     '''Compute array of hash values of shingle.
+    
+    It's used in the next functions to calculate the permutaions 
+    in the signature.
 
     Args:
-        - integer
+        - integer: input to be hashed by all hash functions in the list
         - hash_functions_list: list of hash functions objects
-        having input both as input and output
         - int_type: type of integer used in the numpy array
     
     Returns:

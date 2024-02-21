@@ -1,5 +1,4 @@
-[
-    {"id1": 1, "id2": "None", "text": "The quick brown fox jumps over the lazy dog."},
+    [{"id1": 1, "id2": "None", "text": "The quick brown fox jumps over the lazy dog."},
     {"id1": 2, "id2": "None", "text": "Pack my box with five dozen liquor jugs."},
     {"id1": 3, "id2": "None", "text": "Jackdaws love my big sphinx of quartz."},
     {"id1": 4, "id2": "None", "text": "How vexingly quick daft zebras jump!"},
@@ -9,6 +8,5 @@
     {"id1": 8, "id2": "None", "text": "Two driven jocks help fax my big quiz."},
     {"id1": 9, "id2": "None", "text": "Five quacking zephyrs jolt my wax bed."},
     {"id1": 10, "id2": "None", "text": "Jinxed wizards pluck ivy from the big quilt."},
-    {"id1": 11, "id2": "9", "text": "6ive quacking zephyrs joilt my wax bead."},
-    {"id1": 12, "id2": "10", "text": "Jinx wiZards pLuck iwy from the big quit."}
-]
+    {"id1": 11, "id2": "9", "text": "Five quacking zephyrs jolt my wax bed."},
+    {"id1": 12, "id2": "10", "text": "Jinx wiZards pLuck iwy from the big quit."}]
