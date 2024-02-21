@@ -8,7 +8,7 @@ from typing import Callable
 #   how - many buckets?
 
 
-def HashBand(signature: np.array,
+def ComputeHashBand(signature: np.array,
              band_inf_index : int,
              band_sup_index: int,
              doc_id: int,
