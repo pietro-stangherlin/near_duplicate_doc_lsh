@@ -1,4 +1,5 @@
 import numpy as np
+from BTrees._LOBTree import LOBTree
 
 # requires: family of hash functions
 # for both Minhash signatures and LSH bands
@@ -14,6 +15,28 @@ import numpy as np
 # in the central memory or, if it's not feasible in storage memory
 # 2) after each signatures is used for LSH delete it
 
+def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
+    '''Compare two signatures element by element and  return the similiraty
+    
+    Args:
+        - sig1: signature 1 (array of len k)
+        - sig2: signature 2 (array of len k)
+    
+    Returns: 
+            number positions with the same elements / total positions number
+    '''
+    l1 = len(sig1)
+    l2 = len(sig2)
+    
+    if l1 != l2:
+        print("Error: signatures have different lengths")
+        return 0
+    
+    equals = 0
+    for i in range(l1):
+        equals += int(sig1[i] == sig2[i])
+    
+    return equals / l1
 
 def ComputeHashValues(integer: int,
                       hash_functions_list: list,
@@ -129,3 +152,20 @@ def GenerateSignature(shingles_array: np.array,
     
     return signature
 
+# --------- Signatures set data structure ---------------
+
+class SignaturesBTree(LOBTree):
+    '''BTree used to store doc id as keys and doc signatures as values.
+    
+    Inherit the IOBTree class from BTrees module: 
+    https://btrees.readthedocs.io/
+    
+    Args: 
+        - key: Unsigned integer (doc id)
+        - value: np.array of int (doc signature)
+    '''
+    # change if necessary
+    # max number of elements a leaf can have
+    max_leaf_size = 500
+    # max number of childern an interior node could have
+    max_internal_size = 1000
