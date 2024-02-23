@@ -100,8 +100,8 @@ len(dics)
 
 # per scrivere su un nuovo file il nuovo json pulito
 # (ovvero senza sporcizie dovute a randomNoise)
-#with open("robust_tiny50_clean.json", 'w') as file:
- #   json.dump(dics, file, indent = 4)
+# with open("robust_tiny50_clean.json", 'w') as file:
+#    json.dump(dics, file, indent = 4)
 
 
 
