@@ -1,6 +1,7 @@
 import json
 import random
-import randomNoise as rn
+import re
+from . import randomNoise as rn
 from typing import Callable
 
 # given a dataset like
@@ -129,7 +130,7 @@ def WriteRandomLines(file_in: str,
     Returns: 
         - None: writes on output file
     '''
-    with open(file_in, "r") as fin, open(file_out_collection, "w") as fout, open(file_out_index, "w") as fout_index:
+    with open(file_in, "r") as fin, open(file_out_collection, "w", encoding="utf-8") as fout, open(file_out_index, "w") as fout_index:
         if n_lines_in_file == None:
             # count
             n_lines_in_file = 0
@@ -148,11 +149,13 @@ def WriteRandomLines(file_in: str,
         # the line number in the file
         
         for line in fin:
+            # match = re.search(r"\{.*?\}", line)
+            
             original_line_dict = json.loads(line.strip())
             
             if write_original_lines:
-                original_line_dict[id_int_link_field_name] = None
-                file_out_collection.write(f"{original_line_dict}\n") # check if its json like, maybe json.dump is better
+                original_line_dict[id_int_link_field_name] = "None"
+                fout.write(f"{original_line_dict}\n") # check if its json like, maybe json.dump is better
                 
             if line_index in edit_indexes:
                 for edited in edit_dict_fun(original_line_dict,
@@ -163,10 +166,10 @@ def WriteRandomLines(file_in: str,
                                             error_params_list,
                                             edit_text_function):
                     
-                    file_out_collection.write(f"{edited}\n")
+                    fout.write(f"{edited}\n")
                     
                     # write the indexed in the index file
-                    file_out_index.write(f"{id_int_unique_last_index},{original_line_dict[id_int_unique_field_name]}")
+                    fout_index.write(f"{id_int_unique_last_index},{original_line_dict[id_int_unique_field_name]}\n")
                     id_int_unique_last_index += 1
                     
                     
