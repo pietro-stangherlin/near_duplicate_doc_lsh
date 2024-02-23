@@ -1,5 +1,8 @@
 from ..src import make_collection as mc
 from ..src import make_col_params as pm
+import random
+
+random.seed(123)
 
 mc.WriteRandomLines(**pm.first_50_dict_params_yes_original)
 

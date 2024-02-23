@@ -5,7 +5,7 @@ from . import randomNoise as rn
 from typing import Callable
 
 # given a dataset like
-# {"id" = "...", "content": "...", "id2" : int}
+# {"id" = "...", "content": "...", "id2" : "int"}
 
 def EditTextOCR(text : str,
                 error_params: list) -> str:
@@ -18,7 +18,7 @@ def EditTextOCR(text : str,
                         the order is relative to the description below
                         (example [0.1, 0.5, 0])
     
-    The editing occurs in this order (same as params list):
+    The editing occurs in this order (same as error_params list):
     1) transpose words
     2) trasponse chars
     3) swap chars
@@ -102,7 +102,11 @@ def WriteRandomLines(file_in: str,
                      id_int_unique_last_index: int =  528154): # robust docs number - 1
     '''Write a fixed number of lines from a file at random.
     
-    Updates id2 for newly created documents and adds id3,
+    Updates id_int_unique for newly created documents and adds id_int_link.
+    Assume a file_in where each ROW has this structure:
+    {"id_int_unique_field_name" = "...",
+    "content_field_name": "..."}\n
+    If it has more fields it's not a problem, as they won't be considered
     
     Args:
         - file_in: name of input file
