@@ -9,29 +9,29 @@ def HashFunction1(text):
 
 class TestShingles(unittest.TestCase):
 
-    # ---------------- Array Shingles ----------------#
-    def test_TextToShinglesArray(self):
+    # ---------------- Duplicates Shingles ----------------#
+    def test_TextToShinglesDuplicates(self):
         text = "abcdefg"
         # shingles of len 3
         text_list = ["abc", "bcd", "cde", "def", "efg"]
         shingles_list = [HashFunction1(x) for x in text_list]
         
         expected = np.array(shingles_list, dtype= INT_TYPE)
-        result = shingling.TextToShinglesArray(text, 3, HashFunction1, INT_TYPE)
+        result = shingling.TextToShinglesDuplicates(text, 3, HashFunction1, INT_TYPE)
         
         np.testing.assert_array_equal(result, expected)
 
-    # ------------ Set Shingles ---------------# 
-    def test_TextToShinglesSet(self):
+    # ------------ Uniques Shingles ---------------# 
+    def test_TextToShinglesUniques(self):
         text = "abcdefg"
         # shingles of len 3
         text_list = ["abc", "bcd", "cde", "def", "efg"]
         shingles_list = [HashFunction1(x) for x in text_list]
         
-        expected = set(shingles_list)
-        result = shingling.TextToShinglesSet(text, 3, HashFunction1)
+        expected =  np.array(shingles_list, dtype= INT_TYPE)
+        result = shingling.TextToShinglesUniques(text, 3, HashFunction1)
         
-        self.assertEqual(result, expected)
+        np.testing.assert_array_equal(result, np.sort(expected))
         
         
         
