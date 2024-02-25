@@ -40,7 +40,7 @@ def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
 
 def ComputeHashValues(integer: int,
                       hash_functions_list: list,
-                      int_type = np.int16) -> np.array:
+                      int_type = np.uint64) -> np.array:
     '''Compute array of hash values of shingle.
     
     It's used in the next functions to calculate the permutaions 
@@ -69,7 +69,7 @@ def GenerateSignature(shingles: iter,
                       hash_functions_list: list,
                       use_permutations_dict: bool = False,
                       permutations_dict: dict = None,
-                      int_type = np.int64) -> np.array:
+                      int_type = np.uint64) -> np.array:
     '''Generate signature from shingles array.
 
         Let k be the number of hash functions in the hash_functions_list.

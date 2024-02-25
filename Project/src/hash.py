@@ -1,3 +1,18 @@
+import mmh3
+
+# ---------- Unsigned 64 bit hash Murmur -------------
+def MurmUns64Hash(hashable):
+    '''Compute 64 Unsigned int hash (Murmur Hash)
+
+    Args: 
+        - hashable: yes string, no int
+    
+    Return:
+        64 bit unsigned integer hash 
+    '''
+    return mmh3.hash64(hashable, signed = False)[0]
+
+
 # ---------- Shingle Hash --------------
 
 

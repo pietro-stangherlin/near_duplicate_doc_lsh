@@ -7,7 +7,7 @@ import numpy as np
 def TextToShinglesDuplicates(text: str,
                         shingle_len: int,
                         hash_fun: Callable,
-                        int_type = np.int64) -> np.array:
+                        int_type = np.uint64) -> np.array:
     '''Compute all the shingles of size shingle_len, hash them 
         and save the result in a numpy array
 
