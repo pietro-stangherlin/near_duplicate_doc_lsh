@@ -57,7 +57,7 @@ def ComputeHashValues(integer: int,
     '''
     k = len(hash_functions_list)
 
-    values = np.empty(shape= k, dtype= int_type)
+    values = np.empty(shape = k, dtype = int_type)
 
     for i in range(k):
         values[i] = hash_functions_list[i](integer)
@@ -65,10 +65,11 @@ def ComputeHashValues(integer: int,
     return values
 
 #------------------ Generate Signature ---------------------#
-def GenerateSignature(shingles_array: np.array,
+def GenerateSignature(shingles: iter,
                       hash_functions_list: list,
-                      hash_functions_dictionary: dict,
-                      int_type = np.int16) -> np.array:
+                      use_permutations_dict: bool = False,
+                      permutations_dict: dict = None,
+                      int_type = np.int64) -> np.array:
     '''Generate signature from shingles array.
 
         Let k be the number of hash functions in the hash_functions_list.
@@ -77,22 +78,26 @@ def GenerateSignature(shingles_array: np.array,
         first shingles_array element, the other
         contains the position of the signature elements
         determined by each hash function (permutation).
-        Conditionally on each hash function, for each shingles_array element
+        Conditionally on each hash function, for each shingles element
         check its permuted position, if smaller than the position stored 
         in the position array -> update that position with it and, in the signature array,
         substitute the corresponding shingle with the current one. 
 
         Implementation details.
-        For each shingles_array element check its presence as a key
-        in hash_permutations_dictionary:
-        if present then use those values, if not computes the k hashes and
-        updates hash_permutations_dictionary adding the array
-        to it with the shingle as a key.
+        If se_permutations_dict is True:
+            For each shingles element check its presence as a key
+            in hash_permutations_dict:
+            if present use those values, if not computes the k hashes and
+            updates hash_permutations_dict adding the array
+            to it with the shingle as a key.
+        Else (default) don't check for the dictionary and just compute each permutation
     
     Args:
-        - shingles_array: array of number of hashed shingles
+        - shingles: iterable object (list, set, numpy.array...) containing hashed shingles
         - hash_permutations_family:list of k hash functions
-        - hash_permutations_dictionary: dictionary where 
+        - use_permutations_dict: Use or not a dictionary to store
+                                    all the previous permutations (see implementation details)
+        - permutations_dict: dictionary where 
                                     key = shingle value
                                     value = np.array of k values (int) where
                                     each value is the result of the j-th
@@ -106,48 +111,44 @@ def GenerateSignature(shingles_array: np.array,
     '''
 
 
-    hash_num = len(hash_functions_list)
-
-    first_value = shingles_array[0]
-    signature = np.full(shape= hash_num,
-                        fill_value = first_value,
-                        dtype= int_type)
-
-    # first fill
+    num_hash_funs = len(hash_functions_list)
     
-    if first_value in hash_functions_dictionary:
-        positions = hash_functions_dictionary[first_value]
+    # allocate signature matrix
+    signature = np.zeros(shape = num_hash_funs,
+                        dtype = int_type)
+ 
+    # allocate permuted positions array
+    # fill it with the maximum int_type integer
+    # so it's surely greater or equal than the hashed values
+    # (assuming the hash functions generate smaller integers than max(int_type))
+    positions = np.full(shape = num_hash_funs,
+                        fill_value = np.iinfo(int_type).max,
+                        dtype = int_type)
 
-    else:
-        positions = ComputeHashValues(first_value,
-                                      hash_functions_list,
-                                      int_type)
-        # copy the array in a new array
-        # or the change in positions will be reflected 
-        # on the hash_functions_dictionary array
-        hash_functions_dictionary[first_value] = np.array(positions,
-                                                          dtype = int_type)
+    for value in shingles:
         
-    
-    # other shingles
-    for i in range(1, len(shingles_array)):
-        value = shingles_array[i]
-
-        # get positions
-        if value in hash_functions_dictionary:
-            temp_pos = hash_functions_dictionary[value]
+        if use_permutations_dict:
+            if value in permutations_dict:
+                temp_permuted_pos = permutations_dict[value]
+            else:
+                temp_permuted_pos = ComputeHashValues(value,
+                                        hash_functions_list,
+                                        int_type)
+                permutations_dict[value] = temp_permuted_pos
+        
         else:
-            temp_pos = ComputeHashValues(value,
-                                      hash_functions_list,
-                                      int_type)
-            hash_functions_dictionary[value] = temp_pos
+            temp_permuted_pos = ComputeHashValues(value,
+                                        hash_functions_list,
+                                        int_type)
+            
+            
         
         
-        # confront and eventually update positions
-        for j in range(hash_num):
-            if temp_pos[j] < positions[j]:
-                positions[j] = temp_pos[j]
-                signature[j] = value
+        # confront and eventually update positions and signature
+        for hash_fun_index in range(num_hash_funs):
+            if temp_permuted_pos[hash_fun_index] < positions[hash_fun_index]:
+                positions[hash_fun_index] = temp_permuted_pos[hash_fun_index]
+                signature[hash_fun_index] = value
 
     
     return signature

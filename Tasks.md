@@ -1,9 +1,36 @@
 # Creation of the new collection
 
+# General - TO DO
+Use unsigned numpy.integer instead of signed integer
+
 # Implementation of shingles
-Remember to delete each shingles set after it has been used to generate its signature.
+Remember to delete (or not store) each shingles' set after it has been used to generate its signature.
+
+### Rolling Hashing Shingles - TO DO
+Implement a function for rolling hashing shingling (could be useful for large documents)
+
+## Assuming no duplicates shingles
+### Shingles output - DONE
+Choose between one:
+- set:
+    - PROS: no more operations needed after the set is computed
+    - CONS: occupies more "empty" space (hash set) than a numpy.array with the same elements
+
+- numpy.array:
+    - PROS: occupies les space than set (but each set of shingles is deleted after signature is computed)
+    - CONS: one additional O(n) (n in the number of shingles for that document) operation is required to generate the array from the set which is firt computed.
+
+
 
 # Implementation of Minhash
+
+## Signature computation
+### Hash Permutations Dictionary - DONE
+Structure the *GenerateSignature* function so there's the possibility of not using the dictionary of permutations values for each key (memory wise option), in that case the permutations values for each key should be recomputed each time.
+
+### Consider different permutations values dictionary data structures - TO DO
+(not urgent)
+Also consider differents implementations of that dictionary (like btree), but keep in mind the costs may not be worth.
 
 ## Family of row permutation hash functions
 Choose an appropriate familty of row permutation hash functions.

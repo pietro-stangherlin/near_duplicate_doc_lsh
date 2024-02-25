@@ -2,7 +2,7 @@ from src import minhash
 import unittest
 import numpy as np
 
-INT_TYPE = np.int16
+INT_TYPE = np.int64
 
 def HashFunction1(number):
     return number % 3
@@ -37,6 +37,7 @@ class TestSignatures(unittest.TestCase):
         
         minhash.GenerateSignature(shingles_array_1,
                                 hash_funs_list,
+                                True,
                                 hash_dict,
                                 int_type = INT_TYPE)
         
@@ -66,6 +67,7 @@ class TestSignatures(unittest.TestCase):
         # tested function result
         result_function = minhash.GenerateSignature(shingles_array_1,
                                                  hash_funs_list,
+                                                 True,
                                                  hash_dict,
                                                  int_type = INT_TYPE)
         
@@ -91,6 +93,7 @@ class TestSignatures(unittest.TestCase):
         # tested function result
         result_function = minhash.GenerateSignature(shingles_array_1,
                                                  hash_funs_list,
+                                                 True,
                                                  hash_dict,
                                                 int_type = INT_TYPE)
         
@@ -98,6 +101,31 @@ class TestSignatures(unittest.TestCase):
         hash_dict.clear()
         
         np.testing.assert_array_equal(result_function, signature_expected)
+        
+        # no dictionary
+    def test_GenerateSignature_3(self):
+        
+        shingles_array_1 = np.array([1, 2, 2, 4, 5], dtype = INT_TYPE)
+
+        # permutations based on HashFunctions 1, 2, 3
+        permutation_1 = np.array([1, 2, 2, 1, 2], dtype = INT_TYPE)
+        permutation_2 = np.array([1, 2, 2, 0, 1], dtype = INT_TYPE)
+        permutation_2 = np.array([1, 2, 2, 4, 0], dtype = INT_TYPE)
+        
+        # for each permutation choose the shingle with the lowest permutation value
+        signature_expected = np.array([1, 4, 5], dtype = INT_TYPE)
+        
+        # tested function result
+        result_function = minhash.GenerateSignature(shingles_array_1,
+                                                 hash_funs_list,
+                                                 False,
+                                                 None,
+                                                int_type = INT_TYPE)
+        
+        
+        np.testing.assert_array_equal(result_function, signature_expected)
+        
+        
         
 
 # Warning: this script has to be executed 

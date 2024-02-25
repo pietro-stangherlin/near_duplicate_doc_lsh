@@ -28,10 +28,10 @@ class TestShingles(unittest.TestCase):
         text_list = ["abc", "bcd", "cde", "def", "efg"]
         shingles_list = [HashFunction1(x) for x in text_list]
         
-        expected =  np.array(shingles_list, dtype= INT_TYPE)
+        expected =  set(shingles_list)
         result = shingling.TextToShinglesUniques(text, 3, HashFunction1)
         
-        np.testing.assert_array_equal(result, np.sort(expected))
+        self.assertEqual(result, expected)
         
         
         

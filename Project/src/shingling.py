@@ -7,7 +7,7 @@ import numpy as np
 def TextToShinglesDuplicates(text: str,
                         shingle_len: int,
                         hash_fun: Callable,
-                        int_type = np.int16) -> np.array:
+                        int_type = np.int64) -> np.array:
     '''Compute all the shingles of size shingle_len, hash them 
         and save the result in a numpy array
 
@@ -37,14 +37,13 @@ def TextToShinglesDuplicates(text: str,
 
 def TextToShinglesUniques(text: str,
                         shingle_len: int,
-                        hash_fun: Callable,
-                        int_type = np.int16) -> np.array:
+                        hash_fun: Callable) -> set:
     '''Compute all the shingles of size shingle_len,
-        return a numpy array of uniques hashed shingles
+        return a set uniques hashed shingles
 
     Examples:
         >>> TextToShinglesSet("abcdf", 3, lambda x : sum([ord(c) for c in x]) % 5)
-        array([4, 2, 1], dtype=int16)
+        {1, 2, 4}
 
     Args:
         - text: text from which to compute she shingles
@@ -53,7 +52,7 @@ def TextToShinglesUniques(text: str,
         - int_type: type of integere used in the numpy array
 
     Returns:
-        numpy array of uniques hashed shingles
+        set of uniques hashed shingles
     '''
     # number of possibile consecutive shingles of the chosen length
     shingles_num = len(text) - shingle_len + 1
@@ -63,8 +62,4 @@ def TextToShinglesUniques(text: str,
     for i in range(shingles_num):
         shingles_set.add(hash_fun(text[i:i + shingle_len]))
     
-    return np.array([el for el in shingles_set], dtype= int_type)
-
-
-if __name__ == "__main__":
-    pass
+    return shingles_set
