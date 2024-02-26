@@ -1,22 +1,48 @@
 import mmh3
-
-# ---------- Unsigned 64 bit hash Murmur -------------
-def MurmUns64Hash(hashable):
-    '''Compute 64 Unsigned int hash (Murmur Hash)
-
-    Args: 
-        - hashable: yes string, no int
-    
-    Return:
-        64 bit unsigned integer hash 
-    '''
-    return mmh3.hash64(hashable, signed = False)[0]
-
+import hashlib
+import numpy as np
 
 # ---------- Shingle Hash --------------
+# -- Unsigned 64 bit hash Murmur --
+def MurmUns64Hash(input_string):
+    '''Compute 64 unsigned int hash (Murmur Hash).
 
+    Reference: https://pypi.org/project/mmh3/
+
+    Args: 
+        - input_string: string to be hashed
+    
+    Returns:
+        - 64 bit unsigned integer hash 
+    '''
+    # mmm3 returns a tuple of two 64 bit hashes
+    # only the first is returned here
+    return mmh3.hash64(input_string, signed = False)[0]
+
+# -- Unsigned 64 bit hash from hashlib --
+
+def SHA256Uns64Hash(input_string):
+    '''Compute 64 unsigned int hash (hashlib.sha256).
+
+    Args: 
+        - input_string: string to be hashed
+    
+    Returns:
+        - 64 bit unsigned integer hash 
+    '''
+    sha_signature = hashlib.sha256(input_string.encode()).digest()
+
+    # Convert to integer and truncate to 64 bits
+    int_hash = int.from_bytes(sha_signature, byteorder='big') & ((1 << 64) - 1)
+
+    return int_hash
 
 # ---------- Signature permutation hash functions ---------------
+# Universal Hashing
+# add 32 bit hashing from datasketch
+# add 64 bit hashing from MIDST progject LSH subdirectories
+
+
 
 #----------- just used for testing ------------
 def ToyHashGen(text: str, hash_parameter: int) -> int:
@@ -28,7 +54,7 @@ def ToyHashGen(text: str, hash_parameter: int) -> int:
         - hash_parameter: modulo of the division
 
     Returns:
-        hash value of object
+        - hash value of object
     '''
     return sum([ord(char) for char in text]) % hash_parameter
 
@@ -39,7 +65,7 @@ def ToyHashListGen(k: int) -> list:
         - k: number of hash functions 
 
     Returns: 
-        list of of toy hash functions objects
+        - list of of toy hash functions objects
     '''
 
     # list of toy hashes
