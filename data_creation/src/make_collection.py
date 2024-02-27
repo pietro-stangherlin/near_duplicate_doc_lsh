@@ -140,42 +140,40 @@ def WriteRandomLines(file_in: str,
             n_lines_in_file = 0
             for line in fin:
                 n_lines_in_file += 1
-        
-        
+
         edit_indexes = set(random.sample(range(n_lines_in_file),
-                                       n_random_lines))
-        
-        
+                                    n_random_lines))
+
         line_index = 0
         id_int_unique_last_index += 1
-        
+
         # we created the new dataset with id2 as
         # the line number in the file
-        
+
         for line in fin:
             # match = re.search(r"\{.*?\}", line)
-            
+
             original_line_dict = json.loads(line.strip())
-            
+
             if write_original_lines:
                 original_line_dict[id_int_link_field_name] = "None"
-                fout.write(f"{original_line_dict}\n") # check if its json like, maybe json.dump is better
-                
+                json.dump(original_line_dict, fout)  # use json.dump here
+                fout.write("\n")  # add a newline after each json object
+
             if line_index in edit_indexes:
                 for edited in edit_dict_fun(original_line_dict,
-                                            id_int_unique_last_index, # id2 last value
-                                            id_int_unique_field_name, # id2
-                                            id_int_link_field_name, # id3
+                                            id_int_unique_last_index,  # id2 last value
+                                            id_int_unique_field_name,  # id2
+                                            id_int_link_field_name,  # id3
                                             content_field_name,
                                             error_params_list,
                                             edit_text_function):
-                    
-                    fout.write(f"{edited}\n")
-                    
+
+                    json.dump(edited, fout)  # use json.dump here
+                    fout.write("\n")  # add a newline after each json object
+
                     # write the indexed in the index file
                     fout_index.write(f"{id_int_unique_last_index},{original_line_dict[id_int_unique_field_name]}\n")
                     id_int_unique_last_index += 1
-                    
-                    
-                
+
             line_index += 1

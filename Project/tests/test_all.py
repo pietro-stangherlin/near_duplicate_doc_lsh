@@ -9,6 +9,7 @@ import re
 
 # important: execute the script from external directory
 # so the data folder (not included in the near_duplicate_doc_lsh) is a subdirectory
+# also before running convert the file to utf-8 and remove BOM (from notepad++ encoding, or another way)
 # >>> python -m near_duplicate_doc_lsh.Project.tests.test_all
 
 
@@ -16,6 +17,7 @@ import re
 W = 9 # shingle len
 K = 100 # signature len -> number of hash functions
 INT_TYPE_32 = np.int32
+INT_TYPE_64 = np.int64
 
 
 # generate permutations params
@@ -23,8 +25,8 @@ hash_aux_params_list = hashing.GenerateTwoUns64(K, 123)
 
 file_name = "data_near_duplicate\\robust_clones_first_100.json"
 
-with open(file_name, 'r', encoding = "utf-8") as file:
-    for line in file:
+with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w") as fout:
+    for line in fin:
         # Use regular expression to find the content inside the brackets
         match = re.search(r'\{(.*)\}', line)
         if match:
@@ -37,6 +39,8 @@ with open(file_name, 'r', encoding = "utf-8") as file:
                                                          W,
                                                          hashing.MurmUns32Hash)
             signature_temp = minhash.GenerateSignatureV2(shingles = shingle_temp,
-                                                       hash_function = hashing.HashMultShift32,
+                                                       hash_function = hashing.Naive32UniversalHash,
                                                        hash_params_list = hash_aux_params_list,
-                                                       int_type = INT_TYPE_32)
+                                                       int_type = INT_TYPE_64)
+            fout.write(f"{signature_temp}\n")
+            

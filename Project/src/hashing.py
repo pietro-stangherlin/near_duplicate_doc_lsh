@@ -74,9 +74,36 @@ def SHA256Uns64Hash(input_string):
 # Mikkel Thorup and Yin Zhang, "Tabulation Based 5-Universal Hashing and Linear Probing",
 # 2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76
 
+# use this by default
+def Naive32UniversalHash(x: np.int32,
+                       aux_params: np.array) -> int:
+     '''Performs 2-universal hashing for a 32-bit key.
+
+        For this function aux_params should be a numpy array of two unsigned 64 bit integers
+
+        Reference:
+        J.Lawrence Carter, Mark N. Wegman, "Universal classes of hash functions"
+        Journal of Computer and System Sciences, Volume 18, Issue 2, 1979, Pages 143-154.
+     '''
+    # mersenne_prime
+     p = 2**31 - 1
+
+     a = np.int64(aux_params[0])
+     b = np.int64(aux_params[1])
+     x = np.int64(x)
+
+     # if we want to avoid overflow
+     # distributive property of modulo
+     # return ((a % p) * (x % p) % p + b % p) % p
+
+     # but beacuse we care only about hash it doesn't matter
+     return (a * x + b) % p
+
+
 
 # -- 32 bit keys universal hashing --
 # WARNING: needs to be checked
+# beacuse it's bad defined
 def HashMultShift32(x: np.int32,
                     aux_params: np.array) -> int:
     """
@@ -101,11 +128,20 @@ def HashMultShift32(x: np.int32,
          print("Error: the aux_params should have only two elements")
          return None
 
-    a = int(aux_params[0])
-    b = int(aux_params[1])
-    x = int(x)
+    a = np.int64(aux_params[0])
+    b = np.int64(aux_params[1])
+    x = np.int64(x)
 
-    return ((a * x + b) >> 32)
+    # try
+    return ((a * x + b)  % (2**61 - 1))
+
+    # debug
+    # print(str((a * (x >> 32) + (b >> 32))))
+    # Perform operations in a way that avoids intermediate overflow
+    # return (a * (x >> 32) + (b >> 32))
+
+    # before was
+    # return ((a * x + b) >> 32)
 
 
 def GenerateTwoUns64(num_tuples: int,
