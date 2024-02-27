@@ -76,9 +76,9 @@ def SHA256Uns64Hash(input_string):
 
 
 # -- 32 bit keys universal hashing --
-
+# WARNING: needs to be checked
 def HashMultShift32(x: np.int32,
-                    aux_params: np.array) -> np.int32:
+                    aux_params: np.array) -> int:
     """
     Performs 2-universal hashing for a 32-bit key.
 
@@ -103,12 +103,13 @@ def HashMultShift32(x: np.int32,
 
     a = int(aux_params[0])
     b = int(aux_params[1])
+    x = int(x)
 
-    return (a * int(x) + b) >> 32
+    return ((a * x + b) >> 32)
 
 
 def GenerateTwoUns64(num_tuples: int,
-                     seed: int) -> np.ndarray:
+                     seed: int) -> list:
         '''Compute array of num_tuples tuples of positive 64 bit integer.
 
         The first tuple element is >= 1, the second >= 0.
@@ -120,7 +121,7 @@ def GenerateTwoUns64(num_tuples: int,
         - seed: used for reproducibility
 
         Returns:
-            - numpy.ndarray of num_tuples tuples of two positive 64 bit integer
+            - list of num_tuples tuples of two positive 64 bit integer
         '''
 
         
@@ -128,56 +129,13 @@ def GenerateTwoUns64(num_tuples: int,
 
         max_int = np.iinfo(np.uint64).max
 
-        return np.array(
-            [
-                (
-                    gen.randint(1, max_int, dtype = np.uint64),
-                    gen.randint(0, max_int, dtype = np.uint64),
-                )
-                for _ in range(num_tuples)
-            ],
-            dtype = np.uint64,
-        ).T
+        return [(gen.randint(1, max_int, dtype = np.uint64),
+                gen.randint(0, max_int, dtype = np.uint64))
+                for _ in range(num_tuples)]
 
 
 
 # add 64 bit hashing from MIDST project LSH subdirectories
-
-
-
-#----------- just used for testing ------------
-def ToyHashGen(text: str, hash_parameter: int) -> int:
-    '''Sum the numbers code for each character,
-    the modulo of the division of the sum by the hash_parameter is the hash
-
-    Args: 
-        - text: string to be hashed
-        - hash_parameter: modulo of the division
-
-    Returns:
-        - hash value of object
-    '''
-    return sum([ord(char) for char in text]) % hash_parameter
-
-def ToyHashListGen(k: int) -> list:
-    '''Generate a list of k toy hash functions objects.
-
-    Args:
-        - k: number of hash functions 
-
-    Returns: 
-        - list of of toy hash functions objects
-    '''
-
-    # list of toy hashes
-    toy_hash_functions_list = [None for i in range(k)]
-
-    # populate the list
-    for i in range(k):
-        toy_hash_functions_list[i] = lambda x : ToyHashGen(x, i + 1)
-
-    return toy_hash_functions_list
-
 
 
 

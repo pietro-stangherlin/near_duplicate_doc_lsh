@@ -33,16 +33,16 @@ first_50_dict_params_yes_original = {"file_in": "Data_Creation\\first_50.json",
                                     "id_int_unique_last_index": 49}
 
 
-robust_yes_original = {"file_in": "Data_Creation\\robust_2.json",
-                                    "file_out_collection": "robust_noise.json",
-                                     "file_out_index": "robust_noise_index.csv",
-                                    "n_random_lines": 50000,
+robust_yes_original = {"file_in": "data_near_duplicate\\robust_2.json",
+                                    "file_out_collection": "robust_clones.json",
+                                     "file_out_index": "robust_clones_index.csv",
+                                    "n_random_lines": 100000,
                                     "edit_dict_fun" : mc.EditDictOCR,
                                      "id_int_unique_field_name": "id2",
                                     "id_int_link_field_name": "id3",
                                     "edit_text_function": mc.EditTextOCR,
                                     "content_field_name": "content",
-                                    "error_params_list": [[0.1, 0.1, 0.5]],
+                                    "error_params_list": [[0, 0, 0]],
                                     "write_original_lines": True,
                                     "n_lines_in_file": 528155,
                                     "id_int_unique_last_index": 528154}

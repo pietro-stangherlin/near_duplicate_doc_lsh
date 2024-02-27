@@ -1,4 +1,4 @@
-from src import hash as hs
+from src import hashing as hs
 import unittest
 import numpy as np
 
@@ -19,7 +19,7 @@ class TestHash(unittest.TestCase):
 
     def test_HashMultShift32(self):
         x = 914636142
-        aux_params_1 = np.array((3624216819017203054, 4184670734919783523), dtype= INT_TYPE_U64).T
+        aux_params_1 = (3624216819017203054, 4184670734919783523)
         result = hs.HashMultShift32(x, aux_params_1)
         print(f'''HashMultiShift32(x = {x}, aux_params = {aux_params_1}) = 
               {result}''')

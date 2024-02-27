@@ -5,4 +5,4 @@ W = 9
 K = 100
 
 # LSH bands number 
-B = 3
+B = 10
