@@ -10,20 +10,34 @@ INT_TYPE_U64 = np.uint64
 class TestHash(unittest.TestCase):
 
     def test_GenerateTwoUns64(self):
-        num_tuples = 2
+        num_lists = 2
+        num_el = 3
         seed = 123
-        result = hs.GenerateTwoUns64(num_tuples, seed)
-        print(f'''GenerateTwoUns64 with num_tuples {num_tuples} and seed {seed}:
+        result = hs.GenerateUns64(num_lists, num_el, seed)
+        print(f'''GenerateTwoUns64 with num_lists {num_lists}, num_el {num_el} and seed {seed}:
                {result}''')
         print(f"result type: {type(result)}")
-
-    def test_HashMultShift32(self):
+    
+    def test_Naive32UniversalHash(self):
         x = 914636142
         aux_params_1 = (3624216819017203054, 4184670734919783523)
-        result = hs.HashMultShift32(x, aux_params_1)
-        print(f'''HashMultiShift32(x = {x}, aux_params = {aux_params_1}) = 
+        result = hs.Naive32UniversalHash(x, aux_params_1)
+        print(f'''Naive32UniversalHash(x = {x}, aux_params = {aux_params_1}) = 
               {result}''')
 
+    def test_CWtrick32to32(self):
+        x = 914636142
+        aux_params_1 = [13131141, 13141411, 5363636, 747747484, 858488463]
+        result = hs.CWtrick32to32(x = x, aux_params= aux_params_1)
+        print(f'''CWtrick32to32(x = {x}, aux_params = {aux_params_1}) = 
+              {result}''')
+    
+    def test_CWtrick32to64(self):
+        x = 914636142
+        aux_params_1 = [13131141, 13141411, 5363636, 747747484, 858488463]
+        result = hs.CWtrick32to64(x = x, aux_params= aux_params_1)
+        print(f'''CWtrick32to32(x = {x}, aux_params = {aux_params_1}) = 
+            {result}''')
 
 
 # Warning: this script has to be executed 

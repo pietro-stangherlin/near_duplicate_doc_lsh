@@ -1,6 +1,41 @@
 import mmh3
 import hashlib
 import numpy as np
+import ctypes
+import os
+
+
+
+# ---- generate hash random parameters -------#
+def GenerateUns64(num_lists: int,
+                  num_elements: int,
+                    seed: int) -> list:
+        '''Compute list of num_lists lists
+        each one of positive with num_elements 64 unsigned bit integer.
+
+        All the integers generated are >= 1.
+        Those will be used as parameters for hash functions random parameters
+        similar but not limited to:
+        where hash(x, A, B) = some_function(A * x + B).
+
+        Args:
+        - num_lists: number of lists generated
+        - num_elements: number of integers in each list
+        - seed: used for reproducibility
+
+        Returns:
+            - list of num_lists lists of num_elements unsigned 64 bit integer
+        '''
+
+        
+        gen = np.random.RandomState(seed)
+
+        max_int = np.iinfo(np.uint64).max
+
+        return [
+                [gen.randint(1, max_int, dtype = np.uint64) for _ in range(num_elements)]
+                for _ in range(num_lists)
+                ]
 
 # ---------- Shingle Hash --------------
 # -- Unsigned 32 bit hash Murmur --
@@ -75,21 +110,27 @@ def SHA256Uns64Hash(input_string):
 # 2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76
 
 # use this by default
+# but it's so slow
 def Naive32UniversalHash(x: np.int32,
-                       aux_params: np.array) -> int:
+                       aux_params: list) -> np.uint32:
      '''Performs 2-universal hashing for a 32-bit key.
 
-        For this function aux_params should be a numpy array of two unsigned 64 bit integers
+        Args:
+            -x: integer to be hashed
+            -aux_params: list two unsigned 64 bit integers
+        
+        Returns:
+            - unsigned 32 bit hashed integer 
 
         Reference:
         J.Lawrence Carter, Mark N. Wegman, "Universal classes of hash functions"
         Journal of Computer and System Sciences, Volume 18, Issue 2, 1979, Pages 143-154.
      '''
     # mersenne_prime
-     p = 2**31 - 1
+     p = 2**61 - 1
 
-     a = np.int64(aux_params[0])
-     b = np.int64(aux_params[1])
+     a = aux_params[0]
+     b = aux_params[1]
      x = np.int64(x)
 
      # if we want to avoid overflow
@@ -97,77 +138,128 @@ def Naive32UniversalHash(x: np.int32,
      # return ((a % p) * (x % p) % p + b % p) % p
 
      # but beacuse we care only about hash it doesn't matter
-     return (a * x + b) % p
+     return np.uint32(((a * x + b) % p) % 2**32)
 
 
+# ---- article trick ----#
+# use c++ compiled code ----
+# see instructions in the function descprition
 
-# -- 32 bit keys universal hashing --
-# WARNING: needs to be checked
-# beacuse it's bad defined
-def HashMultShift32(x: np.int32,
-                    aux_params: np.array) -> int:
-    """
-    Performs 2-universal hashing for a 32-bit key.
+# get the absolute path of the cpp program
+# so when the function using it (CW..) are called
+# python knows where to search for the script
 
-    For this function aux_params should be a numpy array of two unsigned 64 bit integers
 
-    Reference:
+# Get the path of the current script
+script_path = os.path.dirname(__file__)
+
+# Join it with the name of the library file
+lib_path = os.path.join(script_path, "hashCWtrick32.dll")
+
+# Load the library using the full path
+lib = ctypes.CDLL(lib_path)
+
+def MultiShift32(x: np.uint32,
+                  aux_params: list) -> np.uint32:
+    '''Applies the operation (a*x + b) mod Prime
+    
+    Args:
+        - x: The 32-bit key.
+        - aux_params: list of 2 unsigned 64 bit integers ()
+        
+    Returns:
+        - hash: unsigned 32 bit integer
+    
+    Instructions:
+        compile the file "hashCWtrick32.cpp" as hashCWtrick3.dll,
+        example with g++:
+        g++ -shared -o hashCWtrick32.dll hashCWtrick32.cpp
+    
+    All the code used is taken from:
     Mikkel Thorup and Yin Zhang, "Tabulation Based 5-Universal Hashing and Linear Probing",
     2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76.
-    A.2  Multiplication-shift based hashing for32-bit keys.
+    table: A.2  plain universal hashing for 32-bit key x.
+    '''
+    lib.Univ2.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64]
+    lib.Univ2.restype = ctypes.c_uint64
+    
+    A = aux_params[0]
+    B = aux_params[1]
+    
+    return lib.Univ2(x, A, B)
 
-
-    Args:
-    - x: 32-bit int to be hashed.
-    - aux_params: numpy array of two unsigned 64 bit integers
-
-    Returns:
-    The result of the 2-universal hashing.
+def CWtrick32to32(x: np.uint32,
+                  aux_params: list) -> np.uint32:
     """
-    if len(aux_params) != 2:
-         print("Error: the aux_params should have only two elements")
-         return None
-
-    a = np.int64(aux_params[0])
-    b = np.int64(aux_params[1])
-    x = np.int64(x)
-
-    # try
-    return ((a * x + b)  % (2**61 - 1))
-
-    # debug
-    # print(str((a * (x >> 32) + (b >> 32))))
-    # Perform operations in a way that avoids intermediate overflow
-    # return (a * (x >> 32) + (b >> 32))
-
-    # before was
-    # return ((a * x + b) >> 32)
-
-
-def GenerateTwoUns64(num_tuples: int,
-                     seed: int) -> list:
-        '''Compute array of num_tuples tuples of positive 64 bit integer.
-
-        The first tuple element is >= 1, the second >= 0.
-        Those will be used as parameters for hash functions parameters A and B
-        where hash(x, A, B) = some_function(A * x + B).
-
-        Args:
-        - num_tuples: number of tuples generated
-        - seed: used for reproducibility
-
-        Returns:
-            - list of num_tuples tuples of two positive 64 bit integer
-        '''
-
+    Applies the operation (a*x + b) mod Prime
+    multiple times with different parameters.
+    
+    Args:
+        - x: The 32-bit key.
+        - aux_params: list of 5 unsigned 64 bit integers ()
         
-        gen = np.random.RandomState(seed)
+    Returns:
+        - hash: unsigned 32 bit integer
+    
+    Instructions:
+        compile the file "hashCWtrick32.cpp" as hashCWtrick3.dll,
+        example with g++:
+        g++ -shared -o hashCWtrick32.dll hashCWtrick32.cpp
 
-        max_int = np.iinfo(np.uint64).max
+    All the code used is taken from:
+    Mikkel Thorup and Yin Zhang, "Tabulation Based 5-Universal Hashing and Linear Probing",
+    2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76.
+    A.9  CW trick for32-bit keys with prime 2**61 - 1.
+    """
+    
+    # Provide the argument types and return type of the function
+    lib.CWtrick32to32.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64]
+    lib.CWtrick32to32.restype = ctypes.c_uint64
+    
+    A = aux_params[0]
+    B = aux_params[1]
+    C = aux_params[2]
+    D = aux_params[3]
+    E = aux_params[4]
+    
+    return lib.CWtrick32to32(x, A, B, C, D, E)
 
-        return [(gen.randint(1, max_int, dtype = np.uint64),
-                gen.randint(0, max_int, dtype = np.uint64))
-                for _ in range(num_tuples)]
+
+def CWtrick32to64(x: np.uint32,
+                  aux_params: list) -> np.uint64:
+    """
+    Applies the operation (a*x + b) mod Prime
+    multiple times with different parameters.
+    
+    Args:
+        - x: The 32-bit key.
+        - aux_params: list of 5 unsigned 64 bit integers ()
+    Returns:
+        - hash: unsigned 64 bit integer
+
+    Instructions:
+        compile the file "hashCWtrick32.cpp" as hashCWtrick3.dll,
+        example with g++:
+        g++ -shared -o hashCWtrick32.dll hashCWtrick32.cpp
+        
+    All the code used is taken from:
+    Mikkel Thorup and Yin Zhang, "Tabulation Based 5-Universal Hashing and Linear Probing",
+    2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76.
+    A.9  CW trick for32-bit keys with prime 2**61 - 1.
+    """
+    # Provide the argument types and return type of the function
+    lib.CWtrick32to64.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64]
+    lib.CWtrick32to64.restype = ctypes.c_uint64
+    
+    A = aux_params[0]
+    B = aux_params[1]
+    C = aux_params[2]
+    D = aux_params[3]
+    E = aux_params[4]
+    
+    return lib.CWtrick32to64(x, A, B, C, D, E)
+
+
 
 
 

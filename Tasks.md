@@ -40,6 +40,11 @@ We need a different hash function for each signature element.
 Attetion is needed in not chosing hash functions that behave nearly the same with 
 different parameters. 
 
+### Use alternative permutations hash functions
+The Naive32UniversalHash (current use) is correct but it's to slow:
+- find alternatives (like bit shift)
+- implement it in c or c++
+
 ## Storage of Signature Matrix
 Options are
 1. not store it: from a shingle generate the signature matrix, from it fill the LSH bands

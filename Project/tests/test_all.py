@@ -6,22 +6,26 @@ import numpy as np
 import json
 import sys
 import re
+import time
 
 # important: execute the script from external directory
 # so the data folder (not included in the near_duplicate_doc_lsh) is a subdirectory
 # also before running convert the file to utf-8 and remove BOM (from notepad++ encoding, or another way)
-# >>> python -m near_duplicate_doc_lsh.Project.tests.test_all
+# >>> python -m near_duplicate_doc_lsh.project.tests.test_all
 
 
 # constants
 W = 9 # shingle len
 K = 100 # signature len -> number of hash functions
-INT_TYPE_32 = np.int32
-INT_TYPE_64 = np.int64
+EL = 5 # number of random integers generated
+INT_TYPE_32 = np.uint32
+INT_TYPE_64 = np.uint64
 
+start = time.time()
 
+permutations_dict = dict()
 # generate permutations params
-hash_aux_params_list = hashing.GenerateTwoUns64(K, 123)
+hash_aux_params_list = hashing.GenerateUns64(K, EL, 123)
 
 file_name = "data_near_duplicate\\robust_clones_first_100.json"
 
@@ -39,8 +43,13 @@ with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w"
                                                          W,
                                                          hashing.MurmUns32Hash)
             signature_temp = minhash.GenerateSignatureV2(shingles = shingle_temp,
-                                                       hash_function = hashing.Naive32UniversalHash,
+                                                       hash_function = hashing.CWtrick32to32,
                                                        hash_params_list = hash_aux_params_list,
-                                                       int_type = INT_TYPE_64)
-            fout.write(f"{signature_temp}\n")
-            
+                                                       int_type = INT_TYPE_64,
+                                                       use_permutations_dict= True,
+                                                       permutations_dict = permutations_dict)
+            # fout.write(f"{signature_temp}\n")
+
+stop = time.time()
+
+print(f"Time: {stop - start}")
