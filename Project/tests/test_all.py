@@ -16,14 +16,16 @@ import time
 
 # constants
 W = 9 # shingle len
-K = 100 # signature len -> number of hash functions
+K = 50 # signature len -> number of hash functions
 EL = 5 # number of random integers generated
 INT_TYPE_32 = np.uint32
 INT_TYPE_64 = np.uint64
 
-start = time.time()
+# exchange hashFunction paramerOrder
+def ExHashFun(array: np.array, x: int):
+    return hashing.CWtrick32to32(x = x, aux_params= array)
 
-permutations_dict = dict()
+start = time.time()
 # generate permutations params
 hash_aux_params_list = hashing.GenerateUns64(K, EL, 123)
 
@@ -42,12 +44,10 @@ with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w"
             shingle_temp = shingling.TextToShinglesUniques(text_temp,
                                                          W,
                                                          hashing.MurmUns32Hash)
-            signature_temp = minhash.GenerateSignatureV2(shingles = shingle_temp,
-                                                       hash_function = hashing.CWtrick32to32,
-                                                       hash_params_list = hash_aux_params_list,
-                                                       int_type = INT_TYPE_64,
-                                                       use_permutations_dict= True,
-                                                       permutations_dict = permutations_dict)
+            signature_temp = minhash.GenerateSignatureV3(shingles = shingle_temp,
+                                                       hash_function = ExHashFun,
+                                                       hash_params_array = hash_aux_params_list,
+                                                       int_type = INT_TYPE_64)
             # fout.write(f"{signature_temp}\n")
 
 stop = time.time()

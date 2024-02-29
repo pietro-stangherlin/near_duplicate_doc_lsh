@@ -59,7 +59,7 @@ x: integer to be hashed
 A,B,C,D,E random integers
 -> return Unsigned 32 bit */
 extern "C" {
-INT64 CWtrick32to32(INT32 x, INT64 A,
+INT32 CWtrick32to32(INT32 x, INT64 A,
 INT64 B, INT64 C, INT64 D, INT64 E)
 
 {

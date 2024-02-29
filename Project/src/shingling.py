@@ -2,7 +2,6 @@ from typing import Callable
 import numpy as np
 
 # I should add specifif rolling hashing implementations
-# https://en.wikipedia.org/wiki/Rolling_hash
 
 def TextToShinglesDuplicates(text: str,
                         shingle_len: int,

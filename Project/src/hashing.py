@@ -7,11 +7,10 @@ import os
 
 
 # ---- generate hash random parameters -------#
-def GenerateUns64(num_lists: int,
-                  num_elements: int,
-                    seed: int) -> list:
-        '''Compute list of num_lists lists
-        each one of positive with num_elements 64 unsigned bit integer.
+def GenerateUns64(num_rows: int,
+                  num_cols: int,
+                    seed: int) -> np.array:
+        '''Compute array of 64 unsigned bit integer.
 
         All the integers generated are >= 1.
         Those will be used as parameters for hash functions random parameters
@@ -19,12 +18,12 @@ def GenerateUns64(num_lists: int,
         where hash(x, A, B) = some_function(A * x + B).
 
         Args:
-        - num_lists: number of lists generated
-        - num_elements: number of integers in each list
+        - num_rows: number of array's rows
+        - num_cols: number of array's columns
         - seed: used for reproducibility
 
         Returns:
-            - list of num_lists lists of num_elements unsigned 64 bit integer
+            - numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
         '''
 
         
@@ -32,10 +31,14 @@ def GenerateUns64(num_lists: int,
 
         max_int = np.iinfo(np.uint64).max
 
-        return [
-                [gen.randint(1, max_int, dtype = np.uint64) for _ in range(num_elements)]
-                for _ in range(num_lists)
-                ]
+        return np.array(
+        [
+            tuple(gen.randint(1, max_int, dtype=np.uint64)
+                  for _ in range(num_cols))
+            for _ in range(num_rows)
+        ],
+        dtype=np.uint64,
+    )
 
 # ---------- Shingle Hash --------------
 # -- Unsigned 32 bit hash Murmur --
@@ -189,7 +192,7 @@ def MultiShift32(x: np.uint32,
     return lib.Univ2(x, A, B)
 
 def CWtrick32to32(x: np.uint32,
-                  aux_params: list) -> np.uint32:
+                  aux_params: np.array) -> np.uint32:
     """
     Applies the operation (a*x + b) mod Prime
     multiple times with different parameters.
@@ -216,13 +219,12 @@ def CWtrick32to32(x: np.uint32,
     lib.CWtrick32to32.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64]
     lib.CWtrick32to32.restype = ctypes.c_uint64
     
-    A = aux_params[0]
-    B = aux_params[1]
-    C = aux_params[2]
-    D = aux_params[3]
-    E = aux_params[4]
-    
-    return lib.CWtrick32to32(x, A, B, C, D, E)
+    return lib.CWtrick32to32(x,
+                             aux_params[0],
+                             aux_params[1],
+                             aux_params[2],
+                             aux_params[3],
+                             aux_params[4])
 
 
 def CWtrick32to64(x: np.uint32,
@@ -251,13 +253,12 @@ def CWtrick32to64(x: np.uint32,
     lib.CWtrick32to64.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64]
     lib.CWtrick32to64.restype = ctypes.c_uint64
     
-    A = aux_params[0]
-    B = aux_params[1]
-    C = aux_params[2]
-    D = aux_params[3]
-    E = aux_params[4]
-    
-    return lib.CWtrick32to64(x, A, B, C, D, E)
+    return lib.CWtrick32to32(x,
+                             aux_params[0],
+                             aux_params[1],
+                             aux_params[2],
+                             aux_params[3],
+                             aux_params[4])
 
 
 

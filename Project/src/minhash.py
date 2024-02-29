@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Callable
 from BTrees._LOBTree import LOBTree
+from multiprocessing import Pool
 
 # requires: family of hash functions
 # for both Minhash signatures and LSH bands
@@ -41,7 +42,7 @@ def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
 
 def ComputeHashValuesV2(integer: int,
                       hash_function: Callable,
-                      hash_params_list: list,
+                      hash_params_array: np.array,
                       int_type = np.int64) -> np.array:
     '''Compute array of hash values of shingle.
     
@@ -55,7 +56,7 @@ def ComputeHashValuesV2(integer: int,
         - integer: input to be hashed by all hash functions in the list.
         - hash_function: hash functions object, accepts (x, hash_params)
                         where x is the element to be hashed.
-        - hash_params_list: hash_params_list is a list of list, each one 
+        - hash_params_array: hash_params_list is a list of list, each one 
                             containing a set of parameters used for the hash function.
         - int_type: type of integer used in the numpy array.
 
@@ -64,14 +65,11 @@ def ComputeHashValuesV2(integer: int,
         hash_values_array: array of all the hash values
 
     '''
-    k = len(hash_params_list)
-
-    values = np.empty(shape = k, dtype = int_type)
-
-    for i in range(k):
-        values[i] = hash_function(integer, hash_params_list[i])
     
-    return values
+    return np.apply_along_axis(hash_function,
+                                 axis = 1,
+                                 arr = hash_params_array,
+                                 x = integer)
 
 #------------------ Generate Signature ---------------------#
 
@@ -167,6 +165,69 @@ def GenerateSignatureV2(shingles: iter,
                 signature[hash_fun_index] = value
 
     
+    return signature
+
+
+def hash_with_params(args):
+    hash_function, value, params = args
+    return hash_function(value, params)
+
+# no dictionary used
+def GenerateSignatureV3(shingles: iter,
+                      hash_function: Callable,
+                      hash_params_array: np.array,
+                      int_type = np.int64) -> np.array:
+    '''Generate signature from shingles array.
+
+        Let k be the number of hash functions elements.
+        The function works on two arrays of length k: one is the signature
+        and it's inizialized with all elements set to the
+        first shingles_array element, the other
+        contains the position of the signature elements
+        determined by each hash function (permutation).
+        Conditionally on each hash function (each element of hash_params_list), for each shingles element
+        check its permuted position, if smaller than the position stored 
+        in the position array -> update that position with it and, in the signature array,
+        substitute the corresponding shingle with the current one. 
+    
+    Args:
+        - shingles: iterable object (list, set, numpy.array...) containing hashed shingles.
+        - hash_function: hash functions object, accepts (x, hash_params)
+                        where x is the element to be hashed.
+        - hash_params_array: 2D array 
+                            each row has a set of parameters for the hash function 
+        - int_type: type of integer used in the numpy array.
+
+    Returns:
+        signature_vector: np.array of k values (int) where
+                                    each value is the result of the j-th
+                                    hash function on shingles_array.
+    '''
+
+    num_hash_funs = hash_params_array.shape[1]
+    
+    # allocate signature matrix
+    signature = np.zeros(shape = num_hash_funs,
+                        dtype = int_type)
+ 
+    # allocate permuted positions array
+    positions = np.full(shape = num_hash_funs,
+                        fill_value = np.iinfo(int_type).max,
+                        dtype = int_type)
+
+    # Create a pool of processes
+    for value in shingles:
+        # Compute hash values in parallel
+        temp_permuted_pos = ComputeHashValuesV2(value,
+                                    hash_function,
+                                    hash_params_array,
+                                    int_type)
+            
+        # Vectorized comparison and update
+        mask = temp_permuted_pos < positions
+        positions[mask] = temp_permuted_pos[mask]
+        signature[mask] = value
+
     return signature
 
 # --------- Signatures set data structure ---------------
