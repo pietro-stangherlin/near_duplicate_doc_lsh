@@ -41,7 +41,7 @@ def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
     return equals / l1
 
 #------------------ Generate Signature ---------------------#
-@numba.jit
+@numba.jit(nopython = True)
 def NumbaSignatureByRow(shingles_array: np.array,
                               hash_params_matrix: np.array,
                               hash_fun: Callable,
@@ -60,15 +60,15 @@ def NumbaSignatureByRow(shingles_array: np.array,
                     is not implemented any compatibility check between
                     the paramters of this function and those of 
                     the hash_function
-        - int_type: the signatures contains the hashed positions instead 
+        - int_type: integer type of the signature elements
+        
+    Returns:
+        - signature array: contains the hashed positions instead 
                             of the values, this doesn't change the result 
                             as long as each shingle has the same type of 
                             its hash (ex. uint32 uint32) if the hash function
                             behaves decently, i.e. looks approximatley like
-                            a bijective function.
-        
-    Returns:
-        - signature array
+                            a bijective function
     '''
     num_matrix_rows = hash_params_matrix.shape[0]
     signature = np.full(shape = num_matrix_rows,

@@ -29,7 +29,7 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
                                                       reshape = True,
                                                       int_type = np.uint64)
 
-file_name = "data_near_duplicate\\robust_clones_first_10000.json"
+file_name = "data_near_duplicate\\robust_clones_first_1000.json"
 
 with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w") as fout:
     for line in fin:
