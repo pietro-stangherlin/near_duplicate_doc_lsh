@@ -60,7 +60,12 @@ def NumbaSignatureByRow(shingles_array: np.array,
                     is not implemented any compatibility check between
                     the paramters of this function and those of 
                     the hash_function
-        - int_type: integer type of the signature elements
+        - int_type: the signatures contains the hashed positions instead 
+                            of the values, this doesn't change the result 
+                            as long as each shingle has the same type of 
+                            its hash (ex. uint32 uint32) if the hash function
+                            behaves decently, i.e. looks approximatley like
+                            a bijective function.
         
     Returns:
         - signature array
@@ -70,6 +75,49 @@ def NumbaSignatureByRow(shingles_array: np.array,
                         fill_value = np.iinfo(int_type).max)
     
     for row_index in range(num_matrix_rows):
+        for shingle in shingles_array:
+            value = hash_fun(shingle, hash_params_matrix[row_index])
+            if value < signature[row_index]:
+                signature[row_index] = value
+    
+    return signature
+
+# slower than the basic
+# so don't use for now
+@numba.jit(nopython = True, parallel = True)
+def NumbaSignatureByRowParallel(shingles_array: np.array,
+                              hash_params_matrix: np.array,
+                              hash_fun: Callable,
+                              int_type: np.uint32):
+    '''Computes signature array.
+    
+    Args:
+        - shingles_array: numpy array of shingles (integers)
+        - hash_params_matrix: matrix of parameters (other than the hashable)
+                            used to compute the hash function,
+                            each row corresponds to a set of parameters
+                            for a different hash function accepting
+                            a number of auxiliary parameters equals to 
+                            the columns number
+        - hash_fun: the hash function used, note that at the moment
+                    is not implemented any compatibility check between
+                    the paramters of this function and those of 
+                    the hash_function
+        - int_type: integer type of the signature elements
+        
+    Returns:
+        - signature array: the signatures contains the hashed positions instead 
+                            of the values, this doesn't change the result 
+                            as long as each shingle has the same type of 
+                            its hash (ex. uint32 uint32) if the hash function
+                            behaves decently, i.e. looks approximatley like
+                            a bijective function
+    '''
+    num_matrix_rows = hash_params_matrix.shape[0]
+    signature = np.full(shape = num_matrix_rows,
+                        fill_value = np.iinfo(int_type).max)
+    
+    for row_index in numba.prange(num_matrix_rows):
         for shingle in shingles_array:
             value = hash_fun(shingle, hash_params_matrix[row_index])
             if value < signature[row_index]:
