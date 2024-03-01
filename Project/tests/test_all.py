@@ -21,13 +21,13 @@ EL = 5 # number of random integers generated
 INT_TYPE_32 = np.uint32
 INT_TYPE_64 = np.uint64
 
-# exchange hashFunction paramerOrder
-def ExHashFun(array: np.array, x: int):
-    return hashing.CWtrick32to32(x = x, aux_params= array)
-
 start = time.time()
 # generate permutations params
-hash_aux_params_list = hashing.GenerateUns64(K, EL, 123)
+hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
+                                                      num_cols = 2,
+                                                      seed = 123,
+                                                      reshape = True,
+                                                      int_type = np.uint64)
 
 file_name = "data_near_duplicate\\robust_clones_first_100.json"
 
@@ -41,14 +41,17 @@ with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w"
             json_content = json.loads(content)  # Convert the content to JSON
             id_temp = json_content["id2"]
             text_temp = json_content["content"]
-            shingle_temp = shingling.TextToShinglesUniques(text_temp,
-                                                         W,
-                                                         hashing.MurmUns32Hash)
-            signature_temp = minhash.GenerateSignatureV3(shingles = shingle_temp,
-                                                       hash_function = ExHashFun,
-                                                       hash_params_array = hash_aux_params_list,
-                                                       int_type = INT_TYPE_64)
-            # fout.write(f"{signature_temp}\n")
+            shingle_temp = shingling.TextToShinglesUniques(
+                text = text_temp,
+                shingle_len = W,
+                hash_fun = hashing.MurmUns32Hash)
+            
+            signature_temp = minhash.NumbaSignatureByRow(
+                shingles_array = np.array(list(shingle_temp), dtype= INT_TYPE_32),
+                hash_params_matrix = hash_params_matrix,
+                hash_fun = hashing.NumbaNaiveHashU32Params,
+                int_type = INT_TYPE_32)
+            fout.write(f"{signature_temp}\n")
 
 stop = time.time()
 

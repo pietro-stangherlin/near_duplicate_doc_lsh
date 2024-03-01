@@ -3,42 +3,42 @@ import hashlib
 import numpy as np
 import ctypes
 import os
+import numba
 
 
 
 # ---- generate hash random parameters -------#
-def GenerateUns64(num_rows: int,
+def GenerateNumpyArray(num_rows: int,
                   num_cols: int,
-                    seed: int) -> np.array:
+                  seed: int,
+                  reshape: bool,
+                  int_type = np.uint64) -> np.array:
         '''Compute array of 64 unsigned bit integer.
 
         All the integers generated are >= 1.
-        Those will be used as parameters for hash functions random parameters
-        similar but not limited to:
-        where hash(x, A, B) = some_function(A * x + B).
 
         Args:
         - num_rows: number of array's rows
         - num_cols: number of array's columns
+        - reshape: reshape the array into a matrix num_rows * num_cols
         - seed: used for reproducibility
 
         Returns:
             - numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
         '''
 
+        np.random.seed(seed)
+
+        array = np.random.randint(low = 1 ,
+                                 high = np.iinfo(int_type).max,
+                                 size = num_rows * num_cols,
+                                 dtype = int_type)
+        # return matrix
+        if reshape:
+            return array.reshape(num_rows, num_cols)
         
-        gen = np.random.RandomState(seed)
-
-        max_int = np.iinfo(np.uint64).max
-
-        return np.array(
-        [
-            tuple(gen.randint(1, max_int, dtype=np.uint64)
-                  for _ in range(num_cols))
-            for _ in range(num_rows)
-        ],
-        dtype=np.uint64,
-    )
+        # return array
+        return array
 
 # ---------- Shingle Hash --------------
 # -- Unsigned 32 bit hash Murmur --
@@ -71,23 +71,6 @@ def MurmUns64Hash(input_string):
     # only the first is returned here
     return mmh3.hash64(input_string, signed = False)[0]
 
-# -- Unsigned 64 bit hash from hashlib --
-def SHA256Uns64Hash(input_string):
-    '''Compute 64 unsigned int hash (hashlib.sha256).
-
-    Args: 
-        - input_string: string to be hashed
-    
-    Returns:
-        - 64 bit unsigned integer hash 
-    '''
-    sha_signature = hashlib.sha256(input_string.encode()).digest()
-
-    # Convert to integer and truncate to 64 bits
-    int_hash = int.from_bytes(sha_signature, byteorder='big') & ((1 << 64) - 1)
-
-    return int_hash
-
 # ---------- Signature permutation hash functions ---------------
 # hash functions serving as row permutations in MinHash:
 # MinHash requires the row permutations to be random
@@ -107,41 +90,29 @@ def SHA256Uns64Hash(input_string):
 # and p is a prime.
 # NOTE: in practice the hash function could be a bit more complicated.
 
+@numba.jit(numba.uint32(numba.uint32, numba.uint64[:]))
+def NumbaNaiveHashU32Params(x, params):
+    '''Compute unsigned 32bit of unsigned 32 bit integer.
+    
+    NOTE: a and b should be randomly uniformly generated
+        to get universal hashing
+    
+    Args:
+        - x (uint32): integer to be hashed 
+        - params (array of 2 uint64): params and b in the formula
+        
+    Returns: 
+        - (uint32) hashed integer
+    '''
+    x = np.uint64(x)
+    p = 2**61 - 1
+    return (((params[0] * x + params[1]) % p) % 2**32)
+
 # The implementations use some computational tricks.
 # Reference:
 # Mikkel Thorup and Yin Zhang, "Tabulation Based 5-Universal Hashing and Linear Probing",
 # 2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76
 
-# use this by default
-# but it's so slow
-def Naive32UniversalHash(x: np.int32,
-                       aux_params: list) -> np.uint32:
-     '''Performs 2-universal hashing for a 32-bit key.
-
-        Args:
-            -x: integer to be hashed
-            -aux_params: list two unsigned 64 bit integers
-        
-        Returns:
-            - unsigned 32 bit hashed integer 
-
-        Reference:
-        J.Lawrence Carter, Mark N. Wegman, "Universal classes of hash functions"
-        Journal of Computer and System Sciences, Volume 18, Issue 2, 1979, Pages 143-154.
-     '''
-    # mersenne_prime
-     p = 2**61 - 1
-
-     a = aux_params[0]
-     b = aux_params[1]
-     x = np.int64(x)
-
-     # if we want to avoid overflow
-     # distributive property of modulo
-     # return ((a % p) * (x % p) % p + b % p) % p
-
-     # but beacuse we care only about hash it doesn't matter
-     return np.uint32(((a * x + b) % p) % 2**32)
 
 
 # ---- article trick ----#
@@ -162,34 +133,6 @@ lib_path = os.path.join(script_path, "hashCWtrick32.dll")
 # Load the library using the full path
 lib = ctypes.CDLL(lib_path)
 
-def MultiShift32(x: np.uint32,
-                  aux_params: list) -> np.uint32:
-    '''Applies the operation (a*x + b) mod Prime
-    
-    Args:
-        - x: The 32-bit key.
-        - aux_params: list of 2 unsigned 64 bit integers ()
-        
-    Returns:
-        - hash: unsigned 32 bit integer
-    
-    Instructions:
-        compile the file "hashCWtrick32.cpp" as hashCWtrick3.dll,
-        example with g++:
-        g++ -shared -o hashCWtrick32.dll hashCWtrick32.cpp
-    
-    All the code used is taken from:
-    Mikkel Thorup and Yin Zhang, "Tabulation Based 5-Universal Hashing and Linear Probing",
-    2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76.
-    table: A.2  plain universal hashing for 32-bit key x.
-    '''
-    lib.Univ2.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64]
-    lib.Univ2.restype = ctypes.c_uint64
-    
-    A = aux_params[0]
-    B = aux_params[1]
-    
-    return lib.Univ2(x, A, B)
 
 def CWtrick32to32(x: np.uint32,
                   aux_params: np.array) -> np.uint32:
@@ -218,40 +161,6 @@ def CWtrick32to32(x: np.uint32,
     # Provide the argument types and return type of the function
     lib.CWtrick32to32.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64]
     lib.CWtrick32to32.restype = ctypes.c_uint64
-    
-    return lib.CWtrick32to32(x,
-                             aux_params[0],
-                             aux_params[1],
-                             aux_params[2],
-                             aux_params[3],
-                             aux_params[4])
-
-
-def CWtrick32to64(x: np.uint32,
-                  aux_params: list) -> np.uint64:
-    """
-    Applies the operation (a*x + b) mod Prime
-    multiple times with different parameters.
-    
-    Args:
-        - x: The 32-bit key.
-        - aux_params: list of 5 unsigned 64 bit integers ()
-    Returns:
-        - hash: unsigned 64 bit integer
-
-    Instructions:
-        compile the file "hashCWtrick32.cpp" as hashCWtrick3.dll,
-        example with g++:
-        g++ -shared -o hashCWtrick32.dll hashCWtrick32.cpp
-        
-    All the code used is taken from:
-    Mikkel Thorup and Yin Zhang, "Tabulation Based 5-Universal Hashing and Linear Probing",
-    2010 Proceedings of the Workshop on Algorithm Engineering and Experiments (ALENEX), pages 62-76.
-    A.9  CW trick for32-bit keys with prime 2**61 - 1.
-    """
-    # Provide the argument types and return type of the function
-    lib.CWtrick32to64.argtypes = [ctypes.c_uint32, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64, ctypes.c_uint64]
-    lib.CWtrick32to64.restype = ctypes.c_uint64
     
     return lib.CWtrick32to32(x,
                              aux_params[0],

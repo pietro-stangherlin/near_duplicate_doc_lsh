@@ -31,16 +31,7 @@ def HashGeneral1(number, params_array):
 
 
 class TestSignatures(unittest.TestCase):
-
-    
-    def test_ComputeHashValuesV2(self):
-        # exchange hashFunction paramerOrder
-        def ExHashFun(array: np.array, x: int):
-            return hashing.CWtrick32to32(x = x, aux_params= array)
-
-        t = minhash.ComputeHashValuesV2(1, ExHashFun, TEST_ARRAY)
-        print(t)
-        
+    pass
         
         
 
