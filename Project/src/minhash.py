@@ -2,20 +2,8 @@ import numpy as np
 import numba
 from typing import Callable
 from BTrees._LOBTree import LOBTree
-
-# requires: family of hash functions
-# for both Minhash signatures and LSH bands
-
-# assuming to read file line by line
-# and keeping ids
-# idea: use shingle to build minhash then delete the shingle
-# after each minhash is made:
-# populate the buckets of LSH with ids
-
-# Storage of signatures: there are two choices here
-# 1) precision wise: save each signature
-# in the central memory or, if it's not feasible in storage memory
-# 2) after each signatures is used for LSH delete it
+import sqlite3
+import pickle
 
 #------------------ Generate Signature ---------------------#
 @numba.njit
@@ -106,7 +94,7 @@ def NumbaSignatureByRowParallel(shingles_array: np.array,
     return signature
 
 
-# -------- compare signatures -------------------
+# -------- Compare Signatures ---------
 @numba.njit
 def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
     '''Compare two signatures element by element and  return the similarity
@@ -128,7 +116,6 @@ def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
 
 
 # --------- Signatures set data structure ---------------
-
 class SignaturesBTree(LOBTree):
     '''BTree used to store doc id as keys and doc signatures as values.
     
@@ -153,6 +140,41 @@ class SignaturesBTree(LOBTree):
             doc2_id: document 2 id
     
         Returns: 
-            number positions with the same elements / total positions number
+            fraction (float): number positions with the same elements / total positions number
         '''
         return SignatureSimilarity(self[doc1_id], self[doc2_id])
+
+# ---------------- Signatures on mass memory with SQLite ------------------------
+class SignaturesSQLite:
+    '''Compute signatures, pickle them, save database and eventually unpickle by key.
+    The database created assumes a simple schema:
+    a unique table with fields: [key , value (blob)]
+    '''
+
+    def __init__(self,
+                 database_name: str,
+                 key_type: str,
+                 num_transaction_operations: int) -> None:
+        '''Inizialize the instance creating the database
+        
+        Args:
+            database_name: name of the database used or to be created
+            key_type: type of key
+            num_transaction_operation: number of operations before
+                                        a database transaction is closed.
+        '''
+        pass
+    
+    def populate_from_file(self,
+                           file_name: str,
+                           populate_fun: Callable,
+                           populate_fun_params: list) -> None:
+        '''Populate the database given a input file and an appropriate function
+        
+        Args:
+            file_name: name of input file, assuming each line of the file
+                        is the first input of populate_fun
+            populate_fun: function acting on each 
+            populate_fun_params: additional populate_fun parameters
+        '''
+        pass
