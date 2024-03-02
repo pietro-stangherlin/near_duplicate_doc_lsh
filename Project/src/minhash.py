@@ -49,7 +49,8 @@ def NumbaSignatureByRow(shingles_array: np.array,
     '''
     num_matrix_rows = hash_params_matrix.shape[0]
     signature = np.full(shape = num_matrix_rows,
-                        fill_value = np.iinfo(int_type).max)
+                        fill_value = np.iinfo(int_type).max,
+                        dtype = int_type)
     
     
     for row_index in range(num_matrix_rows):
@@ -92,7 +93,8 @@ def NumbaSignatureByRowParallel(shingles_array: np.array,
     '''
     num_matrix_rows = hash_params_matrix.shape[0]
     signature = np.full(shape = num_matrix_rows,
-                        fill_value = np.iinfo(int_type).max)
+                        fill_value = np.iinfo(int_type).max,
+                        dtype = int_type)
     
     # numba.range tries to parallelize the for loop
     for row_index in numba.prange(num_matrix_rows):

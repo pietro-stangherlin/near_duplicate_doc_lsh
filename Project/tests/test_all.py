@@ -7,6 +7,7 @@ import json
 import sys
 import re
 import time
+import pickle
 
 # important: execute the script from external directory
 # so the data folder (not included in the near_duplicate_doc_lsh) is a subdirectory
@@ -70,4 +71,6 @@ doc2_id = 528156
 sim_doc1_doc2 =  SigBTree.compute_similarity(doc1_id, doc2_id)
 print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
 
-# pickle the data structure
+# pickle (save on disk in binary format) the data structure
+with open('SigBTree.pkl', 'wb') as f:
+    pickle.dump(SigBTree, f)
