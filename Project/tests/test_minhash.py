@@ -3,35 +3,51 @@ from src import hashing
 import unittest
 import numpy as np
 
-INT_TYPE = np.int64
+INT_TYPE_U32 = np.uint32
+INT_TYPE_U64 = np.uint64
 
-def HashFunction1(number):
-    return number % 3
-def HashFunction2(number):
-    return number % 4
-def HashFunction3(number):
-    return number % 5
+# permutations number
+K = 100
 
-hash_funs_list = [HashFunction1, HashFunction2, HashFunction3]
 
-hash_dict = dict()
-
-TEST_ARRAY = np.array([[11111111, 22222222, 3333333, 444444444, 555555555],
-                       [66666666, 77777777, 8888888, 999999999, 858488463],
-                       [13131141, 13141411, 5363636, 747747484, 858488463],
-                       [13131141, 13141411, 5363636, 747747484, 858488463]])
-
-# --------- V2 versions: use list of hash parameters instead of list of hash functions
-# example equivalent to the previously defined hash functions
-def HashGeneral1(number, params_array):
-    modulo = params_array[0]
-    return number % modulo
+# list of documents ids and signatures
+TOY_DOCS_ID_SIGNATURE = [(1, np.full(shape = K, fill_value = 11111111, dtype = INT_TYPE_U32)),
+                         (2, np.full(shape = K, fill_value = 22222222, dtype = INT_TYPE_U32)),
+                         (3, np.full(shape = K, fill_value = 33333333, dtype = INT_TYPE_U32))]
 
 
 
 
-class TestSignatures(unittest.TestCase):
-    pass
+class TestSignaturesSqlite(unittest.TestCase):
+
+    def test_signaturesqlite(self):
+        
+        # initialize the instance
+        sql_db = minhash.SignaturesSQLite()
+
+        # begin transaction
+        sql_db.begin_transaction()
+
+        # insert key value pairs
+        sql_db.insert_id_signature(TOY_DOCS_ID_SIGNATURE[0][0], TOY_DOCS_ID_SIGNATURE[0][1])
+        sql_db.insert_id_signature(TOY_DOCS_ID_SIGNATURE[1][0], TOY_DOCS_ID_SIGNATURE[1][1])
+
+        # end transaction
+        sql_db.end_transaction()
+
+        sql_db.print_all_records()
+
+        # find signatures by key
+        # result = sql_db.get_signature(TOY_DOCS_ID_SIGNATURE[0][0])
+        # expected = TOY_DOCS_ID_SIGNATURE[0][1]
+
+
+
+        # assertion
+        # np.testing.assert_array_equal(result, expected)
+
+        # clear the database
+        sql_db.clear_database()
         
         
 

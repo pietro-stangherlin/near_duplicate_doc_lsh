@@ -152,26 +152,36 @@ class SignaturesSQLite:
     '''
 
     def __init__(self,
-                 database_name: str,
-                 id_type: str,
-                 num_transaction_operations: int) -> None:
+                 database_name: str = "signatures_db",
+                 key_type: str = "INTEGER",
+                 table_name: str = "signatures_table",
+                 key_name: str = "id",
+                 value_name: str = "signature",
+                 num_transaction_operations: int = 1) -> None:
         '''Inizialize the instance creating the database
         
         Args:
             database_name: name of the database used or to be created
             id_type: type of id (used as database key)
+            table_name:
+            key_name:
+            value_name:
             num_transaction_operation: number of operations before
                                         a database transaction is closed.
         '''
-        
+
+        self.table_name = table_name
+        self.key_name = key_name
+        self.value_name = value_name
+
         # connect or create database
-        self.db = sqlite3.connect(database_name)
+        self.connect = sqlite3.connect(database_name)
         # cursor: used to perform operations
-        self.cursor = self.db.cursor()
+        self.cursor = self.connect.cursor()
         
         # create table if not present
-        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS table
-                            (id {id_type} PRIMARY KEY, signature blob)''')
+        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name}
+                            ({self.key_name} {key_type} PRIMARY KEY, {self.value_name} blob)''')
         
         self.num_transaction_operations = num_transaction_operations
     
@@ -184,11 +194,11 @@ class SignaturesSQLite:
     def end_transaction(self):
         '''Ending a database transaction.
         '''
-        self.db.commit()
+        self.connect.commit()
     
     def insert_id_signature(self,
-                            id: int,
-                            signature: np.array):
+                            key: int,
+                            value: np.array):
         '''Insert a pair (id, pickled_signature) in the database.
         The signature is pickled inside this function.
         
@@ -196,21 +206,34 @@ class SignaturesSQLite:
         the insertion has to be done while in a transaction.
         
         Args:
-            id: id of the document
-            signature: signature relative to the document
+            key: id of the document
+            value: signature relative to the document
         '''
-        self.db.execute("INSERT INTO table VALUES (?,?)",
-                  (id, pickle.dumps(signature)))
+        self.connect.execute(f"INSERT INTO {self.table_name} VALUES (?,?)",
+                  (key, pickle.dumps(value)))
     
     def get_signature(self,
-                      id: int) -> np.array:
+                      key: int) -> np.array:
         '''Return signature relative to id.
         
         Args:
-            id: document id
+            key: document id
         
         Return:
-            signature: signature associated with the searched id
+            value: signature associated with the searched key (id)
         '''
-        self.db.execute("SELECT value FROM my_table WHERE id=?", (id,))
-        return(pickle.loads(self.cursor.fetchone[0]))
+        self.connect.execute(f"SELECT {self.value_name} FROM {self.table_name} WHERE id=?", (key,))
+        return(pickle.loads(self.cursor.fetchone()))
+    
+    def clear_database(self):
+        '''Clear the SQLite database table.
+        '''
+        self.cursor.execute(f"DELETE FROM {self.table_name}")
+
+    def print_all_records(self):
+        '''Print all records in the SQLite database.
+        '''
+        self.cursor.execute(f"SELECT * FROM {self.table_name}")
+        rows = self.cursor.fetchall()
+        for row in rows:
+            print(row)
