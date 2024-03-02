@@ -22,25 +22,25 @@ from BTrees._LOBTree import LOBTree
 def NumbaSignatureByRow(shingles_array: np.array,
                               hash_params_matrix: np.array,
                               hash_fun: Callable,
-                              int_type: np.uint32):
+                              int_type: np.uint32) -> np.array:
     '''Computes signature array.
     
     Args:
-        - shingles_array: numpy array of shingles (integers)
-        - hash_params_matrix: matrix of parameters (other than the hashable)
+        shingles_array: numpy array of shingles (integers)
+        hash_params_matrix: matrix of parameters (other than the hashable)
                             used to compute the hash function,
                             each row corresponds to a set of parameters
                             for a different hash function accepting
                             a number of auxiliary parameters equals to 
                             the columns number
-        - hash_fun: the hash function used, note that at the moment
+        hash_fun: the hash function used, note that at the moment
                     is not implemented any compatibility check between
                     the paramters of this function and those of 
                     the hash_function
-        - int_type: integer type of the signature elements
+        int_type: integer type of the signature elements
         
     Returns:
-        - signature array: contains the hashed positions instead 
+        signature_array: contains the hashed positions instead 
                             of the values, this doesn't change the result 
                             as long as each shingle has the same type of 
                             its hash (ex. uint32 uint32) if the hash function
@@ -66,25 +66,25 @@ def NumbaSignatureByRow(shingles_array: np.array,
 def NumbaSignatureByRowParallel(shingles_array: np.array,
                               hash_params_matrix: np.array,
                               hash_fun: Callable,
-                              int_type: np.uint32):
+                              int_type: np.uint32) -> np.array:
     '''Computes signature array.
     
     Args:
-        - shingles_array: numpy array of shingles (integers)
-        - hash_params_matrix: matrix of parameters (other than the hashable)
+        shingles_array: numpy array of shingles (integers)
+        hash_params_matrix: matrix of parameters (other than the hashable)
                             used to compute the hash function,
                             each row corresponds to a set of parameters
                             for a different hash function accepting
                             a number of auxiliary parameters equals to 
                             the columns number
-        - hash_fun: the hash function used, note that at the moment
+        hash_fun: the hash function used, note that at the moment
                     is not implemented any compatibility check between
                     the paramters of this function and those of 
                     the hash_function
-        - int_type: integer type of the signature elements
+        int_type: integer type of the signature elements
         
     Returns:
-        - signature array: the signatures contains the hashed positions instead 
+        signature_array: the signatures contains the hashed positions instead 
                             of the values, this doesn't change the result 
                             as long as each shingle has the same type of 
                             its hash (ex. uint32 uint32) if the hash function
@@ -112,11 +112,11 @@ def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
     '''Compare two signatures element by element and  return the similarity
     
     Args:
-        - sig1: signature 1 (array of len k)
-        - sig2: signature 2 (array of len k)
+        sig1: signature 1 (array of len k)
+        sig2: signature 2 (array of len k)
     
     Returns: 
-        - number positions with the same elements / total positions number
+        number positions with the same elements / total positions number
     '''
     if sig1.shape != sig2.shape:
         print("Error: signatures have different lengths")
@@ -136,8 +136,8 @@ class SignaturesBTree(LOBTree):
     https://btrees.readthedocs.io/
     
     Args: 
-        - key: Unsigned integer (doc id)
-        - value: np.array of int (doc signature)
+        key (unsigned_integer): Unsigned integer (doc id)
+        value (numpy_array): np.array of int (doc signature)
     '''
     # change if necessary
     # max number of elements a leaf can have
@@ -149,10 +149,10 @@ class SignaturesBTree(LOBTree):
         '''Compare the two documents' signatures returning the similarity
     
         Args:
-            - doc1_id: document 1 id
-            - doc2_id: document 2 id
+            doc1_id: document 1 id
+            doc2_id: document 2 id
     
         Returns: 
-            - number positions with the same elements / total positions number
+            number positions with the same elements / total positions number
         '''
         return SignatureSimilarity(self[doc1_id], self[doc2_id])

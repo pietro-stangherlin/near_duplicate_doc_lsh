@@ -1,2 +1,8 @@
-## Functions Shingles
-:::src.functions_shingles
+## Shingling
+:::src.shingling
+
+## Hashing
+:::src.hashing
+
+## MinHash
+:::src.minhash

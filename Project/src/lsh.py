@@ -16,14 +16,14 @@ def ComputeHashBand(signature: np.array,
     '''Compute the hash of a band.
     
     Args:
-        - signature : signature of the document
-        - band_inf_index : band's inferior index
-        - band_sup_index : band's superior index
-        - doc_id : id of the document
-        - hash_fun : hash function used
+        signature : signature of the document
+        band_inf_index : band's inferior index
+        band_sup_index : band's superior index
+        doc_id : id of the document
+        hash_fun : hash function used
     
     Return:
-        - tuple: (hash value, doc_id)
+        tuple: (hash value, doc_id)
     '''
     return (hash_fun(signature[band_inf_index : band_sup_index]), doc_id)
     
@@ -42,8 +42,8 @@ class LSHOneBandBucketsNaive:
         '''Insert value in the bucket associated with key
         
         Args:
-            - key: should be the hash of a band
-            - value: should be the document id
+            key: should be the hash of a band
+            value: should be the document id
         '''
         if key in self.buckets:
             self.buckets[key].append(value)
@@ -87,9 +87,9 @@ class LSHAllBandsBucketsNaive:
         In the specified band, add the value to its key corresponding bucket
         
         Args:
-            - band: band number
-            - key: hash value used to get the bucket 
-            - value: value stored in the bucket (usually doc_id)
+            band: band number
+            key: hash value used to get the bucket 
+            value: value stored in the bucket (usually doc_id)
     
         '''
         self.bands_list[band].insert(key, value)

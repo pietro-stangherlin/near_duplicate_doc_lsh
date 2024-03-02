@@ -15,13 +15,13 @@ def GenerateNumpyArray(num_rows: int,
         All the integers generated are >= 1.
 
         Args:
-        - num_rows: number of array's rows
-        - num_cols: number of array's columns
-        - reshape: reshape the array into a matrix num_rows * num_cols
-        - seed: used for reproducibility
+            num_rows: number of array's rows
+            num_cols: number of array's columns
+            reshape: reshape the array into a matrix num_rows * num_cols
+            seed: used for reproducibility
 
         Returns:
-            - numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
+            numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
         '''
 
         np.random.seed(seed)
@@ -39,30 +39,30 @@ def GenerateNumpyArray(num_rows: int,
 
 # ---------- Shingle Hash --------------
 # -- Unsigned 32 bit hash Murmur --
-def MurmUns32Hash(input_string):
+def MurmUns32Hash(input_string: str) -> int:
     '''Compute 32 unsigned int hash (Murmur Hash).
 
     Reference: https://pypi.org/project/mmh3/
 
     Args: 
-        - input_string: string to be hashed
+        input_string: string to be hashed
     
     Returns:
-        - 32 bit unsigned integer hash 
+        32 bit unsigned integer hash 
     '''
     return mmh3.hash(input_string, signed = False)
 
 # -- Unsigned 64 bit hash Murmur --
-def MurmUns64Hash(input_string):
+def MurmUns64Hash(input_string: str) -> int:
     '''Compute 64 unsigned int hash (Murmur Hash).
 
     Reference: https://pypi.org/project/mmh3/
 
     Args: 
-        - input_string: string to be hashed
+        input_string: string to be hashed
     
     Returns:
-        - 64 bit unsigned integer hash 
+        64 bit unsigned integer hash 
     '''
     # mmm3 returns a tuple of two 64 bit hashes
     # only the first is returned here
@@ -84,15 +84,15 @@ def MurmUns64Hash(input_string):
 def NumbaNaiveHashU32Params(x, params):
     '''Compute unsigned 32bit of unsigned 32 bit integer.
     
-    NOTE: a and b should be randomly uniformly generated
-        to get universal hashing
+    NOTE: 
+    a and b should be randomly uniformly generated to get universal hashing
     
     Args:
-        - x (uint32): integer to be hashed 
-        - params (array of 2 uint64): params and b in the formula
+        x (uint32): integer to be hashed 
+        params (array of 2 uint64): params and b in the formula
         
     Returns: 
-        - (uint32) hashed integer
+        hash (uint32): hashed integer
     '''
     x = np.uint64(x)
     p = 2**61 - 1
