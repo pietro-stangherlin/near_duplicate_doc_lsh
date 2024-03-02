@@ -17,31 +17,8 @@ from BTrees._LOBTree import LOBTree
 # in the central memory or, if it's not feasible in storage memory
 # 2) after each signatures is used for LSH delete it
 
-def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
-    '''Compare two signatures element by element and  return the similiraty
-    
-    Args:
-        - sig1: signature 1 (array of len k)
-        - sig2: signature 2 (array of len k)
-    
-    Returns: 
-            number positions with the same elements / total positions number
-    '''
-    l1 = len(sig1)
-    l2 = len(sig2)
-    
-    if l1 != l2:
-        print("Error: signatures have different lengths")
-        return 0
-    
-    equals = 0
-    for i in range(l1):
-        equals += int(sig1[i] == sig2[i])
-    
-    return equals / l1
-
 #------------------ Generate Signature ---------------------#
-@numba.jit(nopython = True)
+@numba.njit
 def NumbaSignatureByRow(shingles_array: np.array,
                               hash_params_matrix: np.array,
                               hash_fun: Callable,
@@ -74,6 +51,7 @@ def NumbaSignatureByRow(shingles_array: np.array,
     signature = np.full(shape = num_matrix_rows,
                         fill_value = np.iinfo(int_type).max)
     
+    
     for row_index in range(num_matrix_rows):
         for shingle in shingles_array:
             value = hash_fun(shingle, hash_params_matrix[row_index])
@@ -82,9 +60,8 @@ def NumbaSignatureByRow(shingles_array: np.array,
     
     return signature
 
-# slower than the basic
-# so don't use for now
-@numba.jit(nopython = True, parallel = True)
+
+@numba.njit(parallel = True)
 def NumbaSignatureByRowParallel(shingles_array: np.array,
                               hash_params_matrix: np.array,
                               hash_fun: Callable,
@@ -117,6 +94,7 @@ def NumbaSignatureByRowParallel(shingles_array: np.array,
     signature = np.full(shape = num_matrix_rows,
                         fill_value = np.iinfo(int_type).max)
     
+    # numba.range tries to parallelize the for loop
     for row_index in numba.prange(num_matrix_rows):
         for shingle in shingles_array:
             value = hash_fun(shingle, hash_params_matrix[row_index])
@@ -124,6 +102,28 @@ def NumbaSignatureByRowParallel(shingles_array: np.array,
                 signature[row_index] = value
     
     return signature
+
+
+# -------- compare signatures -------------------
+@numba.njit
+def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
+    '''Compare two signatures element by element and  return the similarity
+    
+    Args:
+        - sig1: signature 1 (array of len k)
+        - sig2: signature 2 (array of len k)
+    
+    Returns: 
+        - number positions with the same elements / total positions number
+    '''
+    if sig1.shape != sig2.shape:
+        print("Error: signatures have different lengths")
+        return 0.0
+
+    equals = np.sum(sig1 == sig2)
+    
+    return equals / sig1.size
+
 
 # --------- Signatures set data structure ---------------
 
@@ -142,3 +142,15 @@ class SignaturesBTree(LOBTree):
     max_leaf_size = 500
     # max number of childern an interior node could have
     max_internal_size = 1000
+
+    def compute_similarity(self, doc1_id: int, doc2_id: int) -> float:
+        '''Compare the two documents' signatures returning the similarity
+    
+        Args:
+            - doc1_id: document 1 id
+            - doc2_id: document 2 id
+    
+        Returns: 
+            - number positions with the same elements / total positions number
+        '''
+        return SignatureSimilarity(self[doc1_id], self[doc2_id])

@@ -80,7 +80,7 @@ def MurmUns64Hash(input_string):
 # J.Lawrence Carter, Mark N. Wegman, "Universal classes of hash functions"
 # Journal of Computer and System Sciences, Volume 18, Issue 2, 1979, Pages 143-154.
 
-@numba.jit(numba.uint32(numba.uint32, numba.uint64[:]))
+@numba.njit(numba.uint32(numba.uint32, numba.uint64[:]))
 def NumbaNaiveHashU32Params(x, params):
     '''Compute unsigned 32bit of unsigned 32 bit integer.
     
