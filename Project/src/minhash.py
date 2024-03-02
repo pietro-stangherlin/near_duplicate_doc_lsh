@@ -132,49 +132,85 @@ class SignaturesBTree(LOBTree):
     # max number of childern an interior node could have
     max_internal_size = 1000
 
-    def compute_similarity(self, doc1_id: int, doc2_id: int) -> float:
+    def compute_similarity(self, id1: int, id2: int) -> float:
         '''Compare the two documents' signatures returning the similarity
     
         Args:
-            doc1_id: document 1 id
-            doc2_id: document 2 id
+            id1: document 1 id
+            id2: document 2 id
     
-        Returns: 
+        Returns:
             fraction (float): number positions with the same elements / total positions number
         '''
-        return SignatureSimilarity(self[doc1_id], self[doc2_id])
+        return SignatureSimilarity(self[id1], self[id2])
 
 # ---------------- Signatures on mass memory with SQLite ------------------------
 class SignaturesSQLite:
     '''Compute signatures, pickle them, save database and eventually unpickle by key.
     The database created assumes a simple schema:
-    a unique table with fields: [key , value (blob)]
+    a unique table with fields: [id , pickled_signature (blob)]
     '''
 
     def __init__(self,
                  database_name: str,
-                 key_type: str,
+                 id_type: str,
                  num_transaction_operations: int) -> None:
         '''Inizialize the instance creating the database
         
         Args:
             database_name: name of the database used or to be created
-            key_type: type of key
+            id_type: type of id (used as database key)
             num_transaction_operation: number of operations before
                                         a database transaction is closed.
         '''
-        pass
+        
+        # connect or create database
+        self.db = sqlite3.connect(database_name)
+        # cursor: used to perform operations
+        self.cursor = self.db.cursor()
+        
+        # create table if not present
+        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS table
+                            (id {id_type} PRIMARY KEY, signature blob)''')
+        
+        self.num_transaction_operations = num_transaction_operations
     
-    def populate_from_file(self,
-                           file_name: str,
-                           populate_fun: Callable,
-                           populate_fun_params: list) -> None:
-        '''Populate the database given a input file and an appropriate function
+    def begin_transaction(self):
+        '''Begin a transaction relative to the database.
+        Remember to always end it.
+        '''
+        self.cursor.execute('BEGIN TRANSACTION')
+        
+    def end_transaction(self):
+        '''Ending a database transaction.
+        '''
+        self.db.commit()
+    
+    def insert_id_signature(self,
+                            id: int,
+                            signature: np.array):
+        '''Insert a pair (id, pickled_signature) in the database.
+        The signature is pickled inside this function.
+        
+        NOTE:
+        the insertion has to be done while in a transaction.
         
         Args:
-            file_name: name of input file, assuming each line of the file
-                        is the first input of populate_fun
-            populate_fun: function acting on each 
-            populate_fun_params: additional populate_fun parameters
+            id: id of the document
+            signature: signature relative to the document
         '''
-        pass
+        self.db.execute("INSERT INTO table VALUES (?,?)",
+                  (id, pickle.dumps(signature)))
+    
+    def get_signature(self,
+                      id: int) -> np.array:
+        '''Return signature relative to id.
+        
+        Args:
+            id: document id
+        
+        Return:
+            signature: signature associated with the searched id
+        '''
+        self.db.execute("SELECT value FROM my_table WHERE id=?", (id,))
+        return(pickle.loads(self.cursor.fetchone[0]))
