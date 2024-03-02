@@ -11,8 +11,8 @@ from an existing collection
 - **project** folder is where the actual scripts implementing the method are
 
 ### External modules used
-Signatures data structure inherits a **BTrees** (https://github.com/zopefoundation/BTrees) class
-Some ideas in the project are insipired from **datasketch** (https://github.com/ekzhu/datasketch).
+This project uses **Numba** (https://numba.pydata.org/) and **Numpy** (https://numpy.org/) to speed up numeric computations, a version of **MurmurHashing** (https://pypi.org/project/mmh3/) is used to hash shingles strings .
+Signatures data structure inherits a **BTrees** (https://github.com/zopefoundation/BTrees) class.
 
 ## How to use
 
