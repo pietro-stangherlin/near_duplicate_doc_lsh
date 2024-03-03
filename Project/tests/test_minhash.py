@@ -29,25 +29,27 @@ class TestSignaturesSqlite(unittest.TestCase):
         sql_db.begin_transaction()
 
         # insert key value pairs
-        sql_db.insert_id_signature(TOY_DOCS_ID_SIGNATURE[0][0], TOY_DOCS_ID_SIGNATURE[0][1])
-        sql_db.insert_id_signature(TOY_DOCS_ID_SIGNATURE[1][0], TOY_DOCS_ID_SIGNATURE[1][1])
+        sql_db.insert_key_value(TOY_DOCS_ID_SIGNATURE[0][0], TOY_DOCS_ID_SIGNATURE[0][1])
+        sql_db.insert_key_value(TOY_DOCS_ID_SIGNATURE[1][0], TOY_DOCS_ID_SIGNATURE[1][1])
 
         # end transaction
         sql_db.end_transaction()
 
-        sql_db.print_all_records()
+        # sql_db.print_all_records()
+
 
         # find signatures by key
-        # result = sql_db.get_signature(TOY_DOCS_ID_SIGNATURE[0][0])
-        # expected = TOY_DOCS_ID_SIGNATURE[0][1]
-
-
+        result = sql_db.get_value_by_key(TOY_DOCS_ID_SIGNATURE[0][0])
+        expected = TOY_DOCS_ID_SIGNATURE[0][1]
 
         # assertion
-        # np.testing.assert_array_equal(result, expected)
+        np.testing.assert_array_equal(result, expected)
+
+        # close database
+        sql_db.close_database()
 
         # clear the database
-        sql_db.clear_database()
+        sql_db.delete_database(ask_confirm = False)
         
         
 

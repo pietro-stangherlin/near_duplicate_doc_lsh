@@ -18,7 +18,7 @@ import pickle
 # constants
 W = 9 # shingle len
 K = 50 # signature len -> number of hash functions
-EL = 5 # number of random integers generated
+EL = 2 # number of random integers generated
 INT_TYPE_32 = np.uint32
 INT_TYPE_64 = np.uint64
 
