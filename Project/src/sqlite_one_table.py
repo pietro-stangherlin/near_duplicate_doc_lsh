@@ -17,8 +17,7 @@ class SQLiteOneTable:
                  table_name: str = "table_1",
                  key_name: str = "key",
                  value_name: str = "value",
-                 do_pickle: bool = True,
-                 num_transaction_operations: int = 1) -> None:
+                 do_pickle: bool = True):
         '''Inizialize the instance creating the database.
         
         Args:
@@ -28,9 +27,9 @@ class SQLiteOneTable:
             table_name: name of the unique table
             key_name: name of the unique key
             value_name: name of the value
-            do_pickle: tell if the values should be pickled and unpickled
-            num_transaction_operation: number of operations before
-                                        a database transaction is closed.
+            do_pickle: tell if the values should be pickled and unpickled,
+                        pickling has the advantage of saving attributes
+                        (for some supported) python classes
         '''
 
         self.database_name = database_name
@@ -53,7 +52,14 @@ class SQLiteOneTable:
         self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name}
                             ({self.key_name} {key_type} PRIMARY KEY, {self.value_name} {self.value_type})''')
         
-        self.num_transaction_operations = num_transaction_operations
+        # define methods based on do_pickle
+        if self.do_pickle:
+            self._insert_key_value = self._insert_key_value_yes_pickle
+            self._get_value_by_key = self._get_value_by_key_yes_pickle
+        else:
+            self._insert_key_value = self._insert_key_value_no_pickle
+            self._get_value_by_key = self._get_value_by_key_no_pickle
+        
     
     def begin_transaction(self):
         '''Begin a transaction relative to the database.
@@ -68,7 +74,7 @@ class SQLiteOneTable:
     
     def insert_key_value(self, key, value):
         '''Insert a pair (key, value) in the database.
-        
+
         NOTE:
         the insertion has to be done while in a transaction.
         
@@ -76,11 +82,7 @@ class SQLiteOneTable:
             key:
             value:
         '''
-        if self.do_pickle:
-            value = pickle.dumps(value)
-
-        self.connect.execute(f"INSERT INTO {self.table_name} VALUES (?,?)",
-                  (key, value))
+        self._insert_key_value(key, value)
     
     def get_value_by_key(self, key):
         '''Return value relative to key.
@@ -91,14 +93,8 @@ class SQLiteOneTable:
         Return:
             value:
         '''
-        value = self.connect.execute(f"SELECT {self.value_name} FROM {self.table_name} WHERE {self.key_name}=?",
-                                     (key,)).fetchone()[0]
-        if self.do_pickle:
-            value = pickle.loads(value)
-        
-        return value
+        return self._get_value_by_key(key)
     
-
     def close_database(self):
         '''Close the SQLite database connection.
         '''
@@ -128,3 +124,58 @@ class SQLiteOneTable:
         rows = self.cursor.fetchall()
         for row in rows:
             print(row)
+    
+    # hidden methods defined so the "if check" is done only once
+    # (when the instance is inizialized)
+    def _insert_key_value_yes_pickle(self, key, value):
+        '''(hidden) Insert a pair (key, value) in the database.
+            YesPickle
+        
+        NOTE:
+        the insertion has to be done while in a transaction.
+        
+        Args:
+            key:
+            value:
+        '''
+        self.connect.execute(f"INSERT INTO {self.table_name} VALUES (?,?)",
+                  (key, pickle.dumps(value)))
+    
+    def _insert_key_value_no_pickle(self, key, value):
+        '''(hidden) Insert a pair (key, value) in the database.
+            NoPickle        
+        NOTE:
+        the insertion has to be done while in a transaction.
+        
+        Args:
+            key:
+            value:
+        '''
+        self.connect.execute(f"INSERT INTO {self.table_name} VALUES (?,?)",
+                  (key, value))
+    
+    def _get_value_by_key_yes_pickle(self, key):
+        '''(hidden) Return value relative to key.
+            YesPickle
+        Args:
+            key:
+        
+        Return:
+            value:
+        '''
+        return pickle.loads(self.connect.execute(f"SELECT {self.value_name} FROM {self.table_name} WHERE {self.key_name}=?",
+                                     (key,)).fetchone()[0])
+        
+    def _get_value_by_key_no_pickle(self, key):
+        '''(hidden) Return value relative to key.
+            NoPickle
+        Args:
+            key:
+        
+        Return:
+            value:
+        '''
+        return self.connect.execute(f"SELECT {self.value_name} FROM {self.table_name} WHERE {self.key_name}=?",
+                                     (key,)).fetchone()[0]
+
+    
