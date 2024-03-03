@@ -2,9 +2,8 @@ import numpy as np
 import numba
 from typing import Callable
 from BTrees._LOBTree import LOBTree
-import sqlite3
-import pickle
-import os
+from . import sqlite_one_table
+
 
 #------------------ Generate Signature ---------------------#
 @numba.njit
@@ -24,7 +23,7 @@ def NumbaSignatureByRow(shingles_array: np.array,
                             the columns number
         hash_fun: the hash function used, note that at the moment
                     is not implemented any compatibility check between
-                    the paramters of this function and those of 
+                    the parameters of this function and those of 
                     the hash_function
         int_type: integer type of the signature elements
         
@@ -146,123 +145,11 @@ class SignaturesBTree(LOBTree):
         return SignatureSimilarity(self[id1], self[id2])
 
 # ---------------- Signatures on mass memory with SQLite ------------------------
-class SignaturesSQLite:
+class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
     '''Compute signatures, pickle them, save database and eventually unpickle by key.
-    The database created assumes a simple schema:
-    a unique table with fields: [key , value]
+
+    Inherits from the SQLiteOneTable class.
     '''
-
-    def __init__(self,
-                 database_name: str = "signatures_db",
-                 key_type: str = "INTEGER",
-                 value_type: str = "BLOB",
-                 table_name: str = "signatures_table",
-                 key_name: str = "id",
-                 value_name: str = "signature",
-                 num_transaction_operations: int = 1) -> None:
-        '''Inizialize the instance creating the database.
-        
-        Args:
-            database_name: name of the database used or to be created
-            key_type: type of the table's key (INTEGER, REAL, TEXT, BLOB)
-            value_type: type of the table's value (INTEGER, REAL, TEXT, BLOB)
-            table_name: 
-            key_name:
-            value_name:
-            num_transaction_operation: number of operations before
-                                        a database transaction is closed.
-        '''
-
-        self.database_name = database_name
-        self.table_name = table_name
-
-        self.key_type = key_type
-        self.value_type = value_type
-
-        self.key_name = key_name
-        self.value_name = value_name
-
-        # connect or create database
-        self.connect = sqlite3.connect(self.database_name)
-        # cursor: used to perform operations
-        self.cursor = self.connect.cursor()
-        
-        # create table if not present
-        self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name}
-                            ({self.key_name} {key_type} PRIMARY KEY, {self.value_name} {self.value_type})''')
-        
-        self.num_transaction_operations = num_transaction_operations
+    pass
     
-    def begin_transaction(self):
-        '''Begin a transaction relative to the database.
-        Remember to always end it.
-        '''
-        self.cursor.execute('BEGIN TRANSACTION')
-        
-    def end_transaction(self):
-        '''Ending a database transaction.
-        '''
-        self.connect.commit()
-    
-    def insert_key_value(self, key, value):
-        '''Insert a pair (id, pickled_signature) in the database.
-        The signature is pickled inside this function.
-        
-        NOTE:
-        the insertion has to be done while in a transaction.
-        
-        Args:
-            key: id of the document
-            value: signature relative to the document
-        '''
-        self.connect.execute(f"INSERT INTO {self.table_name} VALUES (?,?)",
-                  (key, pickle.dumps(value)))
-    
-    def get_value_by_key(self, key):
-        '''Return value relative to a key.
-        
-        Args:
-            key: document id
-        
-        Return:
-            value: signature associated with the searched key (id)
-        '''
-        value = self.connect.execute(f"SELECT {self.value_name} FROM {self.table_name} WHERE {self.key_name}=?",
-                                     (key,))
-        return((pickle.loads(value.fetchone()[0])))
-    
-    # to be tested
-    def clear_database(self):
-        '''Clear the SQLite database table.
-        '''
-        self.cursor.execute(f"DELETE FROM {self.table_name}")
-    
-    def close_database(self):
-        '''Close the SQLite database connection.
-        '''
-        self.connect.close()
-    
-    def delete_database(self,
-                        ask_confirm: bool = True):
-        '''Delete the SQLite database file.
-
-        Args:
-            ask_confirm: if True (default) ask the user a confirmation
-        '''
-
-        if ask_confirm:
-            delete_yes = input("If you want to delete the database file digit Y, any other input wont delete it.\n")
-            
-            if delete_yes == "Y":
-                os.remove(self.database_name)
-        
-        else:
-            os.remove(self.database_name)
-
-    def print_all_records(self):
-        '''Print all records in the SQLite database.
-        '''
-        self.cursor.execute(f"SELECT * FROM {self.table_name}")
-        rows = self.cursor.fetchall()
-        for row in rows:
-            print(row)
+    # some changes are needed: restricts some methods to id and signatures case
