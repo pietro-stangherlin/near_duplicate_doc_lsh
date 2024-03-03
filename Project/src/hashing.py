@@ -84,12 +84,12 @@ def MurmUns64Hash(input_string: str) -> int:
 def NumbaNaiveHashU32Params(x, params):
     '''Compute unsigned 32bit of unsigned 32 bit integer.
     
-    NOTE: 
-    a and b should be randomly uniformly generated to get universal hashing
-    
     Args:
         x (uint32): integer to be hashed 
-        params (array of 2 uint64): params and b in the formula
+        params (array of 2 uint64): params a and b in the formula
+    
+    NOTE: 
+    a and b should be randomly uniformly generated to get universal hashing
         
     Returns: 
         hash (uint32): hashed integer
