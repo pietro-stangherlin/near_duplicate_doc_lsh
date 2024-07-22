@@ -106,7 +106,7 @@ def WriteRandomLines(file_in: str,
     Assume a file_in where each ROW has this structure:
     {"id_int_unique_field_name" = "...",
     "content_field_name": "..."}\n
-    If it has more fields it's not a problem, as they won't be considered
+    If it has more fields they'll be ignored
     
     Args:
         - file_in: name of input file
@@ -147,7 +147,7 @@ def WriteRandomLines(file_in: str,
         line_index = 0
         id_int_unique_last_index += 1
 
-        # we created the new dataset with id2 as
+        # create the new dataset with id2 as
         # the line number in the file
 
         for line in fin:

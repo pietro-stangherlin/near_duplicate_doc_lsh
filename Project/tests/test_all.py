@@ -10,7 +10,7 @@ import time
 # important: execute the script from external directory
 # so the data folder (not included in the near_duplicate_doc_lsh) is a subdirectory
 # also before running convert the file to utf-8 and remove BOM (from notepad++ encoding, or another way)
-# >>> python -m near_duplicate_doc_lsh.project.tests.test_all
+# >>> python -m near_duplicate_doc_lsh.Project.tests.test_all
 
 
 # constants

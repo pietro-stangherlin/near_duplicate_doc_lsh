@@ -5,6 +5,7 @@
 (when specifing the path assume you are in the directory from where you're launching the command)
 2. Place yourself outside the near_duplicate_doc_lsh directory,
 make a python script with:
+
 ```python
 from ..src import make_collection as mc
 from ..src import make_col_params as pm
@@ -13,7 +14,8 @@ from ..src import make_col_params as pm
 # replicability only
 # random.seed(123)
 
-mc.WriteRandomLines(**pm.name_of_newly_created_params_dict)```
+mc.WriteRandomLines(**pm.name_of_newly_created_params_dict)
+```
 
 3. From PowerShell: 
 ```python -m near_duplicate_doc_lsh.data_creation.tests.test_make_collection```

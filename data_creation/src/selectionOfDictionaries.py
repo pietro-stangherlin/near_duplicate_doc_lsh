@@ -94,9 +94,9 @@ def read_n_random_json_elements(file_path, n = 10):
     return dictionaries
 
 
-dics = read_n_random_json_elements("robust_2.json", 50)
-
-len(dics)
+if __name__ == "__main__":
+    dics = read_n_random_json_elements("robust_2.json", 50)
+    len(dics)
 
 # per scrivere su un nuovo file il nuovo json pulito
 # (ovvero senza sporcizie dovute a randomNoise)
