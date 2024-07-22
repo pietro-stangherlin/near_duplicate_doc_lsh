@@ -4,9 +4,9 @@ Assume there's a document collection json like with, ate least one id and one co
 
 Example: file_toy.json
 ```json
-{"id" = "aab6": "content": "the apple is green"},
-{"id" = "ahb8": "content": "eternal sunshine"},
-{"id" = "hrr93": "content": "dust in the wind"}
+{"id": "aab6": "content": "the apple is green"},
+{"id": "ahb8": "content": "eternal sunshine"},
+{"id": "hrr93": "content": "dust in the wind"}
 ```
 
 In order to create a new file of desired format:
@@ -38,16 +38,16 @@ From command line:
 
 Input file:
 ```json
-{"id" = "aab6": "content": "the apple is green"},
-{"id" = "ahb8": "content": "eternal sunshine"},
-{"id" = "hrr93": "content": "dust in the wind"}
+{"id": "aab6", "content": "the apple is green"},
+{"id": "ahb8", "content": "eternal sunshine"},
+{"id": "hrr93", "content": "dust in the wind"}
 ```
 
 Output file:
 ```json
-{"id" = "aab6": "content": "the apple is green", "id2" = "1"},
-{"id" = "ahb8": "content": "eternal sunshine", "id2" = "2"},
-{"id" = "hrr93": "content": "dust in the wind", "id2" = "3"}
+{"id": "aab6", "content": "the apple is green", "id2": "1"},
+{"id": "ahb8", "content": "eternal sunshine", "id2": "2"},
+{"id": "hrr93", "content": "dust in the wind", "id2": "3"}
 ```
 
 ## 2. Instructions to use make_collection.py
@@ -82,16 +82,16 @@ Example (because in the tests folder there's indeed such a script)
 Input file:
 ```json
 ```json
-{"id" = "aab6": "content": "the apple is green", "id2" = "1"},
-{"id" = "ahb8": "content": "eternal sunshine", "id2" = "2"},
-{"id" = "hrr93": "content": "dust in the wind", "id2" = "3"}
+{"id": "aab6", "content": "the apple is green", "id2": "1"},
+{"id": "ahb8", "content": "eternal sunshine", "id2": "2"},
+{"id": "hrr93", "content": "dust in the wind", "id2": "3"}
 ```
 
 Output file:
 
 ```json
-{"id" = "aab6": "content": "the apple is green", "id2" = 1, "id3" = "None"},
-{"id" = "ahb8": "content": "eternal sunshine", "id2" = 2, "id3" = "None"},
-{"id" = "hrr93": "content": "dust in the wind", "id2" = 3, "id3" = "None"},
-{"id" = "aab6": "content": "the appty i gr@en", "id2" = 4, "id3" = 1"}
+{"id": "aab6", "content": "the apple is green", "id2": 1, "id3": "None"},
+{"id": "ahb8", "content": "eternal sunshine", "id2": 2, "id3": "None"},
+{"id": "hrr93", "content": "dust in the wind", "id2": 3, "id3": "None"},
+{"id": "aab6", "content": "the appty i gr@en", "id2": 4, "id3": 1"}
 ```
