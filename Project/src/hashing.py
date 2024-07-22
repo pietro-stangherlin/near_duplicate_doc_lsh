@@ -46,7 +46,7 @@ def MurmUns64Hash(input_string: str) -> int:
 def GenerateNumpyArray(num_rows: int,
                        num_cols: int,
                        seed: int,
-                       reshape: True,
+                       reshape = True,
                        int_type = np.uint64) -> np.array:
         '''Compute array of specified bit integer (default 64 bit unsigned integer).
 
