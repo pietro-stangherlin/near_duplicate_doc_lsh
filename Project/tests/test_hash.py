@@ -1,29 +1,33 @@
 from src import hashing as hs
-import unittest
 import numpy as np
 
 
 INT_TYPE_32 = np.int32
+INT_TYPE_U32 = np.uint32
 INT_TYPE_64 = np.int64
 INT_TYPE_U64 = np.uint64
 
+# NOTE: due to the random nature of the code it's difficult 
+# if not impossibile to use the unit test module
 
 
-class TestHash(unittest.TestCase):
+def test_MurmUns32Hash():
+    print("MurmUns32Hash test")
 
-    def test_CWtrick32to32(self):
-        x = 914636142
-        aux_params_1 = [13131141, 13141411, 5363636, 747747484, 858488463]
-        result = hs.CWtrick32to32(x = x, aux_params= aux_params_1)
-        print(f'''CWtrick32to32(x = {x}, aux_params = {aux_params_1}) = 
-              {result}''')
+    text = "abcbd"
+    hs1 = hs.MurmUns32Hash(text)
+    print(f"text: {text}, hash: {hs1}, type of hash is {type(hs1)}")
     
-    def test_CWtrick32to64(self):
-        x = 914636142
-        aux_params_1 = [13131141, 13141411, 5363636, 747747484, 858488463]
-        result = hs.CWtrick32to64(x = x, aux_params= aux_params_1)
-        print(f'''CWtrick32to32(x = {x}, aux_params = {aux_params_1}) = 
-            {result}''')
+    text = "abcbf"
+    hs1 = hs.MurmUns32Hash(text)
+    print(f"text: {text}, hash: {hs1}, type of hash is {type(hs1)}")
+
+    text = "efcbf"
+    hs1 = hs.MurmUns32Hash(text)
+    print(f"text: {text}, hash: {hs1}, type of hash is {type(hs1)}")
+
+def main():
+    test_MurmUns32Hash()
      
 
 
@@ -32,4 +36,4 @@ class TestHash(unittest.TestCase):
 # python -m unittest tests.test_hash
 
 if __name__ == "__main__":
-    unittest.main()
+    main()

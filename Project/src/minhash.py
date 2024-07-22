@@ -8,9 +8,9 @@ from . import sqlite_one_table
 #------------------ Generate Signature ---------------------#
 @numba.njit
 def NumbaSignatureByRow(shingles_array: np.array,
-                              hash_params_matrix: np.array,
-                              hash_fun: Callable,
-                              int_type: np.uint32) -> np.array:
+                        hash_params_matrix: np.array,
+                        hash_fun: Callable,
+                        int_type: np.uint32) -> np.array:
     '''Compute signature array.
     
     Args:
@@ -72,7 +72,7 @@ def NumbaSignatureByRowParallel(shingles_array: np.array,
         int_type: integer type of the signature elements
         
     Returns:
-        signature_array: the signatures contains the hashed positions instead 
+        signature_array: the signatures contain the hashed positions instead 
                             of the values, this doesn't change the result 
                             as long as each shingle has the same type of 
                             its hash (ex. uint32 uint32) if the hash function

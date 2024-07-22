@@ -2,42 +2,9 @@ import mmh3
 import numpy as np
 import numba
 
+# ---------- Shingle Hash --------------#
+# generate integer hash from string
 
-
-# ---- generate hash random parameters -------#
-def GenerateNumpyArray(num_rows: int,
-                  num_cols: int,
-                  seed: int,
-                  reshape: bool,
-                  int_type = np.uint64) -> np.array:
-        '''Compute array of 64 unsigned bit integer.
-
-        All the integers generated are >= 1.
-
-        Args:
-            num_rows: number of array's rows
-            num_cols: number of array's columns
-            reshape: reshape the array into a matrix num_rows * num_cols
-            seed: used for reproducibility
-
-        Returns:
-            numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
-        '''
-
-        np.random.seed(seed)
-
-        array = np.random.randint(low = 1 ,
-                                 high = np.iinfo(int_type).max,
-                                 size = num_rows * num_cols,
-                                 dtype = int_type)
-        # return matrix
-        if reshape:
-            return array.reshape(num_rows, num_cols)
-        
-        # return array
-        return array
-
-# ---------- Shingle Hash --------------
 # -- Unsigned 32 bit hash Murmur --
 def MurmUns32Hash(input_string: str) -> int:
     '''Compute 32 unsigned int hash (Murmur Hash).
@@ -67,6 +34,49 @@ def MurmUns64Hash(input_string: str) -> int:
     # mmm3 returns a tuple of two 64 bit hashes
     # only the first is returned here
     return mmh3.hash64(input_string, signed = False)[0]
+
+
+# ---- generate hash random parameters -------#
+# this is used to generate the parameter matrix
+# of row permutations hash functions
+# example: a hash function has two parameters a and b
+# and we want to find say 100 row permutations via hash
+# so we make a matrix with 100 rows and 2 columns
+# filled with random integers
+def GenerateNumpyArray(num_rows: int,
+                       num_cols: int,
+                       seed: int,
+                       reshape: True,
+                       int_type = np.uint64) -> np.array:
+        '''Compute array of specified bit integer (default 64 bit unsigned integer).
+
+        All the integers generated are >= 1.
+
+        Args:
+            num_rows: number of array's rows
+            num_cols: number of array's columns
+            seed: used for reproducibility
+            reshape: reshape the array into a matrix num_rows * num_cols
+            int_type: type of int used, numpy types
+
+        Returns:
+            numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
+        '''
+
+        np.random.seed(seed)
+
+        array = np.random.randint(low = 1 ,
+                                 high = np.iinfo(int_type).max,
+                                 size = num_rows * num_cols,
+                                 dtype = int_type)
+        # return matrix
+        if reshape:
+            return array.reshape(num_rows, num_cols)
+        
+        # return array
+        return array
+
+
 
 # ---------- Signature permutation hash functions ---------------
 # hash functions serving as row permutations in MinHash:

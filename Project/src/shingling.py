@@ -3,6 +3,7 @@ import numpy as np
 
 # I should add specifif rolling hashing implementations
 
+
 def TextToShinglesDuplicates(text: str,
                         shingle_len: int,
                         hash_fun: Callable,
@@ -38,7 +39,7 @@ def TextToShinglesUniques(text: str,
                         shingle_len: int,
                         hash_fun: Callable) -> set:
     '''Compute all the shingles of size shingle_len,
-        return a set uniques hashed shingles
+        return a set of uniques hashed shingles
 
     Examples:
         >>> TextToShinglesSet("abcdf", 3, lambda x : sum([ord(c) for c in x]) % 5)
