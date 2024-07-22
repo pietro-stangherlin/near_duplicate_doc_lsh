@@ -22,9 +22,9 @@ Our starting collection (which we can't publish due to its license) is a json li
 {"id": "some id", "content": "some content"} where both "id" and "content" are text.
 
 We need to create some new documents which are similar (in content) to some of the old documents.
-In order to guarantee each id is unique we make a new id ("id2") which is the row number (int) of the document.
-We randomly extract some documents, we modify them introducing some noise (based on parameters), and add them to the 
-collections: each has a unique int id ("id2") and another id ("id3") which refers to the unique id ("id2") from which they were generated.
+1) In order to guarantee each id is unique we make a new id ("id2") which is the row number (int) of the document.
+2) We randomly extract some documents, we modify them introducing some noise (based on parameters), and add them to the collections: each has a unique int id ("id2") and another id ("id3") which refers to the unique id ("id2") from which they were generated.
+
 NOTE: all non modified documents have value "None" in the third id ("id3").
 
 Example with a starting toy collection of three documents:

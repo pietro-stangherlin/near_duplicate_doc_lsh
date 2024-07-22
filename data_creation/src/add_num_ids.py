@@ -75,10 +75,7 @@ def FromStrToIntOther(text: str, other: int) -> int:
     '''
     return other
 
-# robust parameters:
-# tipster_45_all_docs.json robust_2.json id id2 
-# from command line:
-# python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\Data_Creation\tipster_45_all_docs.json robust_2.json id id2
+
 def main():
     if len(sys.argv) < 5:
         print("No parameters given")
@@ -90,3 +87,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# robust parameters:
+# tipster_45_all_docs.json robust_2.json id id2 
+# from command line:
+# python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\Data_Creation\tipster_45_all_docs.json robust_2.json id id2
+
