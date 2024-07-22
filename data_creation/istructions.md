@@ -24,7 +24,7 @@ In order to create a new file of desired format:
 
 ## 1. Instructions to use add_sum_ids.py
 
-### Command line 
+### Actual instructions
 Parameters: file_in_name, file_out_name, original_id_name, new_id_name.
 From command line: python 
 ```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\Data_Creation\file_in_name.json file_out_name new_id_name ```
@@ -52,6 +52,8 @@ Output file:
 
 ## 2. Instructions to use make_collection.py
 
+### Actual instructions
+
 1. Copy and change one of the dictionary in make_col_params.py with the intended parameters
 2. Place yourself outside the near_duplicate_doc_lsh directory,
 make a python script with:
@@ -74,3 +76,22 @@ Exectute the script as a module.
 
 Example (because in the tests folder there's indeed such a script)
 ```python -m near_duplicate_doc_lsh.data_creation.tests.test_make_collection```
+
+### Result example 
+
+Input file:
+```json
+```json
+{"id" = "aab6": "content": "the apple is green", "id2" = "1"},
+{"id" = "ahb8": "content": "eternal sunshine", "id2" = "2"},
+{"id" = "hrr93": "content": "dust in the wind", "id2" = "3"}
+```
+
+Output file:
+
+```json
+{"id" = "aab6": "content": "the apple is green", "id2" = 1, "id3" = "None"},
+{"id" = "ahb8": "content": "eternal sunshine", "id2" = 2, "id3" = "None"},
+{"id" = "hrr93": "content": "dust in the wind", "id2" = 3, "id3" = "None"},
+{"id" = "aab6": "content": "the appty i gr@en", "id2" = 4, "id3" = 1"}
+```
