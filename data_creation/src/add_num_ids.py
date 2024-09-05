@@ -24,10 +24,15 @@ def ConvertID(file_in: str,
     Returns:
         - none
     '''
-    with open(file_in, "r") as fin, open(file_out, "w") as fout:
+    with open(file_in, "r", encoding="UTF8") as fin, open(file_out, "w") as fout:
         line_count = 0
         for line in fin:
-            data = json.loads(line.strip())
+            
+            data = json.loads(line[0:len(line) - 2])
+            
+            print(data["id"])
+            
+            # add try: except if the id_old name does not exist
             # get id
             id = data.get(id_old_name)
             new_id = conv_fun(id, line_count)
@@ -77,7 +82,7 @@ def FromStrToIntOther(text: str, other: int) -> int:
 
 
 def main():
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 4:
         print("No parameters given")
         return
     
@@ -89,8 +94,18 @@ if __name__ == "__main__":
     main()
 
 
+# arxiv abstract collection
+# (NOTE: this step could be avoided since the file already has an integer id)
+# we do it anyway for clarity
+# arxiv parameters:
+# arxiv_cleaned_js.json id id2
+# from command line:
+# python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\arxiv\arxiv_cleaned_js.json .\data_near_duplicate\arxiv\arxiv_cleaned_js_id2.json id id2
+
+
+
 # robust parameters:
 # tipster_45_all_docs.json robust_2.json id id2 
 # from command line:
-# python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\Data_Creation\tipster_45_all_docs.json robust_2.json id id2
+# python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\tipster_45_all_docs.json robust_2.json id id2
 

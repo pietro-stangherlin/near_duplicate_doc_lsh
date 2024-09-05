@@ -8,7 +8,7 @@ The language used is python 3.12.
 - **data_creation** folder contains some script to produce an experimental collection to test the method
 from an existing collection
 - **slides** folder contains the slides used to present the project
-- **Project** folder is where the actual scripts implementing the method are
+- **project** folder is where the actual scripts implementing the method are
 
 ### External modules used
 This project uses **Numba** (https://numba.pydata.org/) and **Numpy** (https://numpy.org/) to speed up numeric computations, a version of **MurmurHashing** (https://pypi.org/project/mmh3/) is used to hash shingles strings .

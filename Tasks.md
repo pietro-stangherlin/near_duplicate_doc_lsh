@@ -1,7 +1,9 @@
 # Creation of the new collection
 
 # General - TO DO
-Use unsigned numpy.integer instead of signed integer
+- Use unsigned numpy.integer instead of signed integer
+- Create a toy dataset to be used in tests
+- assume all dataset to be json
 
 # Implementation of shingles
 Remember to delete (or not store) each shingles' set after it has been used to generate its signature.

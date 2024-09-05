@@ -10,7 +10,7 @@ import time
 # important: execute the script from external directory
 # so the data folder (not included in the near_duplicate_doc_lsh) is a subdirectory
 # also before running convert the file to utf-8 and remove BOM (from notepad++ encoding, or another way)
-# >>> python -m near_duplicate_doc_lsh.Project.tests.test_all
+# >>> python -m near_duplicate_doc_lsh.project.tests.test_all
 
 
 # constants
@@ -21,12 +21,13 @@ INT_TYPE_32 = np.uint32
 INT_TYPE_64 = np.uint64
 
 start = time.time()
+
 # generate permutations params
 hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
-                                                      num_cols = 2,
-                                                      seed = 123,
-                                                      reshape = True,
-                                                      int_type = np.uint64)
+                                                num_cols = 2,
+                                                seed = 123,
+                                                reshape = True,
+                                                int_type = INT_TYPE_64)
 
 file_name = "data_near_duplicate\\robust_clones_first_10000.json"
 

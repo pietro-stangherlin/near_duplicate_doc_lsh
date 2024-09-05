@@ -1,6 +1,8 @@
 import numpy as np 
 from typing import Callable
 
+# Assuming we have a set of elements with fields: id; signature
+
 # elements needed
 # 1) bands to cut the signature
 # 2) hash function for each band

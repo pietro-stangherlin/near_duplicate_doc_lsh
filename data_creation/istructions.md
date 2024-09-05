@@ -1,6 +1,6 @@
 
 # Data Creation Instructions
-Assume there's a document collection json like with, ate least one id and one content fields.
+Assume there's a document collection json like with, at least one id and one content fields.
 
 Example: file_toy.json
 ```json
@@ -10,7 +10,7 @@ Example: file_toy.json
 ```
 
 In order to create a new file of desired format:
-1) run add_sum_ids.py on the starting file to create a new file adding a new id based on the each new number
+1) run add_sum_ids.py on the original file to create a new file adding a new id based on the row number
 2) run make_collection.py on the file created at point 1
 
 
@@ -27,12 +27,15 @@ In order to create a new file of desired format:
 ### Actual instructions
 Parameters: file_in_name, file_out_name, original_id_name, new_id_name.
 From command line: python 
-```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\Data_Creation\file_in_name.json file_out_name new_id_name ```
+```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\file_in_name.json file_out_name new_id_name ```
 
+
+Arxiv data specific example.
+```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\arxiv\arxiv_cleaned_js.json .\data_near_duplicate\arxiv\arxiv_cleaned_js_id2.json id id2 ```
 
 Robust specific example.
 From command line:
-```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\Data_Creation\tipster_45_all_docs.json robust_2.json id id2 ```
+```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\tipster_45_all_docs.json robust_2.json id id2 ```
 
 ### Result example 
 
@@ -93,5 +96,5 @@ Output file:
 {"id": "aab6", "content": "the apple is green", "id2": 1, "id3": "None"},
 {"id": "ahb8", "content": "eternal sunshine", "id2": 2, "id3": "None"},
 {"id": "hrr93", "content": "dust in the wind", "id2": 3, "id3": "None"},
-{"id": "aab6", "content": "the appty i gr@en", "id2": 4, "id3": 1"}
+{"id": "aab6", "content": "the appty i gr@en", "id2": 4, "id3": 1}
 ```
