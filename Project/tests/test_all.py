@@ -9,7 +9,13 @@ import time
 
 # important: execute the script from external directory
 # so the data folder (not included in the near_duplicate_doc_lsh) is a subdirectory
-# also before running convert the file to utf-8 and remove BOM (from notepad++ encoding, or another way)
+# also before running convert the file to utf-8 and remove BOM 
+# (from notepad++ encoding, or another way)
+
+# If data is in test_data: (use this in testing)
+# >>> python -m project.tests.test_all
+
+# if data is in external folder:
 # >>> python -m near_duplicate_doc_lsh.project.tests.test_all
 
 
@@ -29,7 +35,7 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
                                                 reshape = True,
                                                 int_type = INT_TYPE_64)
 
-file_name = "data_near_duplicate\\robust_clones_first_10000.json"
+file_name = "test_data\\arxiv_clones_first_1000.json"
 
 # initialize Signature Btree instance
 SigBTree = minhash.SignaturesBTree()
@@ -85,8 +91,8 @@ print(f"Time: {stop - start}")
 
 # --- BTree
 # compare the similarity of two documents
-doc1_id = 3
-doc2_id = 528156
+doc1_id = 1
+doc2_id = 1001
 # sim_doc1_doc2 =  SigBTree.compute_similarity(doc1_id, doc2_id)
 # print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
 
