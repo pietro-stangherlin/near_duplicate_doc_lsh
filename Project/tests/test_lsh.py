@@ -44,6 +44,46 @@ class TestLSH(unittest.TestCase):
                                      doc_id1,
                                      HashFunctionSum1)
         self.assertEqual(result, expected)
+    
+    
+    def test_LSHOneBandBucketsBTree(self):
+        print("LSHOneBandBucketsBTree test")
+        
+        # initialize the instance
+        band_instance = lsh.LSHOneBandBucketsBTree()
+        
+        # add some key value pairs
+        band_instance.add_ids_pair(1, 4)
+        band_instance.add_ids_pair(1, 5)
+        band_instance.add_ids_pair(2, 7)
+        band_instance.add_ids_pair(2, 9)
+        band_instance.add_ids_pair(3, 10)
+        band_instance.add_ids_pair(4, 11)
+        
+        # check sets of one and sets of two by key
+        # two elements set
+        result_key_value = band_instance[1]
+        expected_key_value = set([4, 5])
+        
+        self.assertEqual(result_key_value,
+                         expected_key_value)
+        
+        # one element set
+        result_key_value = band_instance[3]
+        expected_key_value = set([10])
+        
+        self.assertEqual(result_key_value,
+                         expected_key_value)
+        
+        
+        # more than two buckets ids set
+        result_more_than_two_buckets_ids_set = band_instance.more_than_two_buckets_ids_set
+        expected_more_than_two_buckets_ids_set = set([1,2])
+        
+        self.assertEqual(result_more_than_two_buckets_ids_set,
+                         expected_more_than_two_buckets_ids_set)
+        
+        
         
     
     def test_LSHOneBandBucketsNaive(self):

@@ -139,7 +139,7 @@ class TestMinHash_SQL_and_BTree(unittest.TestCase):
         
         self.assertEqual(sim_doc1_doc2, 1.0)
         
-        # compare the similarity of two documents: those two should be different
+        # compare the similarity of two documents: these two should be different
         doc1_id = 1
         doc2_id = 5
         

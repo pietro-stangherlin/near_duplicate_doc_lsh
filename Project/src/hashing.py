@@ -1,6 +1,7 @@
 import mmh3
 import numpy as np
 import numba
+from typing import Callable
 
 # ---------- Shingle Hash --------------#
 # generate integer hash from string
@@ -90,6 +91,43 @@ def GenerateNumpyArray(num_rows: int,
 # J.Lawrence Carter, Mark N. Wegman, "Universal classes of hash functions"
 # Journal of Computer and System Sciences, Volume 18, Issue 2, 1979, Pages 143-154.
 
+
+def NaiveHashU32Params(x : np.uint32, params: np.array) -> np.uint32:
+    '''Compute unsigned 32bit of unsigned 32 bit integer.
+    
+    Args:
+        x (uint32): integer to be hashed 
+        params (array of 2 uint64): params a and b in the formula
+    
+    NOTE: 
+    a and b should be randomly uniformly generated to get universal hashing
+        
+    Returns: 
+        hash (uint32): hashed integer
+    '''
+    x = np.uint64(x)
+    p = 2**61 - 1
+    return np.uint32((((params[0] * x + params[1]) % p) % 2**32))
+
+def NaiveHashU64Params(x : np.uint64, params: np.array) -> np.uint64:
+    '''Compute unsigned 64 bit of unsigned 64 bit integer.
+    
+    Args:
+        x (uint32): integer to be hashed 
+        params (array of 2 uint64): params a and b in the formula
+    
+    NOTE: 
+    a and b should be randomly uniformly generated to get universal hashing
+        
+    Returns: 
+        hash (uint32): hashed integer
+    '''
+    x = np.uint64(x)
+    p = 2**61 - 1
+    return np.uint64((((params[0] * x + params[1]) % p) % 2**32))
+
+
+
 @numba.njit(numba.uint32(numba.uint32, numba.uint64[:]))
 def NumbaNaiveHashU32Params(x, params):
     '''Compute unsigned 32bit of unsigned 32 bit integer.
@@ -108,4 +146,31 @@ def NumbaNaiveHashU32Params(x, params):
     p = 2**61 - 1
     return (((params[0] * x + params[1]) % p) % 2**32)
 
-# ----------- LSH bands hash functions ------------------
+# ----------- LSH bands hash function ------------------
+def MotwaniBandArrayHash(v: np.array,
+                     random_int_array: np.array,  
+                     modulo: int):
+    '''Implementation of Band hash functions as described by Motwani et. al. article.
+    
+        Args:
+            v: np.array of unsigned integers of length k
+            random_int_array: array of (pseudo) random integers of length k
+            modulo: biggest possible hash value - 1
+        
+        Returns:
+        
+        Description:
+            Assume v = [v1, v2, ..., vk] 
+            and random_int_array = [a1,...,ak] is an array of random integers,
+            the hash is then:
+            hash(v) = (a1 * v1 + ... + ak * vk) % modulo
+        
+        Reference:
+             A. Gionis, P. Indyk, and R. Motwani,
+             “Similarity search in high dimensions via hashing,”
+             Proc. Intl. Conf. on Very Large Databases, pp. 518 529, 1999.
+             "Implementation"
+            
+        
+    '''
+    return np.dot(v, random_int_array) % modulo

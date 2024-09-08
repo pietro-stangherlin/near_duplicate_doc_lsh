@@ -65,6 +65,22 @@ def test_GenerateNumpyArray():
     print("--------------------------------------------------")
     print("\n")
 
+
+def test_NaiveHashU32Params():
+    print("NaiveHashU32Params test")
+
+    hs1 = hs.NaiveHashU32Params(np.uint32(2991312383),
+                                     np.uint64([12847588855871978862, 5278339153051796803]))
+    print(f"input u32 bit, hash: {hs1}")
+    print("--------------------------------------------------")
+    print("\n")
+
+    hs1 = hs.NaiveHashU32Params(np.uint64(12632878844557580402),
+                                      np.uint64([12847588855871978862, 5278339153051796803]))
+    print(f"input u64 bit, hash: {hs1}")
+    print("--------------------------------------------------")
+    print("\n")
+
 # here I need to test eventual conflicts 
 # based on numba input (see function definition)
 # it works
@@ -83,7 +99,25 @@ def test_NumbaNaiveHashU32Params():
     print("--------------------------------------------------")
     print("\n")
 
-
+def test_MotwaniBandArrayHash():
+    print("MotwaniBandArrayHash test")
+    
+    # vector to be hashed
+    vector = np.array([4294967290, 4294967295, 4, 4294967200], 
+                      dtype = np.uint32)
+    
+    # params of the hash function ("random integers")
+    random_ints = np.array([1, 2, 3, 4], 
+                      dtype = np.uint32)
+    
+    # modulo
+    modulo_2_to_32 = 2**32
+    
+    t = hs.MotwaniBandArrayHash(v = vector,
+                                random_int_array = random_ints,
+                                modulo = modulo_2_to_32)
+    
+    print(t)
 
 def main():
     test_MurmUns32Hash()
@@ -91,7 +125,11 @@ def main():
 
     test_GenerateNumpyArray()
     
+    test_NaiveHashU32Params()
+    
     test_NumbaNaiveHashU32Params()
+    
+    test_MotwaniBandArrayHash()
 
 
 # Warning: this script has to be executed 

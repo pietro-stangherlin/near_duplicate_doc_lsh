@@ -1,5 +1,7 @@
 import numpy as np 
 from typing import Callable
+from BTrees._LOBTree import LOBTree
+from . import sqlite_one_table
 
 # Assuming we have a set of elements with fields: id; signature
 
@@ -28,6 +30,56 @@ def ComputeHashBand(signature: np.array,
         tuple: (hash value, doc_id)
     '''
     return (hash_fun(signature[band_inf_index : band_sup_index]), doc_id)
+
+# --------- LSH one band buckets data structure ---------------
+class LSHOneBandBucketsBTree(LOBTree):
+    '''BTree used to store buckets for one LSH band.
+    The key is the bucket id, value is a set of document ids.
+    
+    Inherit the IOBTree class from BTrees module: 
+    https://btrees.readthedocs.io/
+    
+    Args: 
+        key (unsigned_integer): bucket id
+        value (set): set of doc ids
+    '''
+    # change if necessary
+    # max number of elements a leaf can have
+    max_leaf_size = 500
+    # max number of children an interior node could have
+    max_internal_size = 1000
+    
+    # adding an attribute to the class:
+    # set od id_buckets (keys) for buckets with two or more elements
+    more_than_two_buckets_ids_set = set()
+
+    def add_ids_pair(self, id_bucket: int, id_doc: int) -> None:
+        '''Add a document id to the specific bucket.
+        If id_bucket is already in the Btree, add id_doc to its set,
+        else add id_bucket first as key and then allocate the set with id_doc as element 
+    
+        Args:
+            id_bucket (int): id of the bucket
+            id_doc (int):  id of the document
+    
+        Returns:
+            None
+        '''
+        if id_bucket not in self:
+            self.insert(id_bucket, set([id_doc]))
+        
+        else:
+            self[id_bucket].add(id_doc)
+            
+            # if the set already exists it means now has at least two elements
+            self.more_than_two_buckets_ids_set.add(id_bucket)
+    
+    def return_more_than_one_buckets_ids(self) -> set:
+        '''Return a set of all buckets ids for buckets with at least two elements
+        '''
+        return self.more_than_two_buckets_ids_set
+    
+
     
     
 # ---------------- Naive Buckets --------------------
