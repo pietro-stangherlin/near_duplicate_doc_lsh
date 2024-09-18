@@ -149,7 +149,7 @@ def NumbaNaiveHashU32Params(x, params):
 # ----------- LSH bands hash function ------------------
 def MotwaniBandArrayHash(v: np.array,
                      random_int_array: np.array,  
-                     modulo: int):
+                     modulo: int) -> int:
     '''Implementation of Band hash functions as described by Motwani et. al. article.
     
         Args:
@@ -158,6 +158,7 @@ def MotwaniBandArrayHash(v: np.array,
             modulo: biggest possible hash value - 1
         
         Returns:
+            - hash value compute (int)
         
         Description:
             Assume v = [v1, v2, ..., vk] 
@@ -174,4 +175,25 @@ def MotwaniBandArrayHash(v: np.array,
         
     '''
     # NOTE: the [0] index is used to convert the array to an integer
-    return np.dot(v, random_int_array) % modulo
+    return int(np.dot(v, random_int_array) % modulo)
+
+
+def GenerateOneMotwaniHash(params: np.array,
+                           modulo: int) -> Callable:
+    '''Helper function used to make a MotwaniBandArrayHash function
+    taking the input array (signature) as only parameter.
+    
+    Args:
+        - params: array of parameters for the hash function
+        - modulo: modulo parameter for the hash function
+    
+    Returns:
+        - (function): one parameter (signature) hash function
+    '''
+    
+    def OneParamMotwaniHash(v: np.array):
+        return(MotwaniBandArrayHash(v,
+                                    random_int_array = params,
+                                    modulo = modulo))
+    
+    return OneParamMotwaniHash

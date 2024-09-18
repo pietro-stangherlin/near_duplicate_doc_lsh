@@ -59,25 +59,29 @@ class TestLSH(unittest.TestCase):
         
         self.assertEqual(result1, expected1)
         
+        print("-----------------------------------------------")
+        print("\n")
+        
         
     
     def test_ComputeHashBand(self):
         signature1 = SIGNATURE1
         inf_index = 2
         sup_index = 5
-        doc_id1 = 23
         
         
         # trivial hash function
         # hash function used: HashFunction1
-        expected1 = (0 + 1 + 2, doc_id1)
+        expected1 = 0 + 1 + 2
         
         result1 = lsh.ComputeHashBand(signature1,
                                      inf_index,
                                      sup_index,
-                                     doc_id1,
                                      HashFunctionSum1)
         self.assertEqual(result1, expected1)
+        
+        print("-----------------------------------------------")
+        print("\n")
         
         # I need to define another hash function suited for the band dimension
         # non trivial hash function (base function is tested in test_ComputeOneHashGivenParameters)
@@ -96,7 +100,23 @@ class TestLSH(unittest.TestCase):
         expected2 = (sum(signature1[inf_index:sup_index]) % MODULO1, doc_id1)
         
         self.assertEqual(result2, expected2)
-            
+    
+    def test_GenerateMotwaniHashFunctionsList(self):
+        print("GenerateMotwaniHashFunctionsList test")
+        
+        l1 = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = 5,
+                                                band_size = 3,
+                                                modulo = 2**32,
+                                                seed = 123)
+        
+        print("function list")
+        print(l1)
+        
+        print("try one function")
+        print(l1[0](np.array([1,1,2])))
+        
+        print("-----------------------------------------------")
+        print("\n")
     
     def test_LSHOneBandBucketsBTree(self):
         print("LSHOneBandBucketsBTree test")
@@ -134,6 +154,9 @@ class TestLSH(unittest.TestCase):
         
         self.assertEqual(result_more_than_two_buckets_ids_set,
                          expected_more_than_two_buckets_ids_set)
+        
+        print("-----------------------------------------------")
+        print("\n")
         
     
     

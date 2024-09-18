@@ -1,7 +1,7 @@
-# shingle lenght
+# shingle length
 W = 9
 
-# signature lenght
+# signature length
 K = 100
 
 # LSH bands number 

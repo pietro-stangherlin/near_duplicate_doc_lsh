@@ -2,6 +2,7 @@ import numpy as np
 from typing import Callable
 from BTrees._LOBTree import LOBTree
 from . import sqlite_one_table
+from . import hashing
 
 # Assuming we have a set of elements with fields: id; signature
 
@@ -15,21 +16,52 @@ from . import sqlite_one_table
 def ComputeHashBand(signature: np.array,
              band_inf_index: int,
              band_sup_index: int,
-             doc_id: int,
              hash_fun: Callable) -> tuple:
     '''Compute the hash of a band.
     
     Args:
-        signature : signature of the document
-        band_inf_index : band's inferior index
-        band_sup_index : band's superior index
-        doc_id : id of the document
-        hash_fun : hash function used
+        - signature : signature of the document
+        - band_inf_index : band's inferior index
+        - band_sup_index : band's superior index
+        - hash_fun : hash function used
     
     Return:
-        tuple: (hash value, doc_id)
+        - hash value (int)
     '''
-    return (hash_fun(signature[band_inf_index : band_sup_index]), doc_id)
+    return hash_fun(signature[band_inf_index : band_sup_index])
+
+
+
+def GenerateMotwaniHashFunctionsList(n_hash_functions: int,
+                                     band_size: int,
+                                     modulo: int,
+                                     seed: int) -> list:
+    '''Generate a list of "Motwani" hash functions, each hash function is assumed to receive an input 
+    of size band_size (np.array).
+    
+    Args:
+        - n_hash_functions (int): number of hash functions 
+        - band_size (int): size of each band
+        - modulo: modulo used (same for each hash function)
+        - seed (int): use for reproducibility
+    
+    Returns:
+        - (list) list of hash functions, each one has a different set of parameters
+    '''
+    # each row corresponds to a set of parameters
+    param_matrix = hashing.GenerateNumpyArray(num_rows = n_hash_functions,
+                                              num_cols = band_size,
+                                              seed = seed)
+    # returned function
+    functions_list = [None for i in range(n_hash_functions)]
+    
+    
+    for i in range(len(functions_list)):
+        functions_list[i] = hashing.GenerateOneMotwaniHash(params = param_matrix[i,],
+                                                           modulo = modulo)
+    
+    return functions_list
+    
 
 
 # ---------------- LSH bands BTree data structure ------------------- # 
@@ -88,22 +120,27 @@ class LSHOneBandBucketsBTree(LOBTree):
 class LSHManyBandsBucketsBTree:
     
     def __init__(self,
-                 hash_funs_list: list) -> LSHOneBandBucketsBTree:
+                 hash_functions_list: list,
+                 band_size: int) -> LSHOneBandBucketsBTree:
         '''Generate an instance of an object containig many LSHOneBandBucketsBTree instances
         
         Args:
-            - hash_funs_list: list of functions, each function is used to determine the hash
+            - hash_functions_list: list of functions, each function is used to determine the hash
             for a specific band. From this list length is inferred the number of bands
+            - band_size (int): band size, with the constraint that each band has the same size 
         
         Return:
             - instance of LSHManyBandsBucketsBTree class
         '''
-        hash_functions_list = hash_funs_list
+        self.hash_functions_list = hash_functions_list
+        self.n_bands = len(hash_functions_list)
         
-        n_bands = len(hash_functions_list)
+        self.band_size = band_size
+        
+        self.signature_len = self.band_size * self.n_bands
         
         # initialize all the instances
-        bands_object_list = [LSHOneBandBucketsBTree() for i in range(n_bands)]
+        self.bands_object_list = [LSHOneBandBucketsBTree() for i in range(self.n_bands)]
     
     def __str__(self) -> str:
         '''Print the number of bands
@@ -111,14 +148,31 @@ class LSHManyBandsBucketsBTree:
         print(f"number of bands: {self.n_bands}")
     
     def InsertHashInEachBand(self,
-                         signature: np.array) -> None:
+                         signature: np.array,
+                         id_doc: int) -> None:
         '''Given an input signature compute the hash for each band and store it
         in their associated data structure.
         
         Args: 
             - signature: np.array 
+            - id_doc: document id
+            
+        Returns:
+            - None
         '''
-        pass
+        # used to iterate through all bands
+        band_index = 0
+        for i in range(start = 0,
+                       stop = self.signature_len,
+                       step = self.band_size):
+            
+            self.bands_object_list[band_index].add_ids_pair(id_bucket = ComputeHashBand(signature = signature,
+                                                                                        band_inf_index = i,
+                                                                                        band_sup_index = i + self.band_size,
+                                                                                        hash_fun = self.hash_functions_list[band_index]),
+                                                            id_doc = id_doc)
+            
+            band_index += 1
     
     
 # ---------------- LSH bands SQL data structure ------------------- # 

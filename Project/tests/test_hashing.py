@@ -118,6 +118,31 @@ def test_MotwaniBandArrayHash():
                                 modulo = modulo_2_to_32)
     
     print(t)
+    
+    print("--------------------------------------------------")
+    print("\n")
+
+def test_GenerateOneMotwaniHash():
+    print("GenerateOneMotwaniHash test")
+    
+    f1 = hs.GenerateOneMotwaniHash(params = np.array([1,2,3]),
+                                    modulo = 2**32)
+    
+    t1 = f1(np.array([1,1,1]))
+    
+    print(t1)
+    
+    print("\n")
+    
+    f1 = hs.GenerateOneMotwaniHash(params = np.array([1,2,3]),
+                                    modulo = 2**32)
+    
+    t1 = f1(np.array([1,2,1]))
+    
+    print(t1)
+    
+    print("--------------------------------------------------")
+    print("\n")
 
 def main():
     test_MurmUns32Hash()
@@ -130,6 +155,8 @@ def main():
     test_NumbaNaiveHashU32Params()
     
     test_MotwaniBandArrayHash()
+    
+    test_GenerateOneMotwaniHash()
 
 
 # Warning: this script has to be executed 
