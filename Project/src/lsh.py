@@ -31,7 +31,10 @@ def ComputeHashBand(signature: np.array,
     '''
     return (hash_fun(signature[band_inf_index : band_sup_index]), doc_id)
 
-# --------- LSH one band buckets data structure ---------------
+
+# ---------------- LSH bands BTree data structure ------------------- # 
+
+# --------- LSH one band buckets BTree data structure --------------- # 
 class LSHOneBandBucketsBTree(LOBTree):
     '''BTree used to store buckets for one LSH band.
     The key is the bucket id, value is a set of document ids.
@@ -50,7 +53,8 @@ class LSHOneBandBucketsBTree(LOBTree):
     max_internal_size = 1000
     
     # adding an attribute to the class:
-    # set od id_buckets (keys) for buckets with two or more elements
+    # set of id_buckets (keys) for buckets with two or more elements
+    # this way, when we search for buckets with more than one elements we already know where their indexes
     more_than_two_buckets_ids_set = set()
 
     def add_ids_pair(self, id_bucket: int, id_doc: int) -> None:
@@ -78,96 +82,43 @@ class LSHOneBandBucketsBTree(LOBTree):
         '''Return a set of all buckets ids for buckets with at least two elements
         '''
         return self.more_than_two_buckets_ids_set
-    
 
+# --------- LSH many bands buckets BTree data structure --------------- # 
+
+class LSHManyBandsBucketsBTree:
     
-    
-# ---------------- Naive Buckets --------------------
-class LSHOneBandBucketsNaive:
-    '''
-    The set of buckets is a dictionary
-    with key: hash_value, value : list of doc_id (to be changed in numpy array)
-    '''
-        
-    def __init__(self) -> None:
-        self.buckets = dict()
-    
-    def insert(self, key: int, value: int) -> None:
-        '''Insert value in the bucket associated with key
+    def __init__(self,
+                 hash_funs_list: list) -> LSHOneBandBucketsBTree:
+        '''Generate an instance of an object containig many LSHOneBandBucketsBTree instances
         
         Args:
-            key: should be the hash of a band
-            value: should be the document id
+            - hash_funs_list: list of functions, each function is used to determine the hash
+            for a specific band. From this list length is inferred the number of bands
+        
+        Return:
+            - instance of LSHManyBandsBucketsBTree class
         '''
-        if key in self.buckets:
-            self.buckets[key].append(value)
-        else:
-             self.buckets[key] = [value]
-    
-    def iter(self):
-        '''Iterator that yield all buckets (lists)
-        '''
-        for key in self.buckets:
-            yield self.buckets[key]
-    
-    def iter_more_than_one(self):
-        '''Iterator that yield all buckets (lists) with more than one element
-        '''
-        for key in self.buckets:
-            if len(self.buckets[key]) > 1:
-                yield self.buckets[key]
-    
+        hash_functions_list = hash_funs_list
+        
+        n_bands = len(hash_functions_list)
+        
+        # initialize all the instances
+        bands_object_list = [LSHOneBandBucketsBTree() for i in range(n_bands)]
     
     def __str__(self) -> str:
-        return_string = ""
-        for key in self.buckets.keys:
-            return_string += str(key) + "   " + str(self.buckets[key]) + "\n"
+        '''Print the number of bands
+        '''
+        print(f"number of bands: {self.n_bands}")
+    
+    def InsertHashInEachBand(self,
+                         signature: np.array) -> None:
+        '''Given an input signature compute the hash for each band and store it
+        in their associated data structure.
         
-        return return_string
-    
-    
-
-class LSHAllBandsBucketsNaive:
-    '''
-    Set of LSHOneBandBucketsNaive (implemented as a list of them)
-    '''
-    
-    def __init__(self, bands_number : int) -> None:
-        self.bands_number = bands_number
-        self.bands_list = [LSHOneBandBucketsNaive() for _ in range(bands_number)]
-    
-    def insert (self, band: int, key: int, value: int) -> None:
+        Args: 
+            - signature: np.array 
         '''
-        In the specified band, add the value to its key corresponding bucket
-        
-        Args:
-            band: band number
-            key: hash value used to get the bucket 
-            value: value stored in the bucket (usually doc_id)
+        pass
     
-        '''
-        self.bands_list[band].insert(key, value)
     
-    def iter_band(self, band : int):
-        '''Iterator that yield all buckets (lists) in the band
-        '''
-        return self.bands_list[band].iter()
-    
-    def iter_band_more_than_one(self, band : int):
-        '''Iterator that yield all buckets (lists) with more than one element
-            in the band
-        '''
-        return self.bands_list[band].iter_more_than_one()
-    
-    def iter_all_bands(self) -> list:
-        '''return list of the iterators for all bands'''
-        return [self.iter_band(band) for band in range(self.bands_number)]
-
-    def iter_more_than_one_all_bands(self) -> list:
-        '''return list of the iterators for all bands with buckets with more 
-        than one element'''
-        return [self.iter_band_more_than_one(band) for band in range(self.bands_number)]
-        
-    
-    def __str__(self):
-        return str(self.bands_list)
+# ---------------- LSH bands SQL data structure ------------------- # 

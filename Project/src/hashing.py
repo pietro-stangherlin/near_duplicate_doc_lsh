@@ -173,4 +173,5 @@ def MotwaniBandArrayHash(v: np.array,
             
         
     '''
+    # NOTE: the [0] index is used to convert the array to an integer
     return np.dot(v, random_int_array) % modulo
