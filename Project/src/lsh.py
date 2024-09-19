@@ -16,7 +16,7 @@ from . import hashing
 def ComputeHashBand(signature: np.array,
              band_inf_index: int,
              band_sup_index: int,
-             hash_fun: Callable) -> tuple:
+             hash_fun: Callable) -> int:
     '''Compute the hash of a band.
     
     Args:
@@ -26,9 +26,9 @@ def ComputeHashBand(signature: np.array,
         - hash_fun : hash function used
     
     Return:
-        - hash value (int)
+        hash value (int)
     '''
-    return hash_fun(signature[band_inf_index : band_sup_index])
+    return int(hash_fun(signature[band_inf_index : band_sup_index]))
 
 
 
@@ -95,11 +95,11 @@ class LSHOneBandBucketsBTree(LOBTree):
         else add id_bucket first as key and then allocate the set with id_doc as element 
     
         Args:
-            id_bucket (int): id of the bucket
-            id_doc (int):  id of the document
+            - id_bucket (int): id of the bucket
+            - id_doc (int):  id of the document
     
         Returns:
-            None
+            - None
         '''
         if id_bucket not in self:
             self.insert(id_bucket, set([id_doc]))
@@ -162,9 +162,9 @@ class LSHManyBandsBucketsBTree:
         '''
         # used to iterate through all bands
         band_index = 0
-        for i in range(start = 0,
-                       stop = self.signature_len,
-                       step = self.band_size):
+        for i in range(0, # start
+                       self.signature_len, # stop
+                       self.band_size): # step
             
             self.bands_object_list[band_index].add_ids_pair(id_bucket = ComputeHashBand(signature = signature,
                                                                                         band_inf_index = i,
