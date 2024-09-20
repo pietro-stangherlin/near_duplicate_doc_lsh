@@ -20,13 +20,16 @@ Implement a function for rolling hashing shingling (could be useful for large do
 (not urgent)
 Also consider differents implementations of that dictionary (like btree), but keep in mind the costs may not be worth.
 
-## Family of row permutation hash functions
+## Family of row permutation hash functions - Done
 Choose an appropriate familty of row permutation hash functions.
 The idea is to use a familty of hash function which hash depends upon one or more parameters,
 so changing the parameter will generate a different hash function.
 We need a different hash function for each signature element.
 Attetion is needed in not chosing hash functions that behave nearly the same with 
 different parameters. 
+
+## Create index for id docs in SQL data structure - TO DO
+So the search is easier (useful for when the doc ids are)
 
 
 # Implemenentation of LSH
@@ -59,8 +62,9 @@ Choose a way to implement the LSH band with buckets.
 One option is to just use a list or array of m bucktes for each band.
 Here some considerations depends on the nature of documents ids (their type in terms of occupied memory).
 Options:
-- mass memory storage
-- disk storage (database)
+- main memory storage -> half done: btree data structure
+- disk storage (database) -> TO - DO: the SQL schema has to be defined or evaluate a graph database
+
 
 ### Problem: how many buckets, elements per bucket and how many bands?
 We can just try by trial and error
@@ -87,4 +91,7 @@ Example:
 1 -> {15, 23, 57}
 23 -> {1, 15, 57}
 57 -> {1, 15, 23}
+
+We can try to solve this with a graph database keeping all the documents as nodes and similarities as weighted edges, where a missing node is considered as a zero similarity.
+I need to investigate it further 
 

@@ -21,13 +21,13 @@ class SQLiteOneTable:
         '''Inizialize the instance creating the database.
         
         Args:
-            database_name: name of the database used or to be created
-            key_type: type of the table's key (INTEGER, REAL, TEXT, BLOB)
-            value_type: type of the table's value (INTEGER, REAL, TEXT, BLOB)
-            table_name: name of the unique table
-            key_name: name of the unique key
-            value_name: name of the value
-            do_pickle: tell if the values should be pickled and unpickled,
+            - database_name: name of the database used or to be created
+            - key_type: type of the table's key (INTEGER, REAL, TEXT, BLOB)
+            - value_type: type of the table's value (INTEGER, REAL, TEXT, BLOB)
+            - table_name: name of the unique table
+            - key_name: name of the unique key
+            - value_name: name of the value
+            - do_pickle: tell if the values should be pickled and unpickled,
                         pickling has the advantage of saving attributes
                         (for some supported) python classes
         '''
@@ -51,6 +51,9 @@ class SQLiteOneTable:
         # create table if not present
         self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name}
                             ({self.key_name} {key_type} PRIMARY KEY, {self.value_name} {self.value_type})''')
+        
+        # if primary key is integer index is automatically created by sqlite
+        # https://www.sqlite.org/lang_createtable.html#rowid
         
         # define methods based on do_pickle
         if self.do_pickle:
