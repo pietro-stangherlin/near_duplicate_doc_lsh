@@ -101,6 +101,7 @@ class LSHOneBandBucketsBTree(LOBTree):
         Returns:
             - None
         '''
+        
         if id_bucket not in self:
             self.insert(id_bucket, set([id_doc]))
         
