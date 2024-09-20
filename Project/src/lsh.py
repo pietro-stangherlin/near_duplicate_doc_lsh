@@ -66,6 +66,7 @@ def GenerateMotwaniHashFunctionsList(n_hash_functions: int,
 
 # ---------------- LSH bands BTree data structure ------------------- # 
 
+# NOTE: this still need to be completed, after the SQL class is completed
 # --------- LSH one band buckets BTree data structure --------------- # 
 class LSHOneBandBucketsBTree(LOBTree):
     '''BTree used to store buckets for one LSH band.
