@@ -10,6 +10,9 @@ from an existing collection
 - **slides** folder contains the slides used to present the project
 - **project** folder is where the actual scripts implementing the method are
 
+Dir structure:
+!{dir_structure.txt}
+
 ### External modules used
 This project uses **Numba** (https://numba.pydata.org/) and **Numpy** (https://numpy.org/) to speed up numeric computations, a version of **MurmurHashing** (https://pypi.org/project/mmh3/) is used to hash shingles strings .
 Signatures data structure inherits a **BTrees** (https://github.com/zopefoundation/BTrees) class.
