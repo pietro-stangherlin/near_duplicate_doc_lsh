@@ -7,9 +7,6 @@ This site contains the project documentation for the
 Brief description.
 [Here](tutorials.md).
 
-## How To Guides
-Brief description.
-[How-To Guides](how-to-guides.md)
 
 ## References
 Brief description.

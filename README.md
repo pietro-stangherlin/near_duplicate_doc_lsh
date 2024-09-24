@@ -11,7 +11,74 @@ from an existing collection
 - **project** folder is where the actual scripts implementing the method are
 
 Dir structure:
-!{dir_structure.txt}
+```
+near_duplicate_doc_lsh/
+|-- dir_structure.txt
+|-- LICENSE
+|-- print_dir_structure.py
+|-- README.md
+|-- requirements.txt
+|-- Tasks.md
+|-- data_creation/
+|   |-- src/
+|   |   |-- .gitignore
+|   |   |-- add_num_ids.py
+|   |   |-- istructions.md
+|   |   |-- make_collection.py
+|   |   |-- make_col_params.py
+|   |   |-- randomNoise.py
+|   |   |-- selectionOfDictionaries.py
+|   |   |-- __init__.py
+|   |-- tests/
+|   |   |-- .gitignore
+|   |   |-- test_make_collection.py
+|   |   |-- test_randomNoise.py
+|   |   |-- __init__.py
+|-- Project/
+|   |-- .gitignore
+|   |-- mkdocs.yml
+|   |-- toy_data.json
+|   |-- docs/
+|   |   |-- complexity-analysis.md
+|   |   |-- explanation.md
+|   |   |-- how-to-guides.md
+|   |   |-- index.md
+|   |   |-- reference.md
+|   |   |-- tutorials.md
+|   |-- src/
+|   |   |-- .gitignore
+|   |   |-- hashing.py
+|   |   |-- lsh.py
+|   |   |-- main.py
+|   |   |-- minhash.py
+|   |   |-- params.py
+|   |   |-- shingling.py
+|   |   |-- sqlite_one_table.py
+|   |   |-- __init__.py
+|   |   |-- __pycache__/
+|   |   |   |-- hashing.cpython-312.pyc
+|   |   |   |-- lsh.cpython-312.pyc
+|   |   |   |-- minhash.cpython-312.pyc
+|   |   |   |-- shingling.cpython-312.pyc
+|   |   |   |-- sqlite_one_table.cpython-312.pyc
+|   |   |   |-- __init__.cpython-312.pyc
+|   |-- tests/
+|   |   |-- .gitignore
+|   |   |-- test_all.py
+|   |   |-- test_hash.py
+|   |   |-- test_lsh.py
+|   |   |-- test_minhash.py
+|   |   |-- test_shingles.py
+|   |   |-- test_sqlite_one_table.py
+|   |   |-- __init__.py
+|   |   |-- __pycache__/
+|   |   |   |-- test_all.cpython-312.pyc
+|   |   |   |-- __init__.cpython-312.pyc
+|-- slides/
+|   |-- ita/
+|   |   |-- slides_ita.pdf
+|   |   |-- slides_ita.pptx 
+```
 
 ### External modules used
 This project uses **Numba** (https://numba.pydata.org/) and **Numpy** (https://numpy.org/) to speed up numeric computations, a version of **MurmurHashing** (https://pypi.org/project/mmh3/) is used to hash shingles strings .

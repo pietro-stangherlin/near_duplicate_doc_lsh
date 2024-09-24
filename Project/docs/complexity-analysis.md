@@ -3,19 +3,24 @@ Below are given some complexity analysis of the methods used.
 
 ## Shingling
 Assume the text to be shingled has n characters and each shingle has length w.
+
 ### Time complexity
 Both versions of TextToShingles have a time complexity linear in n.
 ### Space complexity
-The space occupied by the Array version could be precisley computed: it is equal to (n - w + 1) * w times the memory occupied by type of int chosen. The Set version occupied space depends on the number of equal shingles (the more they are the less space occupied) and by the empty space allocated by the set class.  
+The space occupied by the Array version could be precisley computed: it is equal to (n - w + 1) * w times the memory occupied by type of int chosen. The set version occupied space depends on the number of equal shingles (the more they are the less space occupied) and by the empty space allocated by the set class.  
 
-## MinHash - TO REDO
+## MinHash
 Assume there are n documents and the signature has k elements.
+In theory it's possible to store the pairs (id_doc, signature) in a dictionary (hash table) allowing O(1) query time; the problem is in order to have few collisions a large empty chunk of memory has to be allocated, which, unless there's plenty of free main memory we don't have, for this reason it's not implemented.
 
-### Time complexity
+### BTree main memory
+Avaible only if there's enough free main memory.
+Space complexity O(n), query complexity O(log(n)).
 
-### Space complexity
-Using a tree to store all the signatures the space occupied is n * (k + 1) times the space occupied by each integer, the plus 1 is due to the document id.
-Using a hash table the space should be much more if we don't want to have many collision, for example, if the 70% of the hash table was empty the total occupied space would be about n * (k + 1) / 0.3.
+### SQL Table(id_doc, signature)
+The signature is a numpy array which has to stored as BLOB after pickling.
+An BTree index is created on id_doc (which is the primary key) allowing a query time of O(log(n)) (altough the constant is greater than the BTree implementation in main memory).
+The ER scheme consist just of an entity with two attributes.
 
 ## LSH
 The goal is to retrieve all documents ids in the same bucket (in the same band).
@@ -30,21 +35,25 @@ Assuming we condition on one band. One way to implement multiple bands data stru
 #### Main memory BTree
 Partially implemented.
 
-#### TABLE(id_bucket, id_doc)
+#### SQL TABLE(id_bucket, id_doc)
 Here the primary key is the couple (id_bucket, id_doc), an index has to be created for the id_bucket.
 The index is needed since for each id_bucket value we need to retrieve all id_doc associated to it.
 Creating the index (assuming a btree index) will slow the insertion operations from O(1) to O(log(n)), but will speed up the query operations from O(n) to O(log(n)).
+Space complexity is O(n).
+
 ER Schema:
 ![alt text](figures\LSH_SQL_ER_ID_BUCKET_ID_DOC.jpg)
 
-#### TABLE(id_bucket, id_doc_list)
+#### SQL TABLE(id_bucket, id_doc_list)
 Here the primary key is the couple (id_bucket, id_doc_list), an index has to be created for the id_bucket. The value is a list (implemented as a BLOB) of documents ids with the same bucket value.
 The index is needed since for each id_bucket value we need to retrieve all id_doc associated to it.
 Creating the index (assuming a btree index) will slow the insertion operations from O(1) to O(log(n)), but will speed up the query operations from O(n) to O(log(n)).
 Here There's also the update cost, beacuse if a doc_id has the same id_bucket value of a present row we need to update the value, which is done in steps:
     1) extract the list value
     2) add the doc id to the list
-    3) update the row with the new (converted) list value
+    3) update the row with the new (converted) list value.
+Space complexity is O(n).
+
 ER Schema:
 ![alt text](figures\LSH_SQL_ER_ID_BUCKET_ID_DOC_LIST.jpg)
 
