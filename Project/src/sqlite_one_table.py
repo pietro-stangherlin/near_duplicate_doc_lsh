@@ -3,43 +3,52 @@ import pickle
 import os
 
 
-# ---------------- SQLite one table database ------------------------
+# ---------------- SQLite one table database ------------------------#
+# This class will be used for storing both signatures and buckets
+# (with slightly different specifications)
 class SQLiteOneTable:
     '''Link to (or create) a sqlite3 database with one table.
     The database created assumes a simple schema:
-    a unique table with fields: [key , value]
+    a unique table with columns: (col1 , col2)
     '''
 
     def __init__(self,
-                 database_name: str = "signatures_db",
-                 key_type: str = "INTEGER",
-                 value_type: str = "BLOB",
+                 database_name: str = "db_name",
+                 col1_type: str = "INTEGER",
+                 col2_type: str = "BLOB",
                  table_name: str = "table_1",
-                 key_name: str = "key",
-                 value_name: str = "value",
-                 do_pickle: bool = True):
+                 col1_name: str = "col1_name",
+                 col2_name: str = "col2_name",
+                 do_pickle: bool = True,
+                 create_index_on_col1: bool = True):
         '''Inizialize the instance creating the database.
+        
         
         Args:
             - database_name: name of the database used or to be created
-            - key_type: type of the table's key (INTEGER, REAL, TEXT, BLOB)
-            - value_type: type of the table's value (INTEGER, REAL, TEXT, BLOB)
+            - col1_type: type of the table's column 1 (INTEGER, REAL, TEXT, BLOB)
+            - col2_type: type of the table's column 2 (INTEGER, REAL, TEXT, BLOB)
             - table_name: name of the unique table
-            - key_name: name of the unique key
-            - value_name: name of the value
+            - col1_name: name of column 1
+            - col2_name: name of column 2
             - do_pickle: tell if the values should be pickled and unpickled,
                         pickling has the advantage of saving attributes
                         (for some supported) python classes
+            - create_index_on_col1: if True create index relative to column 1 
+        
+        NOTE: with SQLite Primary key specification is not needed, as deafult primary key 
+        the rowid is used (unless specified otherwise), see:
+        https://www.sqlite.org/lang_createtable.html#rowid
         '''
 
         self.database_name = database_name
         self.table_name = table_name
 
-        self.key_type = key_type
-        self.value_type = value_type
+        self.col1_type = col1_type
+        self.col2_type = col2_type
 
-        self.key_name = key_name
-        self.value_name = value_name
+        self.col1_name = col1_name
+        self.col2_name = col2_name
 
         self.do_pickle = do_pickle
 
@@ -50,18 +59,21 @@ class SQLiteOneTable:
         
         # create table if not present
         self.cursor.execute(f'''CREATE TABLE IF NOT EXISTS {self.table_name}
-                            ({self.key_name} {key_type} PRIMARY KEY, {self.value_name} {self.value_type})''')
+                            ({self.col1_name} {col1_type},
+                            {self.col2_name} {self.col2_type})''')
         
-        # if primary key is integer index is automatically created by sqlite
-        # https://www.sqlite.org/lang_createtable.html#rowid
+        # create column 1 index if specified
+        if create_index_on_col1:
+            self.cursor.execute(f'''CREATE INDEX idx_col1 
+                                ON {self.table_name} ({self.col1_name});''')
         
         # define methods based on do_pickle
         if self.do_pickle:
-            self._insert_key_value = self._insert_key_value_yes_pickle
-            self._get_value_by_key = self._get_value_by_key_yes_pickle
+            self._insert_col1_col2 = self._insert_col1_col2_yes_pickle
+            self._get_col2_by_col1 = self._get_col2_by_col1_yes_pickle
         else:
-            self._insert_key_value = self._insert_key_value_no_pickle
-            self._get_value_by_key = self._get_value_by_key_no_pickle
+            self._insert_col1_col2 = self._insert_col1_col2_no_pickle
+            self._get_col2_by_col1 = self._get_col2_by_col1_no_pickle
         
     
     def begin_transaction(self):
@@ -75,28 +87,28 @@ class SQLiteOneTable:
         '''
         self.connect.commit()
     
-    def insert_key_value(self, key, value):
-        '''Insert a pair (key, value) in the database.
+    def insert_col1_col2(self, col1_value, col2_value):
+        '''Insert a pair (col1, col2) in the database.
 
         NOTE:
         the insertion has to be done while in a transaction.
         
         Args:
-            key:
-            value:
+            col1_value:
+            col2_value
         '''
-        self._insert_key_value(key, value)
+        self._insert_col1_col2(col1_value, col2_value)
     
-    def get_value_by_key(self, key):
-        '''Return value relative to key.
+    def get_col2_by_col1(self, col1_value):
+        '''Return value relative to column 1 value.
         
         Args:
-            key:
+            col1_value
         
         Return:
-            value:
+            col2_value
         '''
-        return self._get_value_by_key(key)
+        return self._get_col2_by_col1(col1_value)
     
     def close_database(self):
         '''Close the SQLite database connection.
@@ -130,8 +142,8 @@ class SQLiteOneTable:
     
     # hidden methods defined so the "if check" is done only once
     # (when the instance is inizialized)
-    def _insert_key_value_yes_pickle(self, key, value):
-        '''(hidden) Insert a pair (key, value) in the database.
+    def _insert_col1_col2_yes_pickle(self, col1_value, col2_value):
+        '''(hidden) Insert a pair (col1_value, col2_value) in the database.
             YesPickle
         
         NOTE:
@@ -142,43 +154,42 @@ class SQLiteOneTable:
             value:
         '''
         self.connect.execute(f"INSERT INTO {self.table_name} VALUES (?,?)",
-                  (key, pickle.dumps(value)))
+                  (col1_value, pickle.dumps(col2_value)))
     
-    def _insert_key_value_no_pickle(self, key, value):
-        '''(hidden) Insert a pair (key, value) in the database.
+    def _insert_col1_col2_no_pickle(self, col1_value, col2_value):
+        '''(hidden) Insert a pair (col1_value, col2_value) in the database.
             NoPickle        
         NOTE:
         the insertion has to be done while in a transaction.
         
         Args:
-            key:
-            value:
+            - col1_value
+            - col2_value
         '''
         self.connect.execute(f"INSERT INTO {self.table_name} VALUES (?,?)",
-                  (key, value))
+                  (col1_value, col2_value))
     
-    def _get_value_by_key_yes_pickle(self, key):
-        '''(hidden) Return value relative to key.
+    def _get_col2_by_col1_yes_pickle(self, col1_value):
+        '''(hidden) Return col2_value relative to col1_value.
             YesPickle
         Args:
-            key:
-        
+            col1_value
         Return:
-            value:
+            col2_value
         '''
-        return pickle.loads(self.connect.execute(f"SELECT {self.value_name} FROM {self.table_name} WHERE {self.key_name}=?",
-                                     (key,)).fetchone()[0])
+        return pickle.loads(self.connect.execute(f"SELECT {self.col2_name} FROM {self.table_name} WHERE {self.col1_name}=?",
+                                     (col1_value,)).fetchone()[0])
         
-    def _get_value_by_key_no_pickle(self, key):
-        '''(hidden) Return value relative to key.
+    def _get_col2_by_col1_no_pickle(self, col1_value):
+        '''(hidden) Return value relative to col1_value.
             NoPickle
         Args:
-            key:
+            - col1_value
         
         Return:
-            value:
+            - col2_value
         '''
-        return self.connect.execute(f"SELECT {self.value_name} FROM {self.table_name} WHERE {self.key_name}=?",
-                                     (key,)).fetchone()[0]
+        return self.connect.execute(f"SELECT {self.col2_name} FROM {self.table_name} WHERE {self.col1_name}=?",
+                                     (col1_value,)).fetchone()[0]
 
     

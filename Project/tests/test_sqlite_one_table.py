@@ -24,8 +24,8 @@ class TestSqliteOneTable(unittest.TestCase):
         sql_db.begin_transaction()
 
         # insert key value pairs
-        sql_db.insert_key_value(TOY_DOCS_ID_SIGNATURE[0][0], TOY_DOCS_ID_SIGNATURE[0][1])
-        sql_db.insert_key_value(TOY_DOCS_ID_SIGNATURE[1][0], TOY_DOCS_ID_SIGNATURE[1][1])
+        sql_db.insert_col1_col2(TOY_DOCS_ID_SIGNATURE[0][0], TOY_DOCS_ID_SIGNATURE[0][1])
+        sql_db.insert_col1_col2(TOY_DOCS_ID_SIGNATURE[1][0], TOY_DOCS_ID_SIGNATURE[1][1])
 
         # end transaction
         sql_db.end_transaction()
@@ -34,7 +34,7 @@ class TestSqliteOneTable(unittest.TestCase):
 
 
         # find signatures by key
-        result = sql_db.get_value_by_key(TOY_DOCS_ID_SIGNATURE[0][0])
+        result = sql_db.get_col2_by_col1(TOY_DOCS_ID_SIGNATURE[0][0])
         expected = TOY_DOCS_ID_SIGNATURE[0][1]
 
         # assertion

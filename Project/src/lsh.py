@@ -178,3 +178,61 @@ class LSHManyBandsBucketsBTree:
     
     
 # ---------------- LSH bands SQL data structure ------------------- # 
+
+# option 1
+# ------------- LSH one band: SQL TABLE(id_bucket, id_doc) --------#
+class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTable):
+    '''Conditional to one band, write the table TABLE(id_bucket, id_doc), 
+    also create an index on  id_bucket.
+    The table will be used to find all id_docs with the same id_bucket value.
+    '''
+    
+    def __init__(self,
+                 database_name: str = "lsh_one_band_db",
+                 col1_type: str = "INTEGER",
+                 col2_type: str = "INTEGER",
+                 table_name: str = "table_1",
+                 col1_name: str = "bucket",
+                 col2_name: str = "id_doc",
+                 do_pickle: bool = False,
+                 create_index_on_col1: bool = True):
+        
+        super().__init__(database_name,
+                         col1_type,
+                         col2_type,
+                         table_name,
+                         col1_name,
+                         col2_name,
+                         do_pickle,
+                         create_index_on_col1)
+
+        # rename methods
+    def insert_bucket_id_pair(self,
+                                 bucket_value,
+                                 id_doc_value):
+        
+        super().insert_col1_col2(col1_value = bucket_value,
+                                 col2_value = id_doc_value)
+    
+    # not used 
+    def get_id_by_bucket(self,
+                            bucket_value):
+        
+        super().get_col2_by_col1(col1_value = bucket_value)
+    
+    
+    def GetDocIdsByBucket(self,
+                          output_path: str):
+        ''' Method to get all document ids in the same bucket
+        (only for buckets with more than one document,
+        i.e. bucket id values that compare at least twice)
+        
+        Args:
+            - self
+            - output_path: path where to store the result 
+        '''
+        self.connect.execute(f'''SELECT {self.col2_name} 
+                             FROM {self.table_name}
+                             WHERE {self.col1_name}=?
+                             GROUP_BY {self.col1_name}'''
+                             ).fetchone()[0]

@@ -150,6 +150,34 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
 
     Inherits from the SQLiteOneTable class.
     '''
-    pass
+    def __init__(self, 
+                 database_name: str = "signature_db",
+                 col1_type: str = "INTEGER",
+                 col2_type: str = "BLOB",
+                 table_name: str = "table_1",
+                 col1_name: str = "id_doc",
+                 col2_name: str = "signature",
+                 do_pickle: bool = True,
+                 create_index_on_col1: bool = True):
+        
+        super().__init__(database_name,
+                         col1_type,
+                         col2_type,
+                         table_name,
+                         col1_name,
+                         col2_name,
+                         do_pickle,
+                         create_index_on_col1)
     
-    # some changes are needed: restricts some methods to id and signatures case
+    # rename methods
+    def insert_id_signature_pair(self,
+                                 id_value,
+                                 signature_value):
+        
+        super().insert_col1_col2(col1_value = id_value,
+                                 col2_value = signature_value)
+    
+    def get_signature_by_id(self,
+                            id_value):
+        
+        super().get_col2_by_col1(col1_value = id_value)    
