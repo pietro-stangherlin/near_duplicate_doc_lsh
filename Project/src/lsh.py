@@ -227,12 +227,23 @@ class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTable):
         (only for buckets with more than one document,
         i.e. bucket id values that compare at least twice)
         
+        NOTE: each output row follows the pattern id_bucket_value1|id_doc_value1,id_doc_value2,..
+        so in order to extract the id_doc_values each row has to parsed.
+        
         Args:
             - self
-            - output_path: path where to store the result 
+            - output_path: path where to store the result (can be a .txt file)
         '''
-        self.connect.execute(f'''SELECT {self.col2_name} 
-                             FROM {self.table_name}
-                             WHERE {self.col1_name}=?
-                             GROUP_BY {self.col1_name}'''
-                             ).fetchone()[0]
+        # change output
+        self.connect.execute(f".output {output_path}")
+        
+        # execute query
+        self.connect.execute(f'''SELECT {self.col1_name},
+                                GROUP_CONCAT({self.col2_name}) AS col2_values
+                                FROM {self.table_name}
+                                GROUP BY {self.col1_name}
+                                HAVING COUNT({self.col1_name}) >= 2;
+                             ''')
+        
+        # restore default ouptut
+        self.connect.execute(f".output stdout")
