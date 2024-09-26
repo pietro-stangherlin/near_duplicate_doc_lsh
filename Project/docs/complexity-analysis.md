@@ -36,17 +36,20 @@ Assuming we condition on one band. One way to implement multiple bands data stru
 Partially implemented.
 
 #### SQL TABLE(id_bucket, id_doc)
-Here the primary key is the couple (id_bucket, id_doc), an index has to be created for the id_bucket.
+An index is created for the id_bucket.
 The index is needed since for each id_bucket value we need to retrieve all id_doc associated to it.
+
 Creating the index (assuming a btree index) will slow the insertion operations from O(1) to O(log(n)), but will speed up the query operations from O(n) to O(log(n)).
 Space complexity is O(n).
 
 ER Schema:
 ![alt text](figures\LSH_SQL_ER_ID_BUCKET_ID_DOC.jpg)
 
-#### SQL TABLE(id_bucket, id_doc_list)
-Here the primary key is the couple (id_bucket, id_doc_list), an index has to be created for the id_bucket. The value is a list (implemented as a BLOB) of documents ids with the same bucket value.
+#### SQL TABLE(id_bucket, id_doc_list, n_doc)
+An index is created for the id_bucket. The value is a list (implemented as a BLOB) of documents ids with the same bucket value.
 The index is needed since for each id_bucket value we need to retrieve all id_doc associated to it.
+We also need to keep track of how many elements are in each list of doc_ids, this is done using the counter n_doc.
+
 Creating the index (assuming a btree index) will slow the insertion operations from O(1) to O(log(n)), but will speed up the query operations from O(n) to O(log(n)).
 Here There's also the update cost, beacuse if a doc_id has the same id_bucket value of a present row we need to update the value, which is done in steps:
     1) extract the list value
