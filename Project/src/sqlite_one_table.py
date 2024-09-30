@@ -218,8 +218,8 @@ class SQLiteOneTableGeneral:
             - col_do_pickle_bool_list: list of bool,
                             tell if the values of the specific column
                             should be pickled and unpickled.
-                            (pickling has the advantage of saving attributes
-                            ,for some supported, python classes)
+                            (pickling has the advantage of saving attributes,
+                            for some supported python classes)
             - col_not_null_bool_list: list of bool, 
                             tell if the specific column CANNOT have NULL values
             - col_create_index_bool_list: list of bool,
@@ -268,6 +268,12 @@ class SQLiteOneTableGeneral:
             if col_do_pickle_bool_list[i] == True:
                 self.do_pickle_indexes_list.append(i)
         
+        # create also the non pickled (complementary) columns index list
+        
+        # temporaty set
+        all_index_set = set([i for i in range(self.n_col)])
+            
+        self.do_not_pickle_indexes_list = list(all_index_set.difference(set(self.do_pickle_indexes_list)))
         
         self.col_not_null_bool_list = col_not_null_bool_list
         self.col_create_index_bool_list = col_create_index_bool_list
@@ -338,7 +344,8 @@ class SQLiteOneTableGeneral:
         for i in self.do_pickle_indexes_list:
             values_list[i] = pickle.dumps(values_list[i])
         
-        self.connect.execute(f"INSERT INTO {self.table_name} VALUES {self.n_question_marks_string}",
+        self.connect.execute(f'''INSERT INTO {self.table_name}
+                             VALUES {self.n_question_marks_string}''',
                   values_list)
 
     
@@ -371,6 +378,56 @@ class SQLiteOneTableGeneral:
         self.cursor.execute(f"SELECT * FROM {self.table_name}")
         rows = self.cursor.fetchall()
         for row in rows:
-            print(row)
+            print(self._handle_pickled_tuple(raw_row = row))
+        
+    def get_records_by_value(self,
+                            col_name: str,
+                            col_value) -> list:
+        '''Return a list of all records for which 
+            the col_name column have the col_value value.
+            Pickled values are unpickled.
+        
+        Args:
+            - col_name: (str) name of the column
+            - col_value: (generic) value of the column
+        
+        Return:
+            - list of lists (list): list of records (as lists) as described above
+        '''    
+        self.cursor.execute(f'''SELECT * FROM {self.table_name}
+                    WHERE {col_name} = {col_value};''')
+        
+        rows = self.cursor.fetchall()
+        
+        list_of_lists = list()
+
+        for row in rows:
+            list_of_lists.append(self._handle_pickled_tuple(raw_row = row))
+        
+        return list_of_lists
+        
     
-    
+    def _handle_pickled_tuple(self,
+                              raw_row: tuple) -> list:
+        '''Hidden method to return a tuple with the same non pickled values
+        and unpickled values instead of pickled ones.
+        The pickling is assumed using the class pickling indexes defined in __init__.
+        
+        Args:
+            - raw_row: (tuple) with, eventually, some pickled values
+            as given by sql
+        
+        Return:
+            - list of non pickled and unpickled values, in the same order
+        '''
+        unpickled_list = [None for i in range(self.n_col)]
+            
+        # handle non pickled objects
+        for index in self.do_not_pickle_indexes_list:
+            unpickled_list[index] = raw_row[index]
+            
+        # handle pickled objects
+        for index in self.do_pickle_indexes_list:
+            unpickled_list[index] = pickle.loads(raw_row[index])
+     
+        return unpickled_list
