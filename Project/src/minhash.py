@@ -181,3 +181,49 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
                             id_value):
         
         super().get_col2_by_col1(col1_value = id_value)    
+
+
+class SignaturesSQLiteGeneral(sqlite_one_table.SQLiteOneTableGeneral):
+    '''Compute signatures, pickle them, save database and eventually unpickle by key.
+
+    Inherits from the SQLiteOneTable class.
+    '''
+    
+    def __init__(self,
+                 col_types_list: list = ["INTEGER", "BLOB"],
+                 table_name: str = "table_1",
+                 database_name: str = "db_name"):
+        
+        super().__init__(col_types_list = col_types_list,
+                         col_names_list = ["id_doc", "signature"],
+                         col_do_pickle_bool_list = [False, True],
+                         col_not_null_bool_list = [True, True],
+                         col_create_index_bool_list = [True, False],
+                         col_is_unique_bool_list = [True, False],
+                         table_name = table_name ,
+                         database_name = database_name)
+    
+    # rename method: record insertion
+    def insert_id_signature_pair(self,
+                                 id_value,
+                                 signature_value):
+        super().insert_record_values(values_list = [id_value, signature_value])
+    
+    # slighty change one method so only signature is returned
+    def get_signature_by_id(self,
+                            id_value):
+        '''Get the (unpickled) value of signature corresponding to a specific document id
+        
+        Args:
+            - id_value: id of the wanted document
+        
+        Returns:
+            - unpickled signature
+        '''
+        # first get the list corresponding to id_value wanted
+        # since by the schema the id is unique the list ha only one element        
+        # finally exctract the (already upickled) signature
+        
+        return (super().get_records_by_value(col_name = "id_doc",
+                                             col_value = id_value)[0][1])
+        

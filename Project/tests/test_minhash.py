@@ -1,6 +1,6 @@
-from ..src import hashing
-from ..src import shingling
-from ..src import minhash
+from src import hashing
+from src import shingling
+from src import minhash
 import numpy as np
 import unittest
 
@@ -33,14 +33,16 @@ class TestSignaturesSqlite(unittest.TestCase):
     def test_signaturesqlite(self):
         
         # initialize the instance
-        sql_db = minhash.SignaturesSQLite()
+        sql_db = minhash.SignaturesSQLiteGeneral(col_types_list = ["INTEGER", "BLOB"])
 
         # begin transaction
         sql_db.begin_transaction()
 
         # insert key value pairs
-        sql_db.insert_key_value(TOY_DOCS_ID_SIGNATURE[0][0], TOY_DOCS_ID_SIGNATURE[0][1])
-        sql_db.insert_key_value(TOY_DOCS_ID_SIGNATURE[1][0], TOY_DOCS_ID_SIGNATURE[1][1])
+        sql_db.insert_id_signature_pair(id_value = TOY_DOCS_ID_SIGNATURE[0][0],
+                                        signature_value = TOY_DOCS_ID_SIGNATURE[0][1])
+        sql_db.insert_id_signature_pair(id_value = TOY_DOCS_ID_SIGNATURE[1][0],
+                                        signature_value = TOY_DOCS_ID_SIGNATURE[1][1])
 
         # end transaction
         sql_db.end_transaction()
@@ -49,7 +51,7 @@ class TestSignaturesSqlite(unittest.TestCase):
 
 
         # find signatures by key
-        result = sql_db.get_value_by_key(TOY_DOCS_ID_SIGNATURE[0][0])
+        result = sql_db.get_signature_by_id(id_value = TOY_DOCS_ID_SIGNATURE[0][0])
         expected = TOY_DOCS_ID_SIGNATURE[0][1]
 
         # assertion
@@ -84,7 +86,7 @@ class TestMinHash_SQL_and_BTree(unittest.TestCase):
         signatures_temp_dict = dict()
         
         # inizialize SignaturesSQLite
-        SigSQL = minhash.SignaturesSQLite()
+        SigSQL = minhash.SignaturesSQLiteGeneral(col_types_list = ["INTEGER", "BLOB"])
         
         # number of insertions for each transaction
         NUM_SQL_INSERTIONS = 3
@@ -115,7 +117,8 @@ class TestMinHash_SQL_and_BTree(unittest.TestCase):
                 SigSQL.end_transaction()
                 SigSQL.begin_transaction()
             
-            SigSQL.insert_key_value(key = id_temp, value = signature_temp)
+            SigSQL.insert_id_signature_pair(id_value = id_temp,
+                                            signature_value = signature_temp)
 
             insertion_counter += 1
         
@@ -128,8 +131,8 @@ class TestMinHash_SQL_and_BTree(unittest.TestCase):
         doc1_id = 1
         doc2_id = 3
         
-        value1 = SigSQL.get_value_by_key(doc1_id)
-        value2 = SigSQL.get_value_by_key(doc2_id)
+        value1 = SigSQL.get_signature_by_id(doc1_id)
+        value2 = SigSQL.get_signature_by_id(doc2_id)
         
         print("SQL")
 
@@ -143,8 +146,8 @@ class TestMinHash_SQL_and_BTree(unittest.TestCase):
         doc1_id = 1
         doc2_id = 5
         
-        value1 = SigSQL.get_value_by_key(doc1_id)
-        value2 = SigSQL.get_value_by_key(doc2_id)
+        value1 = SigSQL.get_signature_by_id(doc1_id)
+        value2 = SigSQL.get_signature_by_id(doc2_id)
 
         sim_doc1_doc2 = minhash.SignatureSimilarity(value1, value2)
         print(f'''The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}

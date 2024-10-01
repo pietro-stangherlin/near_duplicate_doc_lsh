@@ -53,14 +53,16 @@ class TestSqliteOneTableGeneral(unittest.TestCase):
     def test_sqliteonetable_general(self):
         
         my_records = [[1, "lol", ["a", "b", "c"]],
-                      [2, "yes", ["d", "d", "c"]]]
+                      [2, "yes", ["d", "d", "c"]],
+                      [2, "yes", ["z", "z", "z"]]] # this should NOT be inserted (if all works as intended)
         
         # initialize the instance
         sql_db = sqlite_one_table.SQLiteOneTableGeneral(col_names_list = ["col1", "col2", "col3"],
                                     col_types_list = ["INTEGER", "TEXT", "BLOB"],
                                     col_do_pickle_bool_list = [False, False, True],
                                     col_create_index_bool_list = [True, True, False],
-                                    col_not_null_bool_list = [True, False, False])
+                                    col_not_null_bool_list = [True, False, False],
+                                    col_is_unique_bool_list = [True, False, False])
 
         # begin transaction
         sql_db.begin_transaction()
@@ -72,21 +74,16 @@ class TestSqliteOneTableGeneral(unittest.TestCase):
         # end transaction
         sql_db.end_transaction()
 
+        print("print_all_records")
         sql_db.print_all_records()
         
         # check for equality
         expected = my_records[0]
         
-        # to fix
-        print("expected")
-        print(expected)
-        
         result = sql_db.get_records_by_value(col_name = "col1",
                                             col_value = my_records[0][0])[0]
         # where the last [0] is needed to extract the returned list 
         # from the list of lists
-        print("result")
-        print(result)
         
         self.assertEqual(result, expected)
 

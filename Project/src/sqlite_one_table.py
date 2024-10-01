@@ -207,6 +207,7 @@ class SQLiteOneTableGeneral:
                  col_types_list: list,
                  col_do_pickle_bool_list: list,
                  col_not_null_bool_list: list,
+                 col_is_unique_bool_list: list,
                  col_create_index_bool_list: list,
                  table_name: str = "table_1",
                  database_name: str = "db_name"):
@@ -222,6 +223,8 @@ class SQLiteOneTableGeneral:
                             for some supported python classes)
             - col_not_null_bool_list: list of bool, 
                             tell if the specific column CANNOT have NULL values
+            - col_is_unique_bool_list: list of bool, specifying if the corresponding column
+                                     has the unique constraint
             - col_create_index_bool_list: list of bool,
                                         tell if for the specific column an index 
                                         should be created
@@ -245,7 +248,8 @@ class SQLiteOneTableGeneral:
                                     col_types_list = ["INTEGER", "TEXT", "BLOB"],
                                     col_do_pickle_bool_list = [False, False, True],
                                     col_create_index_bool_list = [True, True, False],
-                                    col_not_null_bool_list = [True, False, False])
+                                    col_not_null_bool_list = [True, False, False],
+                                    col_is_unique_bool_list: [True, False, False])
         
         NOTE: 
         1) with SQLite Primary key specification is not needed, as deafult primary key 
@@ -274,7 +278,9 @@ class SQLiteOneTableGeneral:
             
         self.do_not_pickle_indexes_list = list(all_index_set.difference(set(self.do_pickle_indexes_list)))
         
+        # save schema variables as attributes
         self.col_not_null_bool_list = col_not_null_bool_list
+        self.col_is_unique_bool_list = col_is_unique_bool_list
         self.col_create_index_bool_list = col_create_index_bool_list
         
         
@@ -286,16 +292,24 @@ class SQLiteOneTableGeneral:
             if col_not_null_bool_list[i] == True:
                 col_not_null_string_list[i] = " NOT NULL"
         
+        # convert the col_is_unique_bool_list to appropriate strings
+        col_is_unique_string_list = ["" for i in range(self.n_col)]
+        
+        # in future some checks can be added
+        for i in range(self.n_col):
+            if col_is_unique_bool_list[i] == True:
+                col_is_unique_bool_list[i] = " UNIQUE"
+        
         # create the table creation statement
         db_creation_string = f"CREATE TABLE IF NOT EXISTS {self.table_name}(" # open statement
         
         # all except last column, because last column declaration lacks comma
         for i in range(self.n_col - 1):
-            temp_str = col_names_list[i] + " " + col_types_list[i] + col_not_null_string_list[i] + ","
+            temp_str = col_names_list[i] + " " + col_types_list[i] + col_not_null_string_list[i] + col_is_unique_string_list[i] + ","
             db_creation_string += temp_str
         
         # last column
-        db_creation_string += col_names_list[-1] + " " + col_types_list[-1] + col_not_null_string_list[-1]
+        db_creation_string += col_names_list[-1] + " " + col_types_list[-1] + col_not_null_string_list[-1] +  col_is_unique_string_list[-1]
         
         db_creation_string += ");" # close statement
         
@@ -340,12 +354,16 @@ class SQLiteOneTableGeneral:
             - values_list: list of values, in following the columns ordering
         '''
         # first, eventually pickle the marked as pickle column values
+        # copying the list is a temporary solution in order to not
+        # subscribe the original input list elements
+        values_list_copy = list(values_list)
+        
         for i in self.do_pickle_indexes_list:
-            values_list[i] = pickle.dumps(values_list[i])
+            values_list_copy[i] = pickle.dumps(values_list_copy[i])
         
         self.connect.execute(f'''INSERT INTO {self.table_name}
                              VALUES {self.n_question_marks_string}''',
-                  values_list)
+                  values_list_copy)
 
     
     def close_database(self):
