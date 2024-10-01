@@ -78,12 +78,13 @@ class TestSqliteOneTableGeneral(unittest.TestCase):
         expected = my_records[0]
         
         # to fix
-        
         print("expected")
         print(expected)
         
         result = sql_db.get_records_by_value(col_name = "col1",
-                                            col_value = my_records[0][0])
+                                            col_value = my_records[0][0])[0]
+        # where the last [0] is needed to extract the returned list 
+        # from the list of lists
         print("result")
         print(result)
         

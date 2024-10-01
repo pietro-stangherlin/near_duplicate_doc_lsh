@@ -268,8 +268,7 @@ class SQLiteOneTableGeneral:
             if col_do_pickle_bool_list[i] == True:
                 self.do_pickle_indexes_list.append(i)
         
-        # create also the non pickled (complementary) columns index list
-        
+        # create the non pickled (complementary) columns index list
         # temporaty set
         all_index_set = set([i for i in range(self.n_col)])
             
@@ -373,12 +372,12 @@ class SQLiteOneTableGeneral:
 
     def print_all_records(self):
         '''Print all records in the SQLite database.
-            Mainly used for debug
+            Mainly used for debugging
         '''
         self.cursor.execute(f"SELECT * FROM {self.table_name}")
         rows = self.cursor.fetchall()
         for row in rows:
-            print(self._handle_pickled_tuple(raw_row = row))
+            print(self._unpickle_pickled_tuple_values(raw_row = row))
         
     def get_records_by_value(self,
                             col_name: str,
@@ -402,32 +401,32 @@ class SQLiteOneTableGeneral:
         list_of_lists = list()
 
         for row in rows:
-            list_of_lists.append(self._handle_pickled_tuple(raw_row = row))
+            list_of_lists.append(self._unpickle_pickled_tuple_values(raw_row = row))
         
         return list_of_lists
         
     
-    def _handle_pickled_tuple(self,
+    def _unpickle_pickled_tuple_values(self,
                               raw_row: tuple) -> list:
         '''Hidden method to return a tuple with the same non pickled values
         and unpickled values instead of pickled ones.
         The pickling is assumed using the class pickling indexes defined in __init__.
         
         Args:
-            - raw_row: (tuple) with, eventually, some pickled values
-            as given by sql
+            - raw_row: (tuple) with, eventually, some pickled values in some columns
+            as given by sql query result
         
         Return:
             - list of non pickled and unpickled values, in the same order
         '''
         unpickled_list = [None for i in range(self.n_col)]
             
-        # handle non pickled objects
-        for index in self.do_not_pickle_indexes_list:
-            unpickled_list[index] = raw_row[index]
+        # copy the non pickled values
+        for i in self.do_not_pickle_indexes_list:
+            unpickled_list[i] = raw_row[i]
             
-        # handle pickled objects
-        for index in self.do_pickle_indexes_list:
-            unpickled_list[index] = pickle.loads(raw_row[index])
+        # unpikcle the pickled values and add to the final list
+        for j in self.do_pickle_indexes_list:
+            unpickled_list[j] = pickle.loads(raw_row[j])
      
         return unpickled_list
