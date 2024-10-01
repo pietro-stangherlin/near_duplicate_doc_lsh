@@ -247,3 +247,24 @@ class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTable):
         
         # restore default ouptut
         self.connect.execute(f".output stdout")
+
+
+class LSHOneBandSQLite_id_bucket_id_doc_general(sqlite_one_table.SQLiteOneTableGeneral):
+    '''Conditional to one band, write the table TABLE(id_bucket, id_doc), 
+    also create an index on id_bucket.
+    The table will be used to find all id_docs with the same id_bucket value.
+    '''
+    
+    def __init__(self,
+                 col_types_list: list = ["INTEGER", "INTEGER"],
+                 table_name: str = "table_1",
+                 database_name: str = "db_name"):
+        
+        super().__init__(col_names_list = ["id_bucket", "id_doc"],
+                         col_types_list = col_types_list,
+                         col_do_pickle_bool_list = [False, False],
+                         col_not_null_bool_list = [False, False],
+                         col_is_unique_bool_list = [False, True],
+                         col_create_index_bool_list = [True, False],
+                         table_name = table_name,
+                         database_name = database_name)
