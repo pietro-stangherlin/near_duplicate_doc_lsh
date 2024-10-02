@@ -162,6 +162,40 @@ class TestLSH1OneBandClassBTree(unittest.TestCase):
         
         print("-----------------------------------------------")
         print("\n")
+
+class TestLSH1OneBandClassSQL(unittest.TestCase):
+    def test_LSHOneBandBucketsSQL(self):
+        print("LSHOneBandBucketsBTree test")
+        
+        # initialize instance
+        band_instance_sql = lsh.LSHOneBandSQLite_id_bucket_id_doc(col_types_list = ["INTEGER", "INTEGER"])
+        
+        # add some key value pairs
+        band_instance_sql.begin_transaction()
+        
+        band_instance_sql.insert_bucket_doc_pair(bucket_value = 1, id_doc_value = 4)
+        band_instance_sql.insert_bucket_doc_pair(bucket_value = 1, id_doc_value = 5)
+        band_instance_sql.insert_bucket_doc_pair(bucket_value = 2, id_doc_value = 7)
+        band_instance_sql.insert_bucket_doc_pair(bucket_value = 2, id_doc_value = 9)
+        band_instance_sql.insert_bucket_doc_pair(bucket_value = 3, id_doc_value = 10)
+        band_instance_sql.insert_bucket_doc_pair(bucket_value = 4, id_doc_value = 11)
+        
+        band_instance_sql.end_transaction()
+        
+        # first use the standard output
+        result = band_instance_sql.getDocIdsByBucket(output_path = "stdout")
+        print(result)
+        
+        # delete database
+        band_instance_sql.close_database()
+        
+        band_instance_sql.delete_database(ask_confirm = False)
+        
+        
+        
+        
+        print("-----------------------------------------------")
+        print("\n")
  
 # Warning: this script has to be executed 
 # from the (external) project directory as 

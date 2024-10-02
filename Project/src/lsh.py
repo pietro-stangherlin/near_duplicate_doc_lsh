@@ -181,75 +181,8 @@ class LSHManyBandsBucketsBTree:
 
 # option 1
 # ------------- LSH one band: SQL TABLE(id_bucket, id_doc) --------#
-class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTable):
-    '''Conditional to one band, write the table TABLE(id_bucket, id_doc), 
-    also create an index on  id_bucket.
-    The table will be used to find all id_docs with the same id_bucket value.
-    '''
-    
-    def __init__(self,
-                 database_name: str = "lsh_one_band_db",
-                 col1_type: str = "INTEGER",
-                 col2_type: str = "INTEGER",
-                 table_name: str = "table_1",
-                 col1_name: str = "bucket",
-                 col2_name: str = "id_doc",
-                 do_pickle: bool = False,
-                 create_index_on_col1: bool = True):
-        
-        super().__init__(database_name,
-                         col1_type,
-                         col2_type,
-                         table_name,
-                         col1_name,
-                         col2_name,
-                         do_pickle,
-                         create_index_on_col1)
 
-        # rename methods
-    def insert_bucket_id_pair(self,
-                                 bucket_value,
-                                 id_doc_value):
-        
-        super().insert_col1_col2(col1_value = bucket_value,
-                                 col2_value = id_doc_value)
-    
-    # not used 
-    def get_id_by_bucket(self,
-                            bucket_value):
-        
-        super().get_col2_by_col1(col1_value = bucket_value)
-    
-    
-    def GetDocIdsByBucket(self,
-                          output_path: str):
-        ''' Method to get all document ids in the same bucket
-        (only for buckets with more than one document,
-        i.e. bucket id values that compare at least twice)
-        
-        NOTE: each output row follows the pattern id_bucket_value1|id_doc_value1,id_doc_value2,..
-        so in order to extract the id_doc_values each row has to parsed.
-        
-        Args:
-            - self
-            - output_path: path where to store the result (can be a .txt file)
-        '''
-        # change output
-        self.connect.execute(f".output {output_path}")
-        
-        # execute query
-        self.connect.execute(f'''SELECT {self.col1_name},
-                                GROUP_CONCAT({self.col2_name}) AS col2_values
-                                FROM {self.table_name}
-                                GROUP BY {self.col1_name}
-                                HAVING COUNT({self.col1_name}) >= 2;
-                             ''')
-        
-        # restore default ouptut
-        self.connect.execute(f".output stdout")
-
-
-class LSHOneBandSQLite_id_bucket_id_doc_general(sqlite_one_table.SQLiteOneTableGeneral):
+class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTableGeneral):
     '''Conditional to one band, write the table TABLE(id_bucket, id_doc), 
     also create an index on id_bucket.
     The table will be used to find all id_docs with the same id_bucket value.
@@ -268,3 +201,37 @@ class LSHOneBandSQLite_id_bucket_id_doc_general(sqlite_one_table.SQLiteOneTableG
                          col_create_index_bool_list = [True, False],
                          table_name = table_name,
                          database_name = database_name)
+
+    # rename methods
+    def insert_bucket_doc_pair(self,
+                                 bucket_value,
+                                 id_doc_value):
+        
+        super().insert_record_values(values_list = [bucket_value, id_doc_value])
+    
+    def getDocIdsByBucket(self,
+                          output_path: str):
+        ''' Method to get all document ids in the same bucket
+        (only for buckets with more than one document,
+        i.e. bucket id values that compare at least twice)
+        
+        NOTE: each output row follows the pattern id_bucket_value1|id_doc_value1,id_doc_value2,..
+        so in order to extract the id_doc_values each row has to parsed.
+        
+        Args:
+            - self
+            - output_path: path where to store the result (can be a .txt file)
+        '''
+        # change output
+        self.connect.execute(f".output {output_path}")
+        
+        # execute query
+        self.connect.execute(f'''SELECT {self.col_names_list[0]},
+                                GROUP_CONCAT({self.col_names_list[1]}) AS ids_doc
+                                FROM {self.table_name}
+                                GROUP BY {self.col_names_list[0]}
+                                HAVING COUNT({self.col_names_list[0]}) >= 2;
+                             ''')
+        
+        # restore default ouptut
+        self.connect.execute(f".output stdout")
