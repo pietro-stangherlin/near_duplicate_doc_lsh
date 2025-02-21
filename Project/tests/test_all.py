@@ -23,6 +23,9 @@ import time
 W = 9 # shingle len
 K = 50 # signature len -> number of hash functions
 EL = 2 # number of random integers generated
+
+NBANDS = 5 # number of bands
+
 INT_TYPE_32 = np.uint32
 INT_TYPE_64 = np.uint64
 
@@ -40,14 +43,17 @@ file_name = "test_data\\arxiv_clones_first_1000.json"
 # initialize Signature Btree instance
 SigBTree = minhash.SignaturesBTree()
 
-# inizialize SignaturesSQLite
-SigSQL = minhash.SignaturesSQLite()
+# initialize SignaturesSQLite
+# SigSQL = minhash.SignaturesSQLite()
+
+# initialize LSH bands list data instance
+lsh.LSHManyBandsBucketLists(n_bands = 5)
 
 # number of insertions for each transaction
 NUM_SQL_INSERTIONS = 100
 insertion_counter = 0
 
-SigSQL.begin_transaction()
+# SigSQL.begin_transaction()
 
 with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w") as fout:
     for line in fin:

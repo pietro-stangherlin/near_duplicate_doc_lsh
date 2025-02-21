@@ -24,7 +24,7 @@ def ComputeHashBand(signature: np.array,
     Args:
         - signature: signature of the document
         - band_inf_index: band's inferior index
-        - band_sup_index: band's superior index
+        - band_sup_index: band's superior index (not included)
         - hash_fun: hash function used
     
     Return:

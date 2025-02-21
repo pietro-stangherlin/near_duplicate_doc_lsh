@@ -15,6 +15,25 @@ def HashFunction3(number):
     return number % 5
 
 # trivial hash function to use 
+
+def HashFunctionSum(int_array: np.array):
+    '''Sum the HashFunction1 of all array elements
+    Args:
+        - int_array : numpy array made of integers
+        
+    Return:
+        - sum of hashes % 3 of the array's elements
+    '''
+    tot = 0
+    
+    for el in int_array:
+        tot += el
+    
+    return tot
+
+my_hash_fun_list = [HashFunctionSum, HashFunctionSum, HashFunctionSum]
+
+
 def HashFunctionSum1(int_array: np.array):
     '''Sum the HashFunction1 of all array elements
     Args:
@@ -30,13 +49,15 @@ def HashFunctionSum1(int_array: np.array):
     
     return tot
 
-# this hash function should be used instead
-
 # input vector:
 SIGNATURE1 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9], dtype = INT_TYPE)
 
+# first using the all signature as hashable
 # hash parameters vector: (dimension hash to match with that of SIGNATURE1)
 HASH_PARAM_VECTOR1 = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1], dtype = INT_TYPE)
+
+# now 
+HASH_PARAM_VECTOR2 = np.array([1, 1, 1], dtype = INT_TYPE)
 
 MODULO1 = 2**32
 
@@ -55,7 +76,7 @@ class TestLSHFunctions(unittest.TestCase):
     
     def test_ComputeOneHashGivenParameters(self):
         result1 = MotwaniHash1(SIGNATURE1)
-        expected1 = sum(SIGNATURE1) % MODULO1
+        expected1 = sum(SIGNATURE1)
         
         self.assertEqual(result1, expected1)
         
@@ -116,3 +137,26 @@ class TestLSHFunctions(unittest.TestCase):
         
         print("-----------------------------------------------")
         print("\n")
+    
+    def test_ComputeAllHashBands(self):
+        my_break_points = lsh.GenerateBreakPoints(n = len(SIGNATURE1),
+                                                  n_bands = 3)
+        
+        print("my_break_points")
+        print(my_break_points)
+        print("\n")
+        
+        my_hash_bands = lsh.ComputeAllHashBands(signature = SIGNATURE1,
+                                break_points = my_break_points,
+                                hash_functions_list = my_hash_fun_list)
+        
+        print("my_hash_bands")
+        print(my_hash_bands)
+        
+
+# Warning: this script has to be executed 
+# from the (external) project directory as 
+# python -m unittest tests.test_lsh_hash
+
+if __name__ == "__main__":
+    unittest.main()
