@@ -1,13 +1,12 @@
 from src import lsh
 from src import hashing
 import unittest
-import numpy as np
 
 N_BUCKETS = 5
 N_BANDS = 3
 
 # each key is doc_id, value is a list with buckets ids for each band
-# warning: the bucket ids are dependent
+# WARNING: the length of each list HAS to be equal to N_BANDS
 MY_DOCS_AND_BUCKETS = {"doc1": [0,1,2],
                        "doc2": [0,2,3],
                        "doc3": [4,4,3]}

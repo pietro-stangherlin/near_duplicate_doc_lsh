@@ -18,14 +18,14 @@ import subprocess #used to call sqlite dot-command
 def ComputeHashBand(signature: np.array,
              band_inf_index: int,
              band_sup_index: int,
-             hash_fun: Callable) -> int:
+             hash_fun: Callable):
     '''Compute the hash of a band.
     
     Args:
-        - signature : signature of the document
-        - band_inf_index : band's inferior index
-        - band_sup_index : band's superior index
-        - hash_fun : hash function used
+        - signature: signature of the document
+        - band_inf_index: band's inferior index
+        - band_sup_index: band's superior index
+        - hash_fun: hash function used
     
     Return:
         hash value (int)
@@ -33,7 +33,8 @@ def ComputeHashBand(signature: np.array,
     return int(hash_fun(signature[band_inf_index : band_sup_index]))
 
 
-
+# NOTE: this way we let each band having its unique hash function
+# we get the same hash function for each band as a particular case
 def GenerateMotwaniHashFunctionsList(n_hash_functions: int,
                                      band_size: int,
                                      modulo: int,
@@ -54,7 +55,7 @@ def GenerateMotwaniHashFunctionsList(n_hash_functions: int,
     param_matrix = hashing.GenerateNumpyArray(num_rows = n_hash_functions,
                                               num_cols = band_size,
                                               seed = seed)
-    # returned function
+    # returned functions
     functions_list = [None for i in range(n_hash_functions)]
     
     
@@ -63,8 +64,74 @@ def GenerateMotwaniHashFunctionsList(n_hash_functions: int,
                                                            modulo = modulo)
     
     return functions_list
-    
 
+# trivial function, used to skip a check for each document
+def GenerateBreakPoints(n: int, n_bands: int) -> list:
+    '''Goal: cut an object having length n into n_bands.
+    Using Python convenctions: starting with 0 and upper extreme is not included
+    Examples: 
+       - n is multiple of n_bands: n = 9, n_bands = 3 -> [(0,3), (3,6), (6,9)]
+       - n is not multiple of n_bands: n = 9, n_bands = 2 -> [(0,4), (4,8)] (last one is excluded)
+    
+    Args:
+        - n (int): length of the object
+        - n_bands (int): number of bands in which the object is cut
+    '''
+    if n < n_bands:
+        print("Error: n_bands cannot be greater than n, return None")
+        return None
+    
+    step_size = n // n_bands
+    
+    extremes = [i for i in range(0, n, step_size)]
+    
+    cut_points = [(extremes[i-1], extremes[i]) for i in range(1, len(extremes))]
+    
+    
+    if n % n_bands == 0:
+        cut_points.append((extremes[-1], n))
+    
+    # last check
+    if len(cut_points) != n_bands:
+        print(f"Warning: cut_points length ({len(cut_points)}) is different from n_bands, return None")
+        return None
+    
+    return cut_points
+        
+
+def ComputeAllHashBands(signature: np.array,
+                        break_points: list,
+                        hash_functions_list: list) -> list:
+    '''Given a signature compute the hash (i.e id bucket) for each band using its specific hash function.
+    Args:
+        - signature (np.array)
+        - break_points: list of tuples, each with the extremes of each band.
+            Example: n = 9, n_bands = 2 -> [(0,4), (4,8)] (last one is excluded)
+        - hash_functions_list (list of functions): each element is a function taking the signature as input,
+        assuming hash parameters are already inside the function
+    
+    Return:
+        - list of len n_bands (list of int): each element is a band hash (i.e. bucket id)
+    
+    WARNING: the function assumes each band has the SAME number of vectors,
+    since we have control over the number of elements in each signature 
+    and on the number of bands this shouldn't be a problem;
+    otherwise the last band of different dimension is just discarded from the LSH computations
+    '''
+    if len(break_points) != len(hash_functions_list):
+        print(f'''Warning: length of break_points ({len(break_points)})
+              is different from length of hash_functions_list (f{len(hash_functions_list)}).
+              Returning None''')
+        return None
+    
+    bucket_ids_list = [None for i in range(len(break_points))]
+    for i in range(len(break_points)):
+        bucket_ids_list[i] = ComputeHashBand(signature = signature,
+                                             band_inf_index = break_points[i][0],
+                                             band_sup_index =  break_points[i][1],
+                                             hash_fun = hash_functions_list[i])
+    
+    return bucket_ids_list
 # ---------------- LSH bands Lists data structure ------------------- # 
 
 # --------- LSH one band buckets Lists data structure --------------- # 
@@ -86,10 +153,10 @@ class LSHOneBandBucketLists:
             - bucket_id (int): id of the bucket where the object has to be placed
             - object (str): object to be place in the bucket, usually a document id
         '''
-        if self[bucket_id] == None:
-            self[bucket_id] = [object]
+        if self.band[bucket_id] == None:
+            self.band[bucket_id] = [object]
         else:
-            self[bucket_id].append(object)
+            self.band[bucket_id].append(object)
             # update index
             self.more_than_one_index.add(bucket_id)
     

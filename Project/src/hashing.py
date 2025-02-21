@@ -50,7 +50,6 @@ def GenerateNumpyArray(num_rows: int,
                        reshape = True,
                        int_type = np.uint64) -> np.array:
         '''Compute array of specified bit integer (default 64 bit unsigned integer).
-
         All the integers generated are >= 1.
 
         Args:
@@ -150,7 +149,7 @@ def NumbaNaiveHashU32Params(x, params):
 def MotwaniBandArrayHash(v: np.array,
                      random_int_array: np.array,  
                      modulo: int) -> int:
-    '''Implementation of Band hash functions as described by Motwani et. al. article.
+    '''Implementation of band hash functions as described by Motwani et. al. article.
     
         Args:
             v: np.array of unsigned integers of length k
@@ -158,11 +157,11 @@ def MotwaniBandArrayHash(v: np.array,
             modulo: biggest possible hash value - 1
         
         Returns:
-            - hash value compute (int)
+            - hash value computed (int)
         
         Description:
             Assume v = [v1, v2, ..., vk] 
-            and random_int_array = [a1,...,ak] is an array of random integers,
+            and random_int_array = [a1,...,ak] is an array of random generated integers,
             the hash is then:
             hash(v) = (a1 * v1 + ... + ak * vk) % modulo
         
