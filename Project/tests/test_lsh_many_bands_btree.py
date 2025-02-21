@@ -35,7 +35,7 @@ def HashFunctionSum1(int_array: np.array):
 # input vector:
 SIGNATURE1 = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9], dtype = INT_TYPE)
 
-# hash parameters vector: (dimension hash to match with that of SIGNATURE1)
+# hash parameters vector: (dimension has to match with that of SIGNATURE1)
 HASH_PARAM_VECTOR1 = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1], dtype = INT_TYPE)
 
 MODULO1 = 2**32

@@ -72,18 +72,18 @@ with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w"
             
 
             # add key (doc id) value (signature) pair to the Signature Btree
-            # SigBTree.insert(id_temp, signature_temp)
+            SigBTree.insert(id_temp, signature_temp)
 
             # add key (doc id) value (signature) pair to the SignatureSQL
-            if insertion_counter % NUM_SQL_INSERTIONS == 0:
-                SigSQL.end_transaction()
-                SigSQL.begin_transaction()
+            # if insertion_counter % NUM_SQL_INSERTIONS == 0:
+                # SigSQL.end_transaction()
+                # SigSQL.begin_transaction()
             
-            SigSQL.insert_key_value(key = id_temp, value = signature_temp)
+            # SigSQL.insert_key_value(key = id_temp, value = signature_temp)
 
             insertion_counter += 1
 
-SigSQL.end_transaction()
+# SigSQL.end_transaction()
 
 stop = time.time()
 
@@ -97,11 +97,11 @@ doc2_id = 1001
 # print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
 
 # --- SQL
-value1 = SigSQL.get_value_by_key(doc1_id)
-value2 = SigSQL.get_value_by_key(doc2_id)
+# value1 = SigSQL.get_value_by_key(doc1_id)
+# value2 = SigSQL.get_value_by_key(doc2_id)
 
-sim_doc1_doc2 = minhash.SignatureSimilarity(value1, value2)
-print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
+# sim_doc1_doc2 = minhash.SignatureSimilarity(value1, value2)
+# print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
 
-SigSQL.close_database()
-SigSQL.delete_database(ask_confirm = False)
+# SigSQL.close_database()
+# SigSQL.delete_database(ask_confirm = False)
