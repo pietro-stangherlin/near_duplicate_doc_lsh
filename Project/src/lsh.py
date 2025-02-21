@@ -3,6 +3,8 @@ from typing import Callable
 from BTrees._LOBTree import LOBTree
 from . import sqlite_one_table
 from . import hashing
+import subprocess #used to call sqlite dot-command
+# see: https://stackoverflow.com/questions/2346074/execute-sqlite3-dot-commands-from-python-or-register-collation-in-command-line
 
 # Assuming we have a set of elements with fields: id; signature
 
@@ -63,10 +65,72 @@ def GenerateMotwaniHashFunctionsList(n_hash_functions: int,
     return functions_list
     
 
+# ---------------- LSH bands Lists data structure ------------------- # 
+
+# --------- LSH one band buckets Lists data structure --------------- # 
+class LSHOneBandBucketLists:
+    
+    def __init__(self, n_buckets: int):
+        '''Data structure for a single band, each band is made of n_buckets buckets,
+        a band of buckets is implemented as a list of lists (initialized as None objects).
+        An index (set) is made where all bucket indexes with more than one element are kept.
+        Args:
+            - n_buckets (int): number of buckets
+        '''
+        self.band = [None for i in range(n_buckets)]
+        self.more_than_one_index = set()
+    
+    def AddToBucket(self, bucket_id: int, object) -> None:
+        '''
+        Args:
+            - bucket_id (int): id of the bucket where the object has to be placed
+            - object (str): object to be place in the bucket, usually a document id
+        '''
+        if self[bucket_id] == None:
+            self[bucket_id] = [object]
+        else:
+            self[bucket_id].append(object)
+            # update index
+            self.more_than_one_index.add(bucket_id)
+    
+    def __str__(self):
+        print(f'''LSH BAND with {len(self.band)} buckets 
+              and {len(self.more_than_one_index)} buckets with more than one elements''')
+
+# --------- LSH many bands buckets Lists data structure --------------- # 
+
+class LSHManyBandsBucketLists:
+    
+    def __init__(self, n_bands: int, n_buckets: int):
+        '''Data structure to store many bands, each band is made of n_buckets buckets,
+        A list of LSHOneBandBucketLists is made.
+        Args:
+            - n_buckets (int): number of buckets
+        '''
+        self.bands_list = [LSHOneBandBucketLists(n_buckets = n_buckets) for i in range(n_bands)]
+
+    def AddToBands(self, bucket_ids: list, object):
+        '''Add object to a bucket for each band.
+        
+        Args: 
+            - bucket_ids (list of int): list of bucket ids ordered in the same way as the bands
+            - object (str): object to be place in the bucket, usually a document id
+        '''
+        # check 
+        if len(bucket_ids) != len(self.bands_list):
+            print("Warning: number of bucket ids different from band number! Returning None")
+            return(None)
+        else:
+            for i in range(len(bucket_ids)):
+                self.bands_list[i].AddToBucket(bucket_id = bucket_ids[i], object= object)
+    
+    def __str__(self):
+        print(f'''LSH BAND with {len(self.bands_list)} bands
+              each with {len(self.bands_list[0])} buckets''')
 
 # ---------------- LSH bands BTree data structure ------------------- # 
 
-# NOTE: this still need to be completed, after the SQL class is completed
+# NOTE: this still needs to be completed, after the SQL class is completed
 # --------- LSH one band buckets BTree data structure --------------- # 
 class LSHOneBandBucketsBTree(LOBTree):
     '''BTree used to store buckets for one LSH band.
@@ -209,6 +273,39 @@ class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTableGeneral):
         
         super().insert_record_values(values_list = [bucket_value, id_doc_value])
     
+    # this will manly will used for debug
+    # to finish
+    def getDocIdsByBucketDebugFetch(self,
+                          output_path: str):
+        ''' Method to get all document ids in the same bucket
+        (only for buckets with more than one document,
+        i.e. bucket id values that compare at least twice)
+        
+        NOTE: each output row follows the pattern id_bucket_value1|id_doc_value1,id_doc_value2,..
+        so in order to extract the id_doc_values each row has to parsed.
+        
+        Args:
+            - self
+            - output_path: path where to store the result (can be a .txt file)
+        
+        Return: 
+        '''
+        # change output
+        subprocess.call(["sqlite3", self.database_name,
+                         f".output {output_path}"])
+        
+        # execute query
+        self.connect.execute(f'''SELECT {self.col_names_list[0]},
+                                GROUP_CONCAT({self.col_names_list[1]}) AS ids_doc
+                                FROM {self.table_name}
+                                GROUP BY {self.col_names_list[0]}
+                                HAVING COUNT({self.col_names_list[0]}) >= 2;
+                             ''')
+        
+        # restore default ouptut
+        subprocess.call(["sqlite3", self.database_name,
+                         ".output stdout"])
+    
     def getDocIdsByBucket(self,
                           output_path: str):
         ''' Method to get all document ids in the same bucket
@@ -223,7 +320,8 @@ class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTableGeneral):
             - output_path: path where to store the result (can be a .txt file)
         '''
         # change output
-        self.connect.execute(f".output {output_path}")
+        subprocess.call(["sqlite3", self.database_name,
+                         f".output {output_path}"])
         
         # execute query
         self.connect.execute(f'''SELECT {self.col_names_list[0]},
@@ -234,4 +332,5 @@ class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTableGeneral):
                              ''')
         
         # restore default ouptut
-        self.connect.execute(f".output stdout")
+        subprocess.call(["sqlite3", self.database_name,
+                         ".output stdout"])

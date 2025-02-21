@@ -110,7 +110,7 @@ Suppose we randomly choose document with "id": "aab6", add some noise and make t
 {"id": "aab6", "content": "the apple is green", "id2": 1, "id3": "None"},
 {"id": "ahb8", "content": "eternal sunshine", "id2": 2, "id3": "None"},
 {"id": "hrr93", "content": "dust in the wind", "id2": 3, "id3": "None"},
-{"id": "aab6", "content": "the appty i gr@en", "id2": 4, "id3": 1"}
+{"id": "aab6", "content": "the appty i gr@en", "id2": 4, "id3": "1"}
 ```
 The two new ids are needed in the evaluation step: each bucket contains the ids ("id2") of estimated similar documents, so we can check which "id2" == "id3" are in each bucket.
 

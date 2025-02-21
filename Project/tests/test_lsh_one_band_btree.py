@@ -165,7 +165,7 @@ class TestLSH1OneBandClassBTree(unittest.TestCase):
 
 class TestLSH1OneBandClassSQL(unittest.TestCase):
     def test_LSHOneBandBucketsSQL(self):
-        print("LSHOneBandBucketsBTree test")
+        print("LSHOneBandBucketsSQL test")
         
         # initialize instance
         band_instance_sql = lsh.LSHOneBandSQLite_id_bucket_id_doc(col_types_list = ["INTEGER", "INTEGER"])
@@ -182,9 +182,10 @@ class TestLSH1OneBandClassSQL(unittest.TestCase):
         
         band_instance_sql.end_transaction()
         
+        band_instance_sql.print_all_records()
+        
         # first use the standard output
-        result = band_instance_sql.getDocIdsByBucket(output_path = "stdout")
-        print(result)
+        band_instance_sql.getDocIdsByBucket(output_path = "stdout")
         
         # delete database
         band_instance_sql.close_database()
