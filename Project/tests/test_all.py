@@ -2,6 +2,8 @@ from ..src import shingling
 from ..src import minhash
 from ..src import hashing
 from ..src import lsh
+
+import sys
 import numpy as np
 import json
 import re
@@ -25,7 +27,7 @@ SIGNATURE_LEN = 50 # signature len -> number of hash functions
 EL = 2 # number of random integers generated
 
 N_BANDS = 5 # number of bands
-N_BUCKETS = 10**3 # number of buckets in each band
+N_BUCKETS = 10**6 # number of buckets in each band
 
 INT_TYPE_32 = np.uint32
 INT_TYPE_64 = np.uint64
@@ -122,13 +124,55 @@ print(LshManyBands.bands_list[0])
 # consider only the first band: for each bucket with more than two elements compute the similarity 
 # between the signatures of all elements in the bucket
 
+similar_set_band_0 = set()
+indexes_more_than_one_band_0 = LshManyBands.bands_list[0].more_than_one_index
+
+
+temp_all_combinations = dict()
+
+
+for band_object in LshManyBands.bands_list:
+    for k in band_object.more_than_one_index:
+        temp_bucket = band_object.band[k]
+        
+        for i in range(len(temp_bucket) - 1):
+            for j in range(i + 1, len(temp_bucket)):
+                # already in the dictionary
+                
+                # store just one tuple for each pair:
+                # i.e. (a,b) = (b,a)
+                # we ensure this (assuming the doc_id allows an ordering)
+                
+                # it's ugly, just for readbility
+                
+                temp_key = (temp_bucket[i], temp_bucket[j])
+                
+                if (temp_bucket[i] > temp_bucket[j]):
+                    temp_key = (temp_bucket[j], temp_bucket[i])
+                
+                
+                condition = temp_key in temp_all_combinations
+                if not condition:
+                    sig_sim = SigBTree.compute_similarity(temp_key[0], temp_key[1])
+                    
+                    if sig_sim != 0:
+                        # do not include if signature similarity is zero
+                        temp_all_combinations[temp_key] = sig_sim
+    
+print(temp_all_combinations)
+
+print(f"length of dictionary is {len(temp_all_combinations)}")
+
+# sort key values
+sorted_tuples_dict = sorted(temp_all_combinations.items())
+
 
 # BTree ------------------------------------
 # compare the similarity of two documents
-doc1_id = 1
-doc2_id = 1001
-sim_doc1_doc2 =  SigBTree.compute_similarity(doc1_id, doc2_id)
-print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
+# doc1_id = 1
+# doc2_id = 1001
+# sim_doc1_doc2 =  SigBTree.compute_similarity(doc1_id, doc2_id)
+# print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
 
 # SQL -------------------------------------
 # value1 = SigSQL.get_value_by_key(doc1_id)

@@ -13,10 +13,10 @@ def MurmUns32Hash(input_string: str) -> int:
     Reference: https://pypi.org/project/mmh3/
 
     Args: 
-        input_string: string to be hashed
+        - input_string: string to be hashed
     
     Returns:
-        32 bit unsigned integer hash 
+        - 32 bit unsigned integer hash 
     '''
     return mmh3.hash(input_string, signed = False)
 
@@ -27,10 +27,10 @@ def MurmUns64Hash(input_string: str) -> int:
     Reference: https://pypi.org/project/mmh3/
 
     Args: 
-        input_string: string to be hashed
+        - input_string: string to be hashed
     
     Returns:
-        64 bit unsigned integer hash 
+        - 64 bit unsigned integer hash 
     '''
     # mmm3 returns a tuple of two 64 bit hashes
     # only the first is returned here
