@@ -20,17 +20,19 @@ import time
 
 
 # constants
-W = 9 # shingle len
-K = 50 # signature len -> number of hash functions
+SHINGLE_LEN = 9 # shingle len
+SIGNATURE_LEN = 50 # signature len -> number of hash functions
 EL = 2 # number of random integers generated
 
-NBANDS = 5 # number of bands
+N_BANDS = 5 # number of bands
+N_BUCKETS = 10**3 # number of buckets in each band
 
 INT_TYPE_32 = np.uint32
 INT_TYPE_64 = np.uint64
 
-start = time.time()
+file_name = "test_data\\arxiv_clones_first_1000.json"
 
+# MinHASH ----------------------------------------------------------
 # generate permutations params
 hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
                                                 num_cols = 2,
@@ -38,22 +40,37 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
                                                 reshape = True,
                                                 int_type = INT_TYPE_64)
 
-file_name = "test_data\\arxiv_clones_first_1000.json"
-
 # initialize Signature Btree instance
 SigBTree = minhash.SignaturesBTree()
+
+# SQL -----------------------------------------------------------------
 
 # initialize SignaturesSQLite
 # SigSQL = minhash.SignaturesSQLite()
 
-# initialize LSH bands list data instance
-lsh.LSHManyBandsBucketLists(n_bands = 5)
-
 # number of insertions for each transaction
-NUM_SQL_INSERTIONS = 100
-insertion_counter = 0
+# NUM_SQL_INSERTIONS = 100
+# insertion_counter = 0
 
 # SigSQL.begin_transaction()
+
+# LSH --------------------------------------------------------------------
+
+# generate hash functions for lsh bands hashing
+my_lsh_hash_fun_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = N_BANDS,
+                                                            band_size = SIGNATURE_LEN // N_BANDS,
+                                                            modulo = N_BUCKETS,
+                                                            seed = 123)
+
+my_break_points = lsh.GenerateBreakPoints(n = SIGNATURE_LEN, n_bands = N_BANDS)
+
+# initialize LSH bands list data instance
+LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = N_BANDS, n_buckets = N_BUCKETS)
+
+
+# Actual procedure ------------------------------------------------------
+
+start = time.time()
 
 with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w") as fout:
     for line in fin:
@@ -67,7 +84,7 @@ with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w"
             text_temp = json_content["content"]
             shingle_temp = shingling.TextToShinglesUniques(
                 text = text_temp,
-                shingle_len = W,
+                shingle_len = SIGNATURE_LEN,
                 hash_fun = hashing.MurmUns32Hash)
             
             signature_temp = minhash.NumbaSignatureByRowParallel(
@@ -75,7 +92,6 @@ with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w"
                 hash_params_matrix = hash_params_matrix,
                 hash_fun = hashing.NumbaNaiveHashU32Params,
                 int_type = INT_TYPE_32)
-            
 
             # add key (doc id) value (signature) pair to the Signature Btree
             SigBTree.insert(id_temp, signature_temp)
@@ -86,8 +102,12 @@ with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w"
                 # SigSQL.begin_transaction()
             
             # SigSQL.insert_key_value(key = id_temp, value = signature_temp)
-
-            insertion_counter += 1
+            # insertion_counter += 1
+            
+            LshManyBands.AddToBands(bucket_ids = lsh.ComputeAllHashBands(signature = signature_temp,
+                                                                         break_points = my_break_points,
+                                                                         hash_functions_list = my_lsh_hash_fun_list),
+                                    object = id_temp)
 
 # SigSQL.end_transaction()
 
@@ -95,14 +115,22 @@ stop = time.time()
 
 print(f"Time: {stop - start}")
 
-# --- BTree
+# LSH --------------------------------------
+print("LshManyBands first band")
+print(LshManyBands.bands_list[0])
+
+# consider only the first band: for each bucket with more than two elements compute the similarity 
+# between the signatures of all elements in the bucket
+
+
+# BTree ------------------------------------
 # compare the similarity of two documents
 doc1_id = 1
 doc2_id = 1001
-# sim_doc1_doc2 =  SigBTree.compute_similarity(doc1_id, doc2_id)
-# print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
+sim_doc1_doc2 =  SigBTree.compute_similarity(doc1_id, doc2_id)
+print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
 
-# --- SQL
+# SQL -------------------------------------
 # value1 = SigSQL.get_value_by_key(doc1_id)
 # value2 = SigSQL.get_value_by_key(doc2_id)
 

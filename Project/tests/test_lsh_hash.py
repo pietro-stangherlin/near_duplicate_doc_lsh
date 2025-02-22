@@ -132,8 +132,12 @@ class TestLSHFunctions(unittest.TestCase):
         print("function list")
         print(l1)
         
-        print("try one function")
+        print("try one function, this should work")
         print(l1[0](np.array([1,1,2])))
+        
+        # print("try one function, this should give dimension error")
+        # print(l1[0](np.array([1,1,2, 1])))
+        
         
         print("-----------------------------------------------")
         print("\n")
