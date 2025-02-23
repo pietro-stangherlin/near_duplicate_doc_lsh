@@ -4,6 +4,7 @@ from ..src import hashing
 from ..src import lsh
 
 import sys
+import csv
 import numpy as np
 import json
 import re
@@ -159,12 +160,24 @@ for band_object in LshManyBands.bands_list:
                         # do not include if signature similarity is zero
                         temp_all_combinations[temp_key] = sig_sim
     
-print(temp_all_combinations)
+# print(temp_all_combinations)
 
 print(f"length of dictionary is {len(temp_all_combinations)}")
 
 # sort key values
-sorted_tuples_dict = sorted(temp_all_combinations.items())
+sorted_tuples_list = sorted(temp_all_combinations.items())
+
+# write signature similarity csv
+with open('test_data\\arxiv_clones_first_1000_signature_sim.csv', mode='w', newline='') as fout:
+    writer = csv.writer(fout)
+    
+    # write header
+    writer.writerow(['doc1_id', 'doc2_id', 'signature_similarity'])
+    
+    for ((first_el, second_el), value) in sorted_tuples_list:
+        writer.writerow([first_el, second_el, value])
+
+
 
 
 # BTree ------------------------------------

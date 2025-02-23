@@ -1,9 +1,9 @@
 from . import make_collection as mc
-# files referenced are not included in the project folder
+# some files referenced are not included in the project folder
 
 arxiv_yes_original_first_1000 = {"file_in": "data_near_duplicate\\arxiv\\arxiv_cleaned_js_id2_first_1000.json",
-                                    "file_out_collection": "arxiv_clones_first_1000.json",
-                                     "file_out_index": "arxiv_clones_first_1000_index.csv",
+                                    "file_out_collection": "near_duplicate_doc_lsh\\test_data\\arxiv_clones_first_1000.json",
+                                     "file_out_index": "near_duplicate_doc_lsh\\test_data\\arxiv_clones_first_1000_index.csv",
                                     "n_random_lines": 100,
                                     "edit_dict_fun" : mc.EditDictOCR,
                                      "id_int_unique_field_name": "id2",

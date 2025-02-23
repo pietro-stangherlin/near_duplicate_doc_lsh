@@ -146,6 +146,9 @@ def WriteRandomLines(file_in: str,
 
         line_index = 0
         id_int_unique_last_index += 1
+        
+        # write index header
+        fout_index.write("doc1_id,doc2_id\n")
 
         # create the new dataset with id2 as
         # the line number in the file
@@ -161,6 +164,7 @@ def WriteRandomLines(file_in: str,
                 fout.write("\n")  # add a newline after each json object
 
             if line_index in edit_indexes:
+                
                 for edited in edit_dict_fun(original_line_dict,
                                             id_int_unique_last_index,  # id2 last value
                                             id_int_unique_field_name,  # id2
@@ -173,7 +177,9 @@ def WriteRandomLines(file_in: str,
                     fout.write("\n")  # add a newline after each json object
 
                     # write the indexed in the index file
-                    fout_index.write(f"{id_int_unique_last_index},{original_line_dict[id_int_unique_field_name]}\n")
+                    # first column: original file id
+                    # second column: duplicate file id
+                    fout_index.write(f"{original_line_dict[id_int_unique_field_name]},{id_int_unique_last_index}\n")
                     id_int_unique_last_index += 1
 
             line_index += 1
