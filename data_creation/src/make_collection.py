@@ -141,11 +141,11 @@ def WriteRandomLines(file_in: str,
             for line in fin:
                 n_lines_in_file += 1
 
-        edit_indexes = set(random.sample(range(n_lines_in_file),
+        # index of ids (integers) of documents to be duplicated and edited
+        edit_indexes = set(random.sample(range(1, n_lines_in_file + 1),
                                     n_random_lines))
 
-        line_index = 0
-        id_int_unique_last_index += 1
+        line_index = 1
         
         # write index header
         fout_index.write("doc1_id,doc2_id\n")

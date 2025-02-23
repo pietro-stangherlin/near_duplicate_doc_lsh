@@ -13,7 +13,7 @@ arxiv_yes_original_first_1000 = {"file_in": "data_near_duplicate\\arxiv\\arxiv_c
                                     "error_params_list": [[0, 0, 0]],
                                     "write_original_lines": True,
                                     "n_lines_in_file": 1000,
-                                    "id_int_unique_last_index": 999}
+                                    "id_int_unique_last_index": 1000}
 
 arxiv_yes_original = {"file_in": "data_near_duplicate\\arxiv\\arxiv_cleaned_js_id2.json",
                                     "file_out_collection": "arxiv_clones.json",
@@ -27,7 +27,7 @@ arxiv_yes_original = {"file_in": "data_near_duplicate\\arxiv\\arxiv_cleaned_js_i
                                     "error_params_list": [[0, 0, 0]],
                                     "write_original_lines": True,
                                     "n_lines_in_file": 51774,
-                                    "id_int_unique_last_index": 51773}
+                                    "id_int_unique_last_index": 51774}
  
 # params for first_50.json
 # don't write original lines
@@ -43,7 +43,7 @@ first_100_dict_params_no_original = {"file_in": "data_near_duplicate\\robust2_fi
                                     "error_params_list": [[0.1, 0.1, 0.5]],
                                     "write_original_lines": False,
                                     "n_lines_in_file": 100,
-                                    "id_int_unique_last_index": 99}
+                                    "id_int_unique_last_index": 100}
 
 # write the original lines
 first_100_dict_params_yes_original = {"file_in": "data_near_duplicate\\robust2_first_100.json",
@@ -58,7 +58,7 @@ first_100_dict_params_yes_original = {"file_in": "data_near_duplicate\\robust2_f
                                     "error_params_list": [[0.1, 0.1, 0.5]],
                                     "write_original_lines": True,
                                     "n_lines_in_file": 100,
-                                    "id_int_unique_last_index": 99}
+                                    "id_int_unique_last_index": 100}
 
 
 robust_yes_original = {"file_in": "data_near_duplicate\\robust_2.json",
@@ -73,4 +73,4 @@ robust_yes_original = {"file_in": "data_near_duplicate\\robust_2.json",
                                     "error_params_list": [[0, 0, 0]],
                                     "write_original_lines": True,
                                     "n_lines_in_file": 528155,
-                                    "id_int_unique_last_index": 528154}
+                                    "id_int_unique_last_index": 528155}

@@ -53,8 +53,12 @@ import matplotlib.pyplot as plt
 # Read the true near duplicated documents file
 true_duplicates = pd.read_csv('test_data\\arxiv_clones_first_1000_index.csv')
 
+print(true_duplicates)
+
 # Read the documents with computed signature similarity file
 signature_sim = pd.read_csv('test_data\\arxiv_clones_first_1000_signature_sim.csv')
+
+print(signature_sim)
 
 
 
