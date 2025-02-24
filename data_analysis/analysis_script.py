@@ -86,7 +86,7 @@ print(signature_similarity_reverse_dict)
 # define metrics
 # for a fixed signature similarity threshold
 
-
+# naive implementation
 def RetrievedSetFixedSignatureSimilarityThreshold(signature_sim_reverse_dict: dict,
                                                   signature_sim_threshold: float) -> set:
     '''
@@ -104,7 +104,7 @@ def RetrievedSetFixedSignatureSimilarityThreshold(signature_sim_reverse_dict: di
     greater_than_threshold_set = set()
     
     for signature_sim in signature_sim_reverse_dict:
-        if signature_sim_dict >= signature_sim_threshold:
+        if signature_sim >= signature_sim_threshold:
             greater_than_threshold_set = greater_than_threshold_set.union(signature_sim_reverse_dict[signature_sim])
 
     return greater_than_threshold_set
@@ -122,31 +122,88 @@ def TrueDuplicatesAndRetrievedCount(true_duplicate_set: set,
     '''
     return len(true_duplicate_set.intersection(retrieved_set))
 
-def Precision(true_duplicate_set: set,
-              signature_sim_reverse_dict: dict,
-              signature_sim_threshold: float) -> float:
-    '''Return Precision = #(true_duplicates Intersection retrieved) / #retrieved
-    where retrieved is the set of tuples of pairs with a signature similarity greater than
-     signature_sim_threshold
+def Precision(true_duplicates_and_retrieved_count: int,
+              retrieved_count: int) -> float:
+    '''Return Precision = # (true_duplicates Intersection retrieved) / # retrieved
     
     Args:
-        - true_duplicate_set (set) : set of tuples of the true (near) duplicates documents
-        - signature_sim_reverse_dict (dictionary): dictionary with key = signature similarity (float)
-        value = set of tuples of docs with that signature similarity
-        - signature_sim_threshold (float): signature similarity threshold to consider
+        - true_duplicates_and_retrieved_count (int) : cardinality of the intersection 
+            between true duplicates and retrieved documents
+        - retrieved_count (int): cardinality of retrieved documents
     
     Return:
         - Precision (float)
     '''
-    pass 
+    return (true_duplicates_and_retrieved_count / retrieved_count)
 
-def Recall(true_duplicate_set: set,
-            signature_sim_reverse_dict: dict,
-            signature_sim_threshold: float) -> float:
-    pass
+def Recall(true_duplicates_and_retrieved_count: int,
+           true_duplicates_count: int) -> float:
+    '''Return Recall = # (true_duplicates Intersection retrieved) / # true_duplicates
+
+    Args:
+        - true_duplicates_and_retrieved_count (int) : cardinality of the intersection 
+            between true duplicates and retrieved documents
+        - true_duplicates_count (int): cardinality true duplicates documents
+    
+    Return:
+        - Recall (float)
+    '''
+    return (true_duplicates_and_retrieved_count / true_duplicates_count)
+
+precision_list = [None for i in range(len(signature_similarity_reverse_dict))]
+recall_list = [None for i in range(len(signature_similarity_reverse_dict))]
+
+sorted_signature_similarities = sorted(signature_similarity_reverse_dict.keys())
+print(sorted_signature_similarities)
+
+true_duplicates_intersection_retrieved_count_list = [None for i in range(len(signature_similarity_reverse_dict))]
+retrieved_count_list = [None for i in range(len(signature_similarity_reverse_dict))]
 
 
+for i in range(len(sorted_signature_similarities)):
+    
+    temp_retrieved_set = RetrievedSetFixedSignatureSimilarityThreshold(signature_sim_reverse_dict = signature_similarity_reverse_dict,
+                                                                  signature_sim_threshold = sorted_signature_similarities[i])
+    
+    true_duplicates_intersection_retrieved_count_list[i] = TrueDuplicatesAndRetrievedCount(true_duplicate_set = true_duplicates_tuples_set,
+                                                                                               retrieved_set = temp_retrieved_set)
+    retrieved_count_list[i] = len(temp_retrieved_set)
+    
+    precision_list[i] = Precision(true_duplicates_and_retrieved_count = true_duplicates_intersection_retrieved_count_list[i],
+                                  retrieved_count = retrieved_count_list[i])
+    
+    recall_list[i] = Recall(true_duplicates_and_retrieved_count = true_duplicates_intersection_retrieved_count_list[i],
+                            true_duplicates_count = len(true_duplicates_tuples_set))
+    
+    
 
+print("sorted_signature_similarities")
+print(sorted_signature_similarities)
 
+print("true_duplicates_intersection_retrieved_count_list")
+print(true_duplicates_intersection_retrieved_count_list)
+
+print("retrieved_count_list")
+print(retrieved_count_list)
+
+print("precision_list")
+print(precision_list)
+    
+plt.plot(sorted_signature_similarities, precision_list,
+         color = "blue", linestyle = "-", marker = "o",
+         label = "Precision")
+
+plt.plot(sorted_signature_similarities, recall_list,
+         color = "red", linestyle = "-", marker = "o",
+         label = "Recall")
+
+plt.title("Precision and Recall Vs Signature Similarity")
+plt.xlabel("Signature Similarity")
+plt.ylabel("Metric")
+
+plt.legend()
+
+plt.show()
+    
 
 
