@@ -1,3 +1,6 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
 # TO DO
 
 # important: execute the script from external directory
@@ -40,15 +43,11 @@
 
 # in a more generale script: 
 # choose some sumary statistics and plot them against the change of some of the parameters
-# NOTE: it's wise to automize all the analysis
+# NOTE: it's wise to automatize all the analysis
 
 # NOTE: I also need another analysis relative to the time used,
 # even though is less important beacause it's sufficient to measure 
 # how the different implementation scale
-
-import pandas as pd
-
-import matplotlib.pyplot as plt
 
 # Read the true near duplicated documents file
 true_duplicates = pd.read_csv('test_data\\arxiv_clones_first_1000_index.csv')
@@ -59,6 +58,7 @@ print(true_duplicates)
 signature_sim = pd.read_csv('test_data\\arxiv_clones_first_1000_signature_sim.csv')
 
 print(signature_sim)
+
 
 
 

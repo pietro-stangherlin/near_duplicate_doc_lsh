@@ -1,9 +1,9 @@
 from . import make_collection as mc
 # some files referenced are not included in the project folder
 
-arxiv_yes_original_first_1000 = {"file_in": "data_near_duplicate\\arxiv\\arxiv_cleaned_js_id2_first_1000.json",
-                                    "file_out_collection": "near_duplicate_doc_lsh\\test_data\\arxiv_clones_first_1000.json",
-                                     "file_out_index": "near_duplicate_doc_lsh\\test_data\\arxiv_clones_first_1000_index.csv",
+arxiv_yes_original_first_1000 = {"file_in": "test_data\\arxiv_cleaned_js_id2_first_1000.json",
+                                    "file_out_collection": "test_data\\arxiv_clones_first_1000.json",
+                                     "file_out_index": "test_data\\arxiv_clones_first_1000_index.csv",
                                     "n_random_lines": 100,
                                     "edit_dict_fun" : mc.EditDictOCR,
                                      "id_int_unique_field_name": "id2",
@@ -12,6 +12,20 @@ arxiv_yes_original_first_1000 = {"file_in": "data_near_duplicate\\arxiv\\arxiv_c
                                     "content_field_name": "content",
                                     "error_params_list": [[0, 0, 0]],
                                     "write_original_lines": True,
+                                    "n_lines_in_file": 1000,
+                                    "id_int_unique_last_index": 1000}
+
+arxiv_yes_original_first_1000_only_duplicates = {"file_in": "test_data\\arxiv_cleaned_js_id2_first_1000.json",
+                                    "file_out_collection": "test_data\\arxiv_clones_first_1000_only_duplicates.json",
+                                     "file_out_index": "test_data\\arxiv_clones_first_1000_index.csv",
+                                    "n_random_lines": 100,
+                                    "edit_dict_fun" : mc.EditDictOCR,
+                                     "id_int_unique_field_name": "id2",
+                                    "id_int_link_field_name": "id3",
+                                    "edit_text_function": mc.EditTextOCR,
+                                    "content_field_name": "content",
+                                    "error_params_list": [[0, 0, 0]],
+                                    "write_original_lines": False,
                                     "n_lines_in_file": 1000,
                                     "id_int_unique_last_index": 1000}
 

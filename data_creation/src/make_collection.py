@@ -12,16 +12,16 @@ def EditTextOCR(text : str,
     '''Given some text return a modified version of it.
     (simulating OCR errors)
     
+    The editing occurs in this order (same as error_params list):
+    1) transpose words
+    2) trasponse chars
+    3) swap chars
+    
     Args:
         - text: text to be edited
         - error_params: list of floats each in range [0,1],
                         the order is relative to the description below
                         (example [0.1, 0.5, 0])
-    
-    The editing occurs in this order (same as error_params list):
-    1) transpose words
-    2) trasponse chars
-    3) swap chars
     
     Returns: 
         - edited text
@@ -50,16 +50,16 @@ def EditDictOCR(dictionary: dict,
     
     Args: 
         - dictionary: dictionary to be edited
-        - id_int_unique_last_index: last numerical index used for documents' id2
-        - id_int_unique_field_name: name of id2 field
-        - id_int_link_field_name: name of the new id field where the original
+        - id_int_unique_last_index (int): last numerical index used for documents' id2
+        - id_int_unique_field_name (str): name of id2 field
+        - id_int_link_field_name (str): name of the new id field where the original
                                 doc id_int_unique is written
-        - content_field_name: name of the content (str) to be edited
-        - error_params_list: list of list of parameters, 
-                            the oder of elements in each sublist should 
+        - content_field_name (str): name of the content (str) to be edited
+        - error_params_list (list): list of list of parameters, 
+                            the order of elements in each sublist should 
                             match that in EditTextOCR function.
                             (example [[0.1, 0.5, 0], [0.3, 0.1, 0.8]])
-        - edit_text_function: function to edit the text inside the dictionary["contend_field_name"]
+        - edit_text_function (function): function to edit the text inside the dictionary["contend_field_name"]
                             it is assumed this functions parameters are:
                             (text_to_be_edited, list_of_other_functions_params)
     
@@ -109,23 +109,23 @@ def WriteRandomLines(file_in: str,
     If it has more fields they'll be ignored
     
     Args:
-        - file_in: name of input file
-        - file_out_collection: name of output file
-        - file_out_index: name index like file: 
+        - file_in (str): name of input file
+        - file_out_collection (str): name of output file
+        - file_out_index (str): name index like file: 
                         id_int_unique_1,id_int__unique_original_1\nid_int_unique_2,id_int_unique_original_2
-        - n_random_lines: number of lines to write
-        - edit_line_fun: functions editing the dictionary corresponding to the json line
-        - id_int_unique_field_name: name of id unique id made by integers
-        - id_int_link_field_name: name of new id which get value None for original documents,
+        - n_random_lines (int): number of lines to write
+        - edit_line_fun (function): functions editing the dictionary corresponding to the json line
+        - id_int_unique_field_name (str): name of id unique id made by integers
+        - id_int_link_field_name (str): name of new id which get value None for original documents,
                                 for edited documents is used the value of id_int_unique of the
                                 document from which they are derived
-        - edit_text_function: functions actually used to edit the text
-        - content_field_name: name of field where the actual text to edit is
-        - error_params_list: list of lists of parameters: each sublist is the second
+        - edit_text_function (function): functions actually used to edit the text
+        - content_field_name (str): name of field where the actual text to edit is
+        - error_params_list (list): list of lists of parameters: each sublist is the second
                             parameter of edit_text_function
-        - write_original_lines: write also the file_in lines (default True)
-        - n_lines_in_file: number of lines in input file, if known
-        - id_int_unique_last_index: maximum int index in the collection,
+        - write_original_lines (bool): write also the file_in lines (default True)
+        - n_lines_in_file (int): number of lines in input file, if known
+        - id_int_unique_last_index (int): maximum int index in the collection,
                                     needed to make new unique indexes by incrementing it
     
     Note: if n_lines_in_file is not given the program
@@ -179,7 +179,8 @@ def WriteRandomLines(file_in: str,
                     # write the indexed in the index file
                     # first column: original file id
                     # second column: duplicate file id
-                    fout_index.write(f"{original_line_dict[id_int_unique_field_name]},{id_int_unique_last_index}\n")
                     id_int_unique_last_index += 1
+                    fout_index.write(f"{original_line_dict[id_int_unique_field_name]},{id_int_unique_last_index}\n")
+                    
 
             line_index += 1
