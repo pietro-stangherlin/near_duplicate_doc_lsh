@@ -1,5 +1,5 @@
 from . import make_collection as mc
-# some files referenced are not included in the project folder
+# NOTE: some files referenced are not included in the project folder
 
 arxiv_yes_original_first_1000 = {"file_in": "test_data\\arxiv_cleaned_js_id2_first_1000.json",
                                     "file_out_collection": "test_data\\arxiv_clones_first_1000.json",

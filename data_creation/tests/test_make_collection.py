@@ -6,6 +6,7 @@ random.seed(123)
 
 # uncomment to actually write the line below
 mc.WriteRandomLines(**pm.arxiv_yes_original_first_1000_only_duplicates)
+mc.WriteMetadataCollection()
 
 
 # from near_duplicate_doc_lsh folder folder

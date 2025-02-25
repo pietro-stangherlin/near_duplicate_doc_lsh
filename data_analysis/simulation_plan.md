@@ -8,6 +8,14 @@ For each different parameters set make a folder with:
     - index with original and copies doc id
     - signature similarity pairs file
 
+NOTE. Still need to choose if make separate metadata files to be merged,
+ example for a fixed combination of parameters:
+    1) one metadata file for collection parameters
+    2) one metadata file for MinHash
+    3) one metadata file for LSH
+
+Then add 2) (conditional  to 1)) and finally 3) (conditional to 1) and 2))
+
 ### Document collection
 
 1) save the original collection once for all

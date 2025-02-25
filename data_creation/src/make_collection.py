@@ -7,32 +7,34 @@ from typing import Callable
 # given a dataset like
 # {"id" = "...", "content": "...", "id2" : "int"}
 
+ocr_functions_list = [rn.OcrTransposition, rn.TransposeChars, rn.SimulateOcrErrors]
+
 def EditTextOCR(text : str,
-                error_params: list) -> str:
+                error_params: list,
+                functions_list: list = ocr_functions_list) -> str:
     '''Given some text return a modified version of it.
     (simulating OCR errors)
     
-    The editing occurs in this order (same as error_params list):
-    1) transpose words
-    2) trasponse chars
-    3) swap chars
+    The editing occurs in the same order as error_params list
     
     Args:
-        - text: text to be edited
-        - error_params: list of floats each in range [0,1],
+        - text (str): text to be edited
+        - error_params (list): list of floats each in range [0,1],
                         the order is relative to the description below
                         (example [0.1, 0.5, 0])
+        - functions_list (list): list of editing functions, the order counts 
     
     Returns: 
         - edited text
-        
-    *NOTES: this function could be generalized accepting a list of functions
-    along with a list of list of their parameters, for now we keep it simple
     '''
-    text = rn.OcrTransposition(text, error_params[0])
-    text = rn.TransposeChars(text, error_params[1])
+    if len(functions_list) != len(error_params):
+        print("Error: length of functions list is different from associated error parameters list")
+        return None
+
+    for func, param in zip(functions_list, error_params):
+        text = func(text, param)
     
-    return rn.SimulateOcrErrors(text, error_params[2])
+    return text
 
 
 def EditDictOCR(dictionary: dict,
@@ -66,7 +68,7 @@ def EditDictOCR(dictionary: dict,
     Yield:
         - edited dictionary
     
-    NOTES: The indexing of edited dictionary works only with our way of creating the new ids,
+    NOTE: The indexing of edited dictionary works only with our way of creating the new ids,
     which assumes the maximum id of the collection is known
     so each new id is made by one increment of the maximum
     (this way we are sure each document has its unique id)
@@ -128,7 +130,7 @@ def WriteRandomLines(file_in: str,
         - id_int_unique_last_index (int): maximum int index in the collection,
                                     needed to make new unique indexes by incrementing it
     
-    Note: if n_lines_in_file is not given the program
+    NOTE: if n_lines_in_file is not given the program
     iterates over all lines to count them.
     
     Returns: 
@@ -184,3 +186,14 @@ def WriteRandomLines(file_in: str,
                     
 
             line_index += 1
+
+# idea: write it as a dictionary, save as a json
+# and reload as dictionary
+def WriteMetadataCollection(param_names_list: list,
+                            param_values_list: list,
+                            file_out_path: str):
+    '''Write metadata with collection parameters:
+    '''
+    temp_dict = {"collection_params": dict(zip(param_names_list, param_values_list))}
+    with open(file_out_path, "w") as fout:
+        json.dump(temp_dict, fout)
