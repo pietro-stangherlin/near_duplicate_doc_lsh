@@ -1,5 +1,6 @@
 import json
 import random
+import os # to make folders
 from . import randomNoise as rn
 from typing import Callable
 
@@ -82,8 +83,9 @@ def EditDict(dictionary: dict,
 # robust2
 # n_lines_in_file = 528154
 def WriteRandomLines(file_in: str,
-                     file_out_collection: str,
-                     file_out_index: str,
+                     folder_path_out: str,
+                     relative_file_out_collection: str,
+                     relative_file_out_index: str,
                      n_random_lines: int,
                      id_int_unique_field_name: str,
                      id_int_link_field_name: str,
@@ -103,10 +105,11 @@ def WriteRandomLines(file_in: str,
     
     Args:
         - file_in (str): name of input file
-        - file_out_collection (str): name of output file
-        - file_out_index (str): name index like file: 
+        - folder_path_out (str): folder path where the new files are saved
+        - relative_file_out_collection (str): name of output file NOT including folder path
+        - relative_file_out_index (str): name index like file: 
                         id_int_unique_1,id_int__unique_original_1\nid_int_unique_2,id_int_unique_original_2
-        - n_random_lines (int): number of lines to write
+        - n_random_lines (int): number of lines to write NOT including folder path
         - id_int_unique_field_name (str): name of id unique id made by integers
         - id_int_link_field_name (str): name of new id which get value None for original documents;
                                 for edited documents it is used the value of id_int_unique of the
@@ -125,7 +128,20 @@ def WriteRandomLines(file_in: str,
     Returns: 
         - None: writes on output file
     '''
-    with open(file_in, "r") as fin, open(file_out_collection, "w", encoding="utf-8") as fout, open(file_out_index, "w") as fout_index:
+    
+    
+    # Create the folder if it doesn't exist
+    os.makedirs(folder_path_out, exist_ok=True)
+    
+    file_out_collection_complete = os.path.join(folder_path_out,
+                                                     relative_file_out_collection)
+    
+    file_out_index_complete = os.path.join(folder_path_out,
+                                                     relative_file_out_index)
+    
+    # make output folders if not exist
+    
+    with open(file_in, "r") as fin, open(file_out_collection_complete, "w", encoding="utf-8") as fout, open(file_out_index_complete, "w") as fout_index:
         if n_lines_in_file == None:
             # count
             n_lines_in_file = 0
