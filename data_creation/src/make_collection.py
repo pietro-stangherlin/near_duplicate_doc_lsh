@@ -130,8 +130,8 @@ def WriteRandomLines(file_in: str,
     '''
     
     
-    # Create the folder if it doesn't exist
-    os.makedirs(folder_path_out, exist_ok=True)
+    # make the folder if it doesn't exist
+    os.makedirs(folder_path_out, exist_ok = True)
     
     file_out_collection_complete = os.path.join(folder_path_out,
                                                      relative_file_out_collection)

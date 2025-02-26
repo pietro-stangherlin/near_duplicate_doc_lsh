@@ -75,7 +75,7 @@ LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = N_BANDS, n_buckets = N_BUCK
 
 start = time.time()
 
-with open(file_name, 'r', encoding = "utf-8") as fin, open("signatures.csv", "w") as fout:
+with open(file_name, 'r', encoding = "utf-8") as fin:
     for line in fin:
         # Use regular expression to find the content inside the brackets
         match = re.search(r'\{(.*)\}', line)
