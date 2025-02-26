@@ -135,8 +135,6 @@ def WriteRandomLines(file_in: str,
         # index of ids (integers) of documents to be duplicated and edited
         edit_indexes = set(random.sample(range(1, n_lines_in_file + 1),
                                     n_random_lines))
-
-        line_index = 1
         
         # write index header
         fout_index.write("doc1_id,doc2_id\n")
@@ -144,13 +142,16 @@ def WriteRandomLines(file_in: str,
         # create the new dataset with id2 as
         # the line number in the file
 
+        line_index = 1
+        
         for line in fin:
             # match = re.search(r"\{.*?\}", line)
 
             original_line_dict = json.loads(line.strip())
 
             if write_original_lines:
-                original_line_dict[id_int_link_field_name] = "None"
+                original_line_dict[id_int_link_field_name] = "None" # id3
+                
                 json.dump(original_line_dict, fout)  # use json.dump here
                 fout.write("\n")  # add a newline after each json object
 
@@ -159,7 +160,7 @@ def WriteRandomLines(file_in: str,
                 edited = EditDict(dictionary = original_line_dict,
                                   id_int_unique_last_index = id_int_unique_last_index, # id2 last value
                                   id_int_unique_field_name = id_int_unique_field_name, # id2
-                                  id_int_link_field_name =  id_int_link_field_name, # id3
+                                  id_int_link_field_name = id_int_link_field_name, # id3
                                   content_field_name = content_field_name,
                                   functions_params_list = functions_params_list,
                                   functions_edit_list = functions_edit_list)

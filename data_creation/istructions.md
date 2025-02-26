@@ -10,7 +10,7 @@ Example: file_toy.json
 ```
 
 In order to create a new file of desired format:
-1) run add_sum_ids.py on the original file to create a new file adding a new id based on the row number
+1) run add_num_ids.py on the original file to create a new file adding a new id based on the row number
 2) run make_collection.py on the file created at point 1
 
 
