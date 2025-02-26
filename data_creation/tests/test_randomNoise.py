@@ -2,7 +2,7 @@ import randomNoise as rN
 import random
 import sys
 
-#random.seed(1234)
+# random.seed(1234)
 
 in_text = "abcd def ghi lmno"
 error_rate = 0.1 # in [0,1]

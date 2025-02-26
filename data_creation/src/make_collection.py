@@ -1,6 +1,5 @@
 import json
 import random
-import re
 from . import randomNoise as rn
 from typing import Callable
 
@@ -9,9 +8,9 @@ from typing import Callable
 
 ocr_functions_list = [rn.OcrTransposition, rn.TransposeChars, rn.SimulateOcrErrors]
 
-def EditTextOCR(text : str,
-                error_params: list,
-                functions_list: list = ocr_functions_list) -> str:
+def EditText(text : str,
+                functions_params_list: list,
+                functions_edit_list: list = ocr_functions_list) -> str:
     '''Given some text return a modified version of it.
     (simulating OCR errors)
     
@@ -19,32 +18,31 @@ def EditTextOCR(text : str,
     
     Args:
         - text (str): text to be edited
-        - error_params (list): list of floats each in range [0,1],
+        - functions_params_list (list): list of floats each in range [0,1],
                         the order is relative to the description below
                         (example [0.1, 0.5, 0])
-        - functions_list (list): list of editing functions, the order counts 
+        - functions_edit_list (list): list of editing functions, the order counts 
     
     Returns: 
-        - edited text
+        - edited text (str)
     '''
-    if len(functions_list) != len(error_params):
+    if len(functions_edit_list) != len(functions_params_list):
         print("Error: length of functions list is different from associated error parameters list")
         return None
 
-    for func, param in zip(functions_list, error_params):
+    for func, param in zip(functions_edit_list, functions_params_list):
         text = func(text, param)
     
     return text
 
-
-def EditDictOCR(dictionary: dict,
+def EditDict(dictionary: dict,
                 id_int_unique_last_index: int, # id2 last value
                 id_int_unique_field_name: str, # id2
                 id_int_link_field_name: str, # id3
                 content_field_name: str,
-                error_params_list: list,
-                edit_text_function: Callable,
-                ) -> iter:
+                functions_params_list: list,
+                functions_edit_list: list = ocr_functions_list,
+                ) -> dict:
     '''Edit dictionary according to some criteria, produces an iterator of dictionaries made this way.
     
     Assuming there are k elements in error_params_list ->
@@ -57,15 +55,12 @@ def EditDictOCR(dictionary: dict,
         - id_int_link_field_name (str): name of the new id field where the original
                                 doc id_int_unique is written
         - content_field_name (str): name of the content (str) to be edited
-        - error_params_list (list): list of list of parameters, 
+        - functions_params_list (list): list of list of parameters, 
                             the order of elements in each sublist should 
-                            match that in EditTextOCR function.
-                            (example [[0.1, 0.5, 0], [0.3, 0.1, 0.8]])
-        - edit_text_function (function): function to edit the text inside the dictionary["contend_field_name"]
-                            it is assumed this functions parameters are:
-                            (text_to_be_edited, list_of_other_functions_params)
+                            match the one of functions_edit_list
+        - functions_edit_list (list): list of editing functions, the order counts
     
-    Yield:
+    Return:
         - edited dictionary
     
     NOTE: The indexing of edited dictionary works only with our way of creating the new ids,
@@ -77,14 +72,11 @@ def EditDictOCR(dictionary: dict,
     original_id_unique = dictionary[id_int_unique_field_name]
     original_content = dictionary[content_field_name]
     
-    # new numerical id2
-    next_id_int = id_int_unique_last_index + 1
-    
-    for error_list in error_params_list:
-        yield {id_int_unique_field_name: next_id_int,
+    return {id_int_unique_field_name: id_int_unique_last_index + 1,  # new numerical id
                id_int_link_field_name: original_id_unique,
-               content_field_name: edit_text_function(original_content, error_list)}
-        next_id_int += 1
+               content_field_name: EditText(text = original_content,
+                                               functions_params_list = functions_params_list,
+                                               functions_edit_list = functions_edit_list)}
 
 
 # robust2
@@ -93,15 +85,14 @@ def WriteRandomLines(file_in: str,
                      file_out_collection: str,
                      file_out_index: str,
                      n_random_lines: int,
-                     edit_dict_fun : Callable,
                      id_int_unique_field_name: str,
                      id_int_link_field_name: str,
-                     edit_text_function: Callable,
                      content_field_name: str,
-                     error_params_list: list,
+                     functions_params_list: list,
+                     functions_edit_list: list = ocr_functions_list,
                      write_original_lines: bool = True,
-                     n_lines_in_file: int = 528155, # robust docs number
-                     id_int_unique_last_index: int =  528154): # robust docs number - 1
+                     n_lines_in_file: int = None, # robust docs number
+                     id_int_unique_last_index: int =  None): # robust docs number
     '''Write a fixed number of lines from a file at random.
     
     Updates id_int_unique for newly created documents and adds id_int_link.
@@ -116,14 +107,12 @@ def WriteRandomLines(file_in: str,
         - file_out_index (str): name index like file: 
                         id_int_unique_1,id_int__unique_original_1\nid_int_unique_2,id_int_unique_original_2
         - n_random_lines (int): number of lines to write
-        - edit_line_fun (function): functions editing the dictionary corresponding to the json line
         - id_int_unique_field_name (str): name of id unique id made by integers
-        - id_int_link_field_name (str): name of new id which get value None for original documents,
-                                for edited documents is used the value of id_int_unique of the
+        - id_int_link_field_name (str): name of new id which get value None for original documents;
+                                for edited documents it is used the value of id_int_unique of the
                                 document from which they are derived
-        - edit_text_function (function): functions actually used to edit the text
         - content_field_name (str): name of field where the actual text to edit is
-        - error_params_list (list): list of lists of parameters: each sublist is the second
+        - functions_params_list (list): list of lists of parameters: each sublist is the second
                             parameter of edit_text_function
         - write_original_lines (bool): write also the file_in lines (default True)
         - n_lines_in_file (int): number of lines in input file, if known
@@ -167,28 +156,29 @@ def WriteRandomLines(file_in: str,
 
             if line_index in edit_indexes:
                 
-                for edited in edit_dict_fun(original_line_dict,
-                                            id_int_unique_last_index,  # id2 last value
-                                            id_int_unique_field_name,  # id2
-                                            id_int_link_field_name,  # id3
-                                            content_field_name,
-                                            error_params_list,
-                                            edit_text_function):
+                edited = EditDict(dictionary = original_line_dict,
+                                  id_int_unique_last_index = id_int_unique_last_index, # id2 last value
+                                  id_int_unique_field_name = id_int_unique_field_name, # id2
+                                  id_int_link_field_name =  id_int_link_field_name, # id3
+                                  content_field_name = content_field_name,
+                                  functions_params_list = functions_params_list,
+                                  functions_edit_list = functions_edit_list)
 
-                    json.dump(edited, fout)  # use json.dump here
-                    fout.write("\n")  # add a newline after each json object
+                json.dump(edited, fout)  # use json.dump here
+                fout.write("\n")  # add a newline after each json object
 
-                    # write the indexed in the index file
-                    # first column: original file id
-                    # second column: duplicate file id
-                    id_int_unique_last_index += 1
-                    fout_index.write(f"{original_line_dict[id_int_unique_field_name]},{id_int_unique_last_index}\n")
+                # write the pair (original_doc_id, duplicated_doc_id) in the index file
+                # first column: original file id
+                # second column: duplicate file id
+                id_int_unique_last_index += 1
+                fout_index.write(f"{original_line_dict[id_int_unique_field_name]},{id_int_unique_last_index}\n")
                     
-
+                
+                
             line_index += 1
 
 # idea: write it as a dictionary, save as a json
-# and reload as dictionary
+# and reload as dictionary as needed
 def WriteMetadataCollection(param_names_list: list,
                             param_values_list: list,
                             file_out_path: str):
