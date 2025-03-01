@@ -7,7 +7,7 @@ from ..src import minhash
 from ..src import hashing
 from ..src import lsh
 
-import sys
+import os
 import csv
 import numpy as np
 import json
@@ -39,6 +39,14 @@ INT_TYPE_64 = np.uint64
 file_name_original_only = "test_data\\arxiv_first_1000_id2.json"
 file_name_duplicates_only = "test_data\\arxiv_duplicates\\arxiv_clones_1000_only_duplicates.json"
 
+# signature db folder and path
+signature_db_folder = "test_data\\arxiv_duplicates\\sig_config1"
+signature_db_relative_path = "signature_db"
+
+os.makedirs(signature_db_folder, exist_ok = True)
+signature_db_full_path = os.path.join(signature_db_folder,
+                                      signature_db_relative_path)
+
 
 # MinHASH ----------------------------------------------------------
 # generate permutations params
@@ -48,11 +56,20 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
                                                 reshape = True,
                                                 int_type = INT_TYPE_64)
 
+# write shingle and MinHash metadata
+original_collection_metadata_path = "test_data\\metadata_arxiv_1000_only_duplicates.json"
+# read it
+# add shingle and minhash parameters
+# save it in subfolder
+
 
 # SQL -----------------------------------------------------------------
 
+# first make subfolder, with respect to the duplicates file folder
+# where to store the signature database
+
 # initialize SignaturesSQLite
-SigSQL = minhash.SignaturesSQLite()
+SigSQL = minhash.SignaturesSQLite(database_name = signature_db_full_path)
 
 # number of insertions for each transaction
 NUM_SQL_INSERTIONS = 100
@@ -61,7 +78,6 @@ insertion_counter = 0
 SigSQL.begin_transaction()
 
 # Actual procedure ------------------------------------------------------
-
 
 # 1) Add original Data
 # Add original data (no clones) to Signature database
@@ -103,6 +119,7 @@ SigSQL.end_transaction()
 
 stop = time.time()
 
+print("Only original data Signatures")
 print(f"Time: {stop - start}")
 
 
@@ -110,7 +127,7 @@ print(f"Time: {stop - start}")
 SigSQL.close_database()
 
 # open database
-SigSQL = minhash.SignaturesSQLite()
+SigSQL = minhash.SignaturesSQLite(database_name = signature_db_full_path)
 
 
 # 2) Add duplicates Data
@@ -153,6 +170,7 @@ SigSQL.end_transaction()
 
 stop = time.time()
 
+print("Only duplicates data Signatures")
 print(f"Time: {stop - start}")
 
 
@@ -189,12 +207,14 @@ LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = N_BANDS, n_buckets = N_BUCK
 
 
 # open database connection
-SigSQL = minhash.SignaturesSQLite()
+SigSQL = minhash.SignaturesSQLite(database_name = signature_db_full_path)
 
 # define rows iterator
 fetched_rows_iterator = SigSQL.fetch_all_rows()
 
 # populate LSH band data structure
+
+start = time.time()
 
 for row in fetched_rows_iterator:
     id_temp = row[0]
@@ -205,6 +225,13 @@ for row in fetched_rows_iterator:
                                                     break_points = my_break_points,
                                                     hash_functions_list = my_lsh_hash_fun_list),
                                                     object = id_temp)
+stop = time.time()
+
+print("Adding to LSH bands buckets")
+print(f"Time: {stop - start}")
+
+
+start = time.time()
 
 temp_all_combinations = dict()
 
@@ -239,6 +266,9 @@ for band_object in LshManyBands.bands_list:
                     if sig_sim != 0:
                         # do not include if signature similarity is zero
                         temp_all_combinations[temp_key] = sig_sim
+
+print("Finding documents in the same bucket LSH bands")
+print(f"Time: {stop - start}")
     
 # print(temp_all_combinations)
 
@@ -247,8 +277,27 @@ print(f"length of dictionary is {len(temp_all_combinations)}")
 # sort key values
 sorted_tuples_list = sorted(temp_all_combinations.items())
 
+
 # write signature similarity csv
-with open('test_data\\arxiv_clones_first_1000_signature_sim.csv', mode='w', newline='') as fout:
+
+# signature db folder and path
+signature_db_folder = "test_data\\arxiv_duplicates\\sig_config1"
+signature_db_relative_path = "signature_db"
+
+
+signature_db_full_path = os.path.join(signature_db_folder,
+                                      signature_db_relative_path)
+
+signature_sim_folder_path = "test_data\\arxiv_duplicates\\sig_config1\\lsh1"
+signature_sim_relative_path = "arxiv_clones_first_1000_signature_sim.csv"
+
+os.makedirs(signature_sim_folder_path, exist_ok = True)
+
+signature_sim_full_path = os.path.join(signature_sim_folder_path,
+                                      signature_sim_relative_path)
+
+
+with open(signature_sim_full_path, mode='w', newline='') as fout:
     writer = csv.writer(fout)
     
     # write header
