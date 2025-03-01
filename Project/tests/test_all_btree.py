@@ -16,10 +16,10 @@ import time
 # (from notepad++ encoding, or another way)
 
 # If data is in test_data: (use this in testing)
-# >>> python -m project.tests.test_all
+# >>> python -m project.tests.test_all_btree
 
 # if data is in external folder:
-# >>> python -m near_duplicate_doc_lsh.project.tests.test_all
+# >>> python -m near_duplicate_doc_lsh.project.tests.test_all_btree
 
 
 # constants
@@ -43,19 +43,10 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
                                                 reshape = True,
                                                 int_type = INT_TYPE_64)
 
+# BTree
+
 # initialize Signature Btree instance
 SigBTree = minhash.SignaturesBTree()
-
-# SQL -----------------------------------------------------------------
-
-# initialize SignaturesSQLite
-# SigSQL = minhash.SignaturesSQLite()
-
-# number of insertions for each transaction
-# NUM_SQL_INSERTIONS = 100
-# insertion_counter = 0
-
-# SigSQL.begin_transaction()
 
 # LSH --------------------------------------------------------------------
 
@@ -99,13 +90,6 @@ with open(file_name, 'r', encoding = "utf-8") as fin:
             # add key (doc id) value (signature) pair to the Signature Btree
             SigBTree.insert(id_temp, signature_temp)
 
-            # add key (doc id) value (signature) pair to the SignatureSQL
-            # if insertion_counter % NUM_SQL_INSERTIONS == 0:
-                # SigSQL.end_transaction()
-                # SigSQL.begin_transaction()
-            
-            # SigSQL.insert_key_value(key = id_temp, value = signature_temp)
-            # insertion_counter += 1
             
             LshManyBands.AddToBands(bucket_ids = lsh.ComputeAllHashBands(signature = signature_temp,
                                                                          break_points = my_break_points,
@@ -187,12 +171,3 @@ with open('test_data\\arxiv_clones_first_1000_signature_sim.csv', mode='w', newl
 # sim_doc1_doc2 =  SigBTree.compute_similarity(doc1_id, doc2_id)
 # print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
 
-# SQL -------------------------------------
-# value1 = SigSQL.get_value_by_key(doc1_id)
-# value2 = SigSQL.get_value_by_key(doc2_id)
-
-# sim_doc1_doc2 = minhash.SignatureSimilarity(value1, value2)
-# print(f"The signature similarity between doc {doc1_id} and doc {doc2_id} is {sim_doc1_doc2}")
-
-# SigSQL.close_database()
-# SigSQL.delete_database(ask_confirm = False)

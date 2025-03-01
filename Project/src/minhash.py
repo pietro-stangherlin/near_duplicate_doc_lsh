@@ -180,9 +180,11 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
     def get_signature_by_id(self,
                             id_value):
         
-        super().get_col2_by_col1(col1_value = id_value)    
+        return(super().get_col2_by_col1(col1_value = id_value))    
 
 
+
+# NOTE: this is just a try, currently NOT USED!!!s
 class SignaturesSQLiteGeneral(sqlite_one_table.SQLiteOneTableGeneral):
     '''Compute signatures, pickle them, save database and eventually unpickle by key.
 

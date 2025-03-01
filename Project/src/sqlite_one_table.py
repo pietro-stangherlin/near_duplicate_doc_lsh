@@ -23,7 +23,7 @@ class SQLiteOneTable:
                  do_pickle: bool = True,
                  create_index_on_col1: bool = True):
         '''Inizialize the instance creating the database.
-        
+        Or opening an existing one
         
         Args:
             - database_name: name of the database used or to be created
@@ -65,7 +65,7 @@ class SQLiteOneTable:
         
         # create column 1 index if specified
         if create_index_on_col1:
-            self.cursor.execute(f'''CREATE INDEX idx_col1 
+            self.cursor.execute(f'''CREATE INDEX IF NOT EXISTS idx_col1 
                                 ON {self.table_name} ({self.col1_name});''')
         
         # define methods based on do_pickle
@@ -132,6 +132,26 @@ class SQLiteOneTable:
         
         else:
             os.remove(self.database_name)
+    
+    def fetch_all_rows(self,
+                       batch_size: int = 10000,
+                       do_unpickle_col2: bool = True):
+        '''Iterator of all the rows in the unique table.
+        Args:
+            - batch_size (int): number of rows fetched for iteration
+            - do_unpickle (bool): if True unpickle the value of column2
+        Yield:
+            - row, eventually unpickled
+        '''
+        self.cursor.execute(f"SELECT * FROM {self.table_name}")
+        while True:
+            rows = self.cursor.fetchmany(batch_size)
+            if not rows:
+                break
+            for row in rows:
+                if do_unpickle_col2:
+                    row = (row[0], pickle.loads(row[1]))
+                yield row
 
     def print_all_records(self):
         '''Print all records in the SQLite database.

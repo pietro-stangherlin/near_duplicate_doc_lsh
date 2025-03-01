@@ -29,7 +29,7 @@ class TestSqliteOneTable(unittest.TestCase):
         # insert key value pairs
         sql_db.insert_col1_col2(TOY_DOCS_ID_SIGNATURE[0][0], TOY_DOCS_ID_SIGNATURE[0][1])
         sql_db.insert_col1_col2(TOY_DOCS_ID_SIGNATURE[1][0], TOY_DOCS_ID_SIGNATURE[1][1])
-
+        sql_db.insert_col1_col2(TOY_DOCS_ID_SIGNATURE[2][0], TOY_DOCS_ID_SIGNATURE[2][1])
         # end transaction
         sql_db.end_transaction()
 
@@ -41,6 +41,15 @@ class TestSqliteOneTable(unittest.TestCase):
 
         # assertion
         np.testing.assert_array_equal(result, expected)
+        
+        # fetch many test
+        fetched_rows = sql_db.fetch_all_rows()
+        
+        row_index = 0
+        for row in fetched_rows:
+            np.testing.assert_array_equal(row[1],
+                                          TOY_DOCS_ID_SIGNATURE[row_index][1])
+            row_index += 1
 
         # close database
         sql_db.close_database()
