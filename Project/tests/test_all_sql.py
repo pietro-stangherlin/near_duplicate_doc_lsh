@@ -56,13 +56,6 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
                                                 reshape = True,
                                                 int_type = INT_TYPE_64)
 
-# write shingle and MinHash metadata
-original_collection_metadata_path = "test_data\\metadata_arxiv_1000_only_duplicates.json"
-# read it
-# add shingle and minhash parameters
-# save it in subfolder
-
-
 # SQL -----------------------------------------------------------------
 
 # first make subfolder, with respect to the duplicates file folder
@@ -131,12 +124,15 @@ SigSQL = minhash.SignaturesSQLite(database_name = signature_db_full_path)
 
 
 # 2) Add duplicates Data
-# Add dupicates data to Signature database
+# Add duplicates data to Signature database
 
 start = time.time()
 
+doc_count_signature = 0
+
 with open(file_name_duplicates_only, 'r', encoding = "utf-8") as fin:
     for line in fin:
+        doc_count_signature += 1
         # Use regular expression to find the content inside the brackets
         match = re.search(r'\{(.*)\}', line)
         if match:
@@ -174,6 +170,34 @@ print("Only duplicates data Signatures")
 print(f"Time: {stop - start}")
 
 
+# write shingle and MinHash metadata
+original_collection_metadata_path = "test_data\\arxiv_duplicates\\metadata_arxiv_1000_only_duplicates.json"
+# read it
+# add shingle and minhash parameters
+# save it in subfolder
+
+# make output subfolder
+
+metadata_minhash_relative_path = "metadata_minhash.json"
+
+metadata_minhash_full_path = os.path.join(signature_db_folder,
+                                      metadata_minhash_relative_path)
+
+
+# NOTE: in future ADD: type of integer used for both shingling and Hashing
+# + type of Hashing functions used, for both
+
+with open(original_collection_metadata_path, "r") as fin:
+    metadata_minhash_dict = json.load(fin)
+    metadata_minhash_dict["minhash"] = {"shingle_length": SHINGLE_LEN,
+                                        "signature_length": SIGNATURE_LEN,
+                                        "random_integers" : EL,
+                                        "document_count": doc_count_signature,
+                                        "time" : stop - start}
+    
+with open(metadata_minhash_full_path, "w") as fout:
+    json.dump(metadata_minhash_dict, fout)
+    
 
 # SQL ------------------------------------
 # compare the similarity of two documents
@@ -231,7 +255,7 @@ print("Adding to LSH bands buckets")
 print(f"Time: {stop - start}")
 
 
-start = time.time()
+start_find_sim = time.time()
 
 temp_all_combinations = dict()
 
@@ -267,8 +291,10 @@ for band_object in LshManyBands.bands_list:
                         # do not include if signature similarity is zero
                         temp_all_combinations[temp_key] = sig_sim
 
+stop_find_sim = time.time()
+
 print("Finding documents in the same bucket LSH bands")
-print(f"Time: {stop - start}")
+print(f"Time: {stop_find_sim - start_find_sim}")
     
 # print(temp_all_combinations)
 
@@ -309,3 +335,24 @@ with open(signature_sim_full_path, mode='w', newline='') as fout:
 
 SigSQL.close_database()
 SigSQL.delete_database(ask_confirm = False)
+
+
+
+metadata_lsh_relative_path = "metadata_lsh.json"
+
+metadata_lsh_full_path = os.path.join(signature_sim_folder_path ,
+                                      metadata_lsh_relative_path)
+
+
+# NOTE: in future ADD: type of integer used for both shingling and Hashing
+# + type of Hashing functions used, for both
+
+with open(metadata_minhash_full_path, "r") as fin:
+    metadata_lsh_dict = json.load(fin)
+    metadata_lsh_dict["lsh"] = {"bands_number": N_BANDS,
+                                        "buckets_number": N_BUCKETS,
+                                        "time_populate" : stop - start,
+                                        "time_find_sim": stop_find_sim - start_find_sim}
+    
+with open(metadata_lsh_full_path, "w") as fout:
+    json.dump(metadata_lsh_dict, fout)
