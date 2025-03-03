@@ -1,6 +1,6 @@
-import minhash
-import shingling
-import line_reading as lr
+from ..src import minhash
+from ..src import shingling
+from ..src import line_reading as lr
 
 import regex as re
 import numpy as np
@@ -87,12 +87,46 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
                     SigSQL.end_transaction()
                     SigSQL.begin_transaction()
             
-                    SigSQL.insert_id_signature_pair(id_value = tuple_id_signature[0],
+                SigSQL.insert_id_signature_pair(id_value = tuple_id_signature[0],
                                             signature_value = tuple_id_signature[1])
-                    insertion_counter += 1
+                insertion_counter += 1
                     
     SigSQL.end_transaction()
     SigSQL.close_database()
+
+
+def FindAllCombinations(lsh_many_bands,
+                  sig_sql):
+    '''
+    '''
+    temp_all_combinations = {}
+
+    for band_object in lsh_many_bands.bands_list:
+        for k in band_object.more_than_one_index:
+            temp_bucket = band_object.band[k]
+            
+            for i in range(len(temp_bucket) - 1):
+                for j in range(i + 1, len(temp_bucket)):
+                    # store just one tuple for each pair:
+                    # i.e. (a,b) = (b,a)
+                    # we ensure this (assuming the doc_id allows an ordering)
+                    
+                    temp_key = (temp_bucket[i], temp_bucket[j])
+                    
+                    if temp_bucket[i] > temp_bucket[j]:
+                        temp_key = (temp_bucket[j], temp_bucket[i])
+                    
+                    if temp_key not in temp_all_combinations:
+                        value1 = sig_sql.get_signature_by_id(temp_key[0])
+                        value2 = sig_sql.get_signature_by_id(temp_key[1])
+                        sig_sim = minhash.SignatureSimilarity(value1, value2)
+                        
+                        if sig_sim != 0:
+                            # do not include if signature similarity is zero
+                            temp_all_combinations[temp_key] = sig_sim
+
+    return temp_all_combinations
+
 
 
             

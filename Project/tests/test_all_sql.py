@@ -2,18 +2,15 @@
 # LSH band buckets still stored in list of lists data structure
 # then all records need to be read again in order to populate the LSH data structure
 
-from ..src import minhash
+from ..src import minhash as mh
 from ..src import hashing
 from ..src import lsh
-from ..src import line_reading as lr
 from ..src import macro
-import test_all_params as tap
+from project.tests import test_all_params as tap
 
 import os
 import csv
-import numpy as np
 import json
-import re
 import time
 
 # important: execute the script from external directory
@@ -53,7 +50,7 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
 start = time.time()
 
 macro.MinHashPopulateSignatureSQL(file_in_full_path = tap.file_name_original_only,
-                                signature_db_full_path = tap.signature_db_full_path,
+                                signature_db_full_path = signature_db_full_path,
                                 id_name = tap.ID_NAME,
                                 content_name = tap.CONTENT_NAME,
                                 shingle_len = tap.SHINGLE_LEN,
@@ -77,7 +74,7 @@ start = time.time()
 doc_count_signature = 0
 
 macro.MinHashPopulateSignatureSQL(file_in_full_path = tap.file_name_duplicates_only,
-                                signature_db_full_path = tap.signature_db_full_path,
+                                signature_db_full_path = signature_db_full_path,
                                 id_name = tap.ID_NAME,
                                 content_name = tap.CONTENT_NAME,
                                 shingle_len = tap.SHINGLE_LEN,
@@ -121,7 +118,7 @@ with open(metadata_minhash_full_path, "w") as fout:
 
 # generate hash functions for lsh bands hashing
 my_lsh_hash_fun_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = tap.N_BANDS,
-                                                            band_size = tap.SIGNATURE_LEN // N_BANDS,
+                                                            band_size = tap.SIGNATURE_LEN // tap.N_BANDS,
                                                             modulo = tap.N_BUCKETS,
                                                             seed = 123)
 
@@ -132,7 +129,7 @@ LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = tap.N_BANDS, n_buckets = ta
 
 
 # open database connection
-SigSQL = minhash.SignaturesSQLite(database_name = signature_db_full_path)
+SigSQL = mh.SignaturesSQLite(database_name = signature_db_full_path)
 
 # define rows iterator
 fetched_rows_iterator = SigSQL.fetch_all_rows()
@@ -158,39 +155,8 @@ print(f"Time: {stop - start}")
 
 start_find_sim = time.time()
 
-temp_all_combinations = dict()
-
-for band_object in LshManyBands.bands_list:
-    for k in band_object.more_than_one_index:
-        temp_bucket = band_object.band[k]
-        
-        for i in range(len(temp_bucket) - 1):
-            for j in range(i + 1, len(temp_bucket)):
-                # already in the dictionary
-                
-                # store just one tuple for each pair:
-                # i.e. (a,b) = (b,a)
-                # we ensure this (assuming the doc_id allows an ordering)
-                
-                # it's ugly, just for readbility
-                
-                temp_key = (temp_bucket[i], temp_bucket[j])
-                
-                if (temp_bucket[i] > temp_bucket[j]):
-                    temp_key = (temp_bucket[j], temp_bucket[i])
-                
-                
-                condition = temp_key in temp_all_combinations
-                if not condition:
-                    value1 = SigSQL.get_signature_by_id(temp_key[0])
-                    # debug
-                    # print(value1)
-                    value2 = SigSQL.get_signature_by_id(temp_key[1])
-                    sig_sim = minhash.SignatureSimilarity(value1, value2)
-                    
-                    if sig_sim != 0:
-                        # do not include if signature similarity is zero
-                        temp_all_combinations[temp_key] = sig_sim
+temp_all_combinations = macro.FindAllCombinations(lsh_many_bands = LshManyBands,
+                                                  sig_sql = SigSQL)
 
 stop_find_sim = time.time()
 

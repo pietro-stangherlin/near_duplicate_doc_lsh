@@ -13,7 +13,6 @@ CONTENT_NAME = "content"
 SHINGLE_LEN = 9 # shingle len
 SHINGLE_HASH_FUN = hashing.MurmUns32Hash
 
-
 SIGNATURE_LEN = 50 # signature len -> number of hash functions
 MINHASH_HASH_FUN = hashing.NumbaNaiveHashU32Params
 MINHASH_INT_TYPE = INT_TYPE_32
