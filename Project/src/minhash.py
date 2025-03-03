@@ -67,7 +67,7 @@ def NumbaSignatureByRowParallel(shingles_array: np.array,
                             the columns number
         hash_fun: the hash function used, note that at the moment
                     is not implemented any compatibility check between
-                    the paramters of this function and those of 
+                    the parameters of this function and those of 
                     the hash_function
         int_type: integer type of the signature elements
         
@@ -97,7 +97,7 @@ def NumbaSignatureByRowParallel(shingles_array: np.array,
 # -------- Compare Signatures ---------
 @numba.njit
 def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
-    '''Compare two signatures element by element and  return the similarity
+    '''Compare two signatures element by element and return the similarity
     
     Args:
         sig1: signature 1 (array of len k)

@@ -6,6 +6,7 @@ from ..src import shingling
 from ..src import minhash
 from ..src import hashing
 from ..src import lsh
+from ..src import line_reading as lr
 
 import os
 import csv
@@ -26,6 +27,10 @@ import time
 # >>> python -m near_duplicate_doc_lsh.project.tests.test_all_sql
 
 # constants
+
+ID_NAME = "id2"
+CONTENT_NAME = "content"
+
 SHINGLE_LEN = 9 # shingle len
 SIGNATURE_LEN = 50 # signature len -> number of hash functions
 EL = 2 # number of random integers generated
@@ -82,15 +87,12 @@ with open(file_name_original_only, 'r', encoding = "utf-8") as fin:
         # Use regular expression to find the content inside the brackets
         match = re.search(r'\{(.*)\}', line)
         if match:
-            content = match.group(0)  # group(0) returns the entire match
-            # due to json problems
-            json_content = json.loads(content)  # Convert the content to JSON
-            id_temp = int(json_content["id2"])
-            text_temp = json_content["content"]
-            
-            
+            tuple_id_content = lr.ToJsonLineRead(my_match = match,
+                                        id_name = ID_NAME,
+                                        content_name = CONTENT_NAME)
+                        
             shingle_temp = shingling.TextToShinglesUniques(
-                text = text_temp,
+                text = tuple_id_content[1],
                 shingle_len = SIGNATURE_LEN,
                 hash_fun = hashing.MurmUns32Hash)
             
@@ -105,7 +107,8 @@ with open(file_name_original_only, 'r', encoding = "utf-8") as fin:
                 SigSQL.end_transaction()
                 SigSQL.begin_transaction()
             
-            SigSQL.insert_id_signature_pair(id_value = id_temp, signature_value = signature_temp)
+            SigSQL.insert_id_signature_pair(id_value = tuple_id_content[0],
+                                            signature_value = signature_temp)
             insertion_counter += 1
             
 SigSQL.end_transaction()
