@@ -1,5 +1,9 @@
 # parameters used in test all
 import numpy as np
+from ..src import hashing
+
+INT_TYPE_32 = np.uint32
+INT_TYPE_64 = np.uint64
 
 # Doc ----------------------------------------------------------
 ID_NAME = "id2"
@@ -7,7 +11,13 @@ CONTENT_NAME = "content"
 
 # MinHash -------------------------------------------------------
 SHINGLE_LEN = 9 # shingle len
+SHINGLE_HASH_FUN = hashing.MurmUns32Hash
+
+
 SIGNATURE_LEN = 50 # signature len -> number of hash functions
+MINHASH_HASH_FUN = hashing.NumbaNaiveHashU32Params
+MINHASH_INT_TYPE = INT_TYPE_32
+
 EL = 2 # number of random integers generated
 
 NUM_SQL_INSERTIONS = 1000
@@ -15,12 +25,6 @@ NUM_SQL_INSERTIONS = 1000
 # LSH -----------------------------------------------------------
 N_BANDS = 5 # number of bands
 N_BUCKETS = 10**6 # number of buckets in each band
-
-INT_TYPE_32 = np.uint32
-INT_TYPE_64 = np.uint64
-
-
-
 
 # folders and files path ------------------------------------------------------
 
