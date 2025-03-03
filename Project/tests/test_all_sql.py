@@ -112,15 +112,13 @@ with open(file_name_original_only, 'r', encoding = "utf-8") as fin:
             insertion_counter += 1
             
 SigSQL.end_transaction()
+SigSQL.close_database()
 
 stop = time.time()
 
 print("Only original data Signatures")
 print(f"Time: {stop - start}")
 
-
-# close database
-SigSQL.close_database()
 
 # open database
 SigSQL = minhash.SignaturesSQLite(database_name = signature_db_full_path)
@@ -180,7 +178,6 @@ original_collection_metadata_path = "test_data\\arxiv_duplicates\\metadata_arxiv
 # save it in subfolder
 
 # make output subfolder
-
 metadata_minhash_relative_path = "metadata_minhash.json"
 
 metadata_minhash_full_path = os.path.join(signature_db_folder,
@@ -308,15 +305,6 @@ sorted_tuples_list = sorted(temp_all_combinations.items())
 
 
 # write signature similarity csv
-
-# signature db folder and path
-signature_db_folder = "test_data\\arxiv_duplicates\\sig_config1"
-signature_db_relative_path = "signature_db"
-
-
-signature_db_full_path = os.path.join(signature_db_folder,
-                                      signature_db_relative_path)
-
 signature_sim_folder_path = "test_data\\arxiv_duplicates\\sig_config1\\lsh1"
 signature_sim_relative_path = "arxiv_clones_first_1000_signature_sim.csv"
 
