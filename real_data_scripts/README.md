@@ -11,6 +11,7 @@ Due to license reason the collection and the related files are not included in t
 
 3) for a fixed set of parameters of shingle and minhash make signatures of just the original collection
     -> saving the result as a sqlite database.
+    -> in the same folder save the shingle and minhash parameters used to make the signatures
 
 4) for a fixed set of parameters of shingle and minhash:
     for each different set of clones parameters:

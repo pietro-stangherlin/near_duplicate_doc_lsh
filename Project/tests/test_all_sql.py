@@ -31,7 +31,7 @@ signature_db_full_path = os.path.join(tap.signature_db_folder,
 
 # MinHASH ----------------------------------------------------------
 # generate permutations params
-hash_params_matrix = hashing.GenerateNumpyArray(num_rows = 100,
+hash_params_matrix = hashing.GenerateNumpyArray(num_rows = tap.SIGNATURE_LEN,
                                                 num_cols = 2,
                                                 seed = 123,
                                                 reshape = True,

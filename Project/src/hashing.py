@@ -123,7 +123,7 @@ def NaiveHashU64Params(x : np.uint64, params: np.array) -> np.uint64:
     '''
     x = np.uint64(x)
     p = 2**61 - 1
-    return np.uint64((((params[0] * x + params[1]) % p) % 2**32))
+    return np.uint64((((params[0] * x + params[1]) % p)))
 
 
 
@@ -144,6 +144,25 @@ def NumbaNaiveHashU32Params(x, params):
     x = np.uint64(x)
     p = 2**61 - 1
     return (((params[0] * x + params[1]) % p) % 2**32)
+
+
+@numba.njit(numba.uint64(numba.uint64, numba.uint64[:]))
+def NumbaNaiveHashU64Params(x, params):
+    '''Compute unsigned 32bit of unsigned 32 bit integer.
+    
+    Args:
+        x (uint64): integer to be hashed 
+        params (array of 2 uint64): params a and b in the formula
+    
+    NOTE: 
+    a and b should be randomly uniformly generated to get universal hashing
+        
+    Returns: 
+        hash (uint64): hashed integer
+    '''
+    x = np.uint64(x)
+    p = 2**61 - 1
+    return (((params[0] * x + params[1]) % p))
 
 # ----------- LSH bands hash function ------------------
 def MotwaniBandArrayHash(v: np.array,
