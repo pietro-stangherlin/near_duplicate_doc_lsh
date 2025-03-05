@@ -181,7 +181,7 @@ signature_sim_full_path = os.path.join(signature_sim_folder_path,
                                       signature_sim_relative_path)
 
 
-with open(signature_sim_full_path, mode='w', newline='') as fout:
+with open(signature_sim_full_path, mode= 'w', newline='') as fout:
     writer = csv.writer(fout)
     
     # write header

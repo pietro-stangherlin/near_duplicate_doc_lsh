@@ -7,9 +7,6 @@ import numpy as np
 
 # this file holds macro function useful to the evaluation
 
-# number of insertions for each transaction
-NUM_SQL_INSERTIONS = 100
-
 def ToMatchFromIdAndSignature(my_match: str,
                               id_name: str,
                               content_name: str,
@@ -96,7 +93,7 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
 
 
 def FindAllCombinations(lsh_many_bands,
-                  sig_sql):
+                        sig_sql):
     '''
     '''
     temp_all_combinations = {}

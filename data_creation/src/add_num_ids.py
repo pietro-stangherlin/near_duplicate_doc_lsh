@@ -1,6 +1,4 @@
-import sys
-import json 
-from typing import Callable
+import json
 
 # convert all the ids to int and add a new id field
 # to that field
