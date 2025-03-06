@@ -13,6 +13,8 @@ import csv
 import json
 import time
 
+SEED = 123
+
 # important: execute the script from external directory
 # so the data folder (not included in the near_duplicate_doc_lsh) is a subdirectory
 # also before running convert the file to utf-8 and remove BOM 
@@ -33,7 +35,7 @@ signature_db_full_path = os.path.join(tap.signature_db_folder,
 # generate permutations params
 hash_params_matrix = hashing.GenerateNumpyArray(num_rows = tap.SIGNATURE_LEN,
                                                 num_cols = 2,
-                                                seed = 123,
+                                                seed = SEED,
                                                 reshape = True,
                                                 int_type = tap.INT_TYPE_64)
 
@@ -120,7 +122,7 @@ with open(metadata_minhash_full_path, "w") as fout:
 my_lsh_hash_fun_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = tap.N_BANDS,
                                                             band_size = tap.SIGNATURE_LEN // tap.N_BANDS,
                                                             modulo = tap.N_BUCKETS,
-                                                            seed = 123)
+                                                            seed = SEED)
 
 my_break_points = lsh.GenerateBreakPoints(n = tap.SIGNATURE_LEN, n_bands = tap.N_BANDS)
 
