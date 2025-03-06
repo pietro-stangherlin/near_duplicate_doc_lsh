@@ -3,14 +3,15 @@ import numpy as np
 
 # This just creates json files, each with shingle and minhash parameters
 # which are saved in the minhash_params folder
+# same for lsh parameters
 
 from near_duplicate_doc_lsh.project.src import hashing
 
 # instructions:
-# exectute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.make_minhash_params
+# execute from LSH folder with:
+# > python -m near_duplicate_doc_lsh.real_data_scripts.make_params_files
 
-save_folder = "near_duplicate_doc_lsh\\real_data_scripts\\minhash_params\\"
+save_folder_minhash = "near_duplicate_doc_lsh\\real_data_scripts\\minhash_params\\"
 
 SEED = 123
 
@@ -48,10 +49,30 @@ for bit in hash_dict:
 
             # define the filename based on the signature length
             # add bit number
-            filename = save_folder + f"minhash_par_shl_{shingle_len}_sil_{signa_len}_{bit}.json"
+            filename = save_folder_minhash + f"minhash_par_shl_{shingle_len}_sil_{signa_len}_{bit}.json"
 
             # save parameters to a file
             with open(filename, 'w') as file:
                 json.dump(parameters, file, indent = 4)
 
 # MAKE LSH parameters FILES
+
+# list of signature lengths
+bands_numbers = [10, 20, 30] # 9 is the suggested length
+bucket_numbers = [10**6, 5 * 10**6, 10**7]
+
+save_folder_lsh = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_params\\"
+
+for band_n in bands_numbers:
+    for bucket_n in bucket_numbers:
+        parameters = {
+        "bands_numbers": band_n,
+        "bucket_numbers": bucket_n}
+
+        # define the filename based on the signature length
+        # add bit number
+        filename = save_folder_lsh + f"lsh_par_band_{band_n}_bucket_{bucket_n}.json"
+
+        # save parameters to a file
+        with open(filename, 'w') as file:
+            json.dump(parameters, file, indent = 4)
