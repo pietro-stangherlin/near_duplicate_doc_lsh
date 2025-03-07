@@ -2,6 +2,7 @@
 
 from near_duplicate_doc_lsh.project.src import hashing
 from near_duplicate_doc_lsh.project.src import macro
+from near_duplicate_doc_lsh.real_data_scripts import make_params_files as mpf
 
 import os
 import csv
@@ -24,11 +25,17 @@ signature_db_folder = "data_near_duplicate\\signatures_db_original\\"
 # - signature_db of original data
 # - metadata file
 
-
-for filename in os.listdir(minhash_params_folder):
-    file_path = os.path.join(folder_path, filename)
-    if os.path.isfile(file_path):
-        print(file_path)
+# for each metadata file
+for param_filename in os.listdir(minhash_params_folder):
+    param_file_path = os.path.join(param_filename, minhash_params_folder)
+    
+    # open param file
+    # get params and save 
+    
+    
+    # get 
+    # make folder in signature path
+    
 
 
 
