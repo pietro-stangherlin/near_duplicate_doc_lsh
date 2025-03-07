@@ -4,6 +4,7 @@ from near_duplicate_doc_lsh.project.src import hashing
 from near_duplicate_doc_lsh.project.src import macro
 from near_duplicate_doc_lsh.real_data_scripts import make_params_files as mpf
 
+import numpy as np
 import os
 import csv
 import json
@@ -19,6 +20,20 @@ minhash_params_folder = "near_duplicate_doc_lsh\\real_data_scripts\\minhash_para
 
 signature_db_folder = "data_near_duplicate\\signatures_db_original\\"
 
+
+# MinHash load function
+def LoadMinhashParamsFile(file_path):
+    with open(file_path, 'r') as file:
+        params = json.load(file)
+        
+        params_dict = {
+        mpf.SHINGLE_LEN_FIELD_NAME: params[mpf.SHINGLE_LEN_FIELD_NAME],
+        mpf.SHINGLE_HASH_FUN_FIELD_NAME: getattr(hashing, params[mpf.SHINGLE_HASH_FUN_FIELD_NAME]),
+        mpf.MINHASH_HASH_FUN_FIELD_NAME: getattr(hashing, params[mpf.MINHASH_HASH_FUN_FIELD_NAME]),
+        mpf.MINHASH_HASH_PARAM_MATRIX_FIELD_NAME: np.array(params[mpf.MINHASH_HASH_PARAM_MATRIX_FIELD_NAME], dtype = mpf.INT_TYPE_64)
+        }
+    
+        return params_dict
 # cycle for all minhash parameters files
 # for each combination if the folder already exists: do nothing
 # else make it and populate with both:
@@ -29,16 +44,18 @@ signature_db_folder = "data_near_duplicate\\signatures_db_original\\"
 for param_filename in os.listdir(minhash_params_folder):
     param_file_path = os.path.join(param_filename, minhash_params_folder)
     
-    # open param file
-    # get params and save 
+    # check if 32 or 64 bit hash
+    bit_value = 32
     
     
-    # get 
-    # make folder in signature path
+    minhash_params_dict = LoadMinhashParamsFile(file_path = param_file_path)
     
-
-
-
+    # make folder
+    signature_folder_relative_name = f"sgn_shl_{}_sigl_{}_{}_{}_{}\\"
+    
+    # save metadata
+    
+    
 os.makedirs(rmp.signature_db_folder, exist_ok = True)
 signature_db_full_path = os.path.join(rmp.signature_db_folder,
                                       rmp.signature_db_relative_path)
