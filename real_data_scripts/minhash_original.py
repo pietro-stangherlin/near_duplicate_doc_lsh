@@ -9,6 +9,10 @@ import os
 import shutil
 import json
 
+# NOTE: IMPORTANT -> check where SIGNATURE LENGTH is used in the code
+# it's also possible it's implicitly used by counting the 
+# number of rows in hash param matrix
+
 # instructions:
 # execute from LSH folder with:
 # > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original

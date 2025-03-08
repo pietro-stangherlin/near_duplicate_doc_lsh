@@ -1,5 +1,6 @@
 from near_duplicate_doc_lsh.data_creation.src import make_collection as mc
 from near_duplicate_doc_lsh.real_data_scripts import real_make_collection_params as rmcp
+from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
 import random
 
 # to do
@@ -28,4 +29,4 @@ other_params_list = [temp_dict["n_lines_in_file"], temp_dict["n_random_lines"]]
 mc.WriteRandomLines(**temp_dict)
 mc.WriteMetadataCollection(param_names_list = fun_names_list + other_names_list,
                            param_values_list = fun_params_list + other_params_list ,
-                           file_out_path = rmcp.no_noise_100k_path + "metadata.json")
+                           file_out_path = rmcp.no_noise_100k_path + pm.METADATA_FILE_NAME)
