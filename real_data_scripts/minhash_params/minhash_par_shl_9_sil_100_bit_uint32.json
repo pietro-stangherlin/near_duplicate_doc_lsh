@@ -1,7 +1,9 @@
 {
-    "shingle_len": 18,
+    "shingle_len": 9,
     "shingle_hash_fun": "MurmUns32Hash",
+    "signature_len": 100,
     "minhash_hash_fun": "NumbaNaiveHashU32Params",
+    "minhash_bit_type": "uint32",
     "hash_params_matrix": [
         [
             12847588855871978862,

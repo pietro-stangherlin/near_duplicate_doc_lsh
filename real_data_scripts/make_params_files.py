@@ -12,32 +12,31 @@ from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
 # execute from LSH folder with:
 # > python -m near_duplicate_doc_lsh.real_data_scripts.make_params_files
 
-INT_TYPE_32 = np.uint32
-INT_TYPE_64 = np.uint64
-
 # MinHash function -----------------------------------------------------------
 def SaveMinhashParamsFiles(shingle_lenghts,
                            signature_lengths,
                            hash_dict,
                            save_folder_minhash):
-    for bit in hash_dict:
+    for bit_type in hash_dict:
+        
         for shingle_len in shingle_lenghts:
             for signa_len in signature_lengths:
                 parameters = {
         pm.SHINGLE_LEN_FIELD_NAME: shingle_len,
-        pm.SHINGLE_HASH_FUN_FIELD_NAME: hash_dict[bit][0], # store hash function name
-        pm.SIGNATURE_LEN_FIELD_NAME : signature_lengths,
-        pm.MINHASH_HASH_FUN_FIELD_NAME: hash_dict[bit][1], # store hash function name
+        pm.SHINGLE_HASH_FUN_FIELD_NAME: hash_dict[bit_type][0], # store hash function name
+        pm.SIGNATURE_LEN_FIELD_NAME: signa_len,
+        pm.MINHASH_HASH_FUN_FIELD_NAME: hash_dict[bit_type][1], # store hash function name
+        pm.MINHASH_BIT_TYPE_FIELD_NAME: bit_type,
         pm.MINHASH_HASH_PARAM_MATRIX_FIELD_NAME: hashing.GenerateNumpyArray(num_rows = signa_len,
                                                          num_cols =  2,
                                                          seed= pm.SEED_MINHASH,
                                                          reshape = True,
-                                                         int_type = INT_TYPE_64).tolist()  # Convert the matrix to a list
+                                                         int_type = np.uint64).tolist()  # Convert the matrix to a list
     }
 
                 # define the filename based on the signature length
                 # add bit number
-                filename = save_folder_minhash + f"minhash_par_shl_{shingle_len}_sil_{signa_len}_{bit}.json"
+                filename = save_folder_minhash + f"minhash_par_shl_{shingle_len}_sil_{signa_len}_bit_{bit_type}.json"
 
                 # save parameters to a file
                 with open(filename, 'w') as file:

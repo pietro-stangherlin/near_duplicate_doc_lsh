@@ -11,8 +11,12 @@ CONTENT_FIELD_NAME = "content"
 
 # Constants ------------------------------------
 
-INT_TYPE_32 = np.uint32
-INT_TYPE_64 = np.uint64
+# NOTE: one should add the string "np." as a prefix, like "np.uint32"
+# here it's not present in order to be able to save the file as a json
+# (python doesn't allow to write object types as json)
+# also pickling is avoided to improve readability
+INT_TYPE_32 = "uint32"
+INT_TYPE_64 = "uint64"
 
 # seeds used for making the hash functions parameters matrix
 SEED_MINHASH = 123
@@ -33,6 +37,8 @@ SIGNATURE_LEN_FIELD_NAME = "signature_len"
 MINHASH_HASH_FUN_FIELD_NAME = "minhash_hash_fun"
 MINHASH_HASH_PARAM_MATRIX_FIELD_NAME = "hash_params_matrix"
 
+MINHASH_BIT_TYPE_FIELD_NAME = "minhash_bit_type"
+
 # Parameters values  -------------------
 # list of signature lengths
 SHINGLE_LENGTHS = [9, 18] # 9 is the suggested length
@@ -44,18 +50,21 @@ SIGNATURE_LENGTHS = [100, 200, 300]
 # with 64 bit shingle -> use 64 bit signature hash
 
 # hash functions dict:
-MINHASH_HASH_DICT = {"32": (hashing.MurmUns32Hash.__name__, # shingle
+MINHASH_HASH_DICT = {INT_TYPE_32: (hashing.MurmUns32Hash.__name__, # shingle
                     hashing.NumbaNaiveHashU32Params.__name__), # minhash
-             "64": (hashing.MurmUns64Hash.__name__, # shingle
+             INT_TYPE_64: (hashing.MurmUns64Hash.__name__, # shingle
                     hashing.NumbaNaiveHashU64Params.__name__)} # minhash
 
 # Paths ------------------
 MINHASH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\minhash_params\\"
 
 # folder of signatures
-SIGNATURE_DB_FOLDER = "data_near_duplicate\\signatures_db_original\\"
+SIGNATURE_DB_ORIGINAL_FOLDER = "data_near_duplicate\\robust\\signatures_db_original\\"
 # relative name of the signature sql database file
+
 SIGNATURE_DB_FILE_NAME_RELATIVE = "signature_db"
+
+MINHASH_PARAMETERS_COPY_RELATIVE_NAME = "minhash_params.json"
 
 # LSH ----------------------------------------------------------------------------
 # name of the bands number length field in the dictionary
