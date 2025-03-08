@@ -71,4 +71,4 @@ if __name__ == "__main__":
     
     SaveLSHParamsFiles(bands_numbers = pm.BANDS_NUMBERS,
                        bucket_numbers = pm.BUCKET_NUMBERS,
-                       save_folder_lsh = pm.SAVE_FOLDER_LSH)
+                       save_folder_lsh = pm.LSH_PARAMS_FOLDER)

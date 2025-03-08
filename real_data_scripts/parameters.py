@@ -4,9 +4,19 @@
 from near_duplicate_doc_lsh.project.src import hashing
 
 # Collection ------------------------------------------------
+
 ID_FIELD_NAME = "id2"
 CONTENT_FIELD_NAME = "content"
+
 ROBUST_DUPLICATES_NAME = "robust_duplicates.json"
+DUPLICATES_INDEX_NAME = "robust_index.csv"
+
+# METADATA -------------------------------------
+METADATA_FILE_NAME = "metadata.json"
+
+MINHASH_METADATA_PARAMS_NAME = "minhash_params"
+LSH_METADATA_PARAMS_NAME = "lsh_params"
+
 BIT_TYPE_NAME = "bit_type"
 TIME_NAME = "time"
 
@@ -18,8 +28,6 @@ TIME_NAME = "time"
 # also pickling is avoided to improve readability
 INT_TYPE_32 = "uint32"
 INT_TYPE_64 = "uint64"
-
-METADATA_FILE_NAME = "metadata.json"
 
 # seeds used for making the hash functions parameters matrix
 SEED_MINHASH = 123
@@ -46,7 +54,6 @@ MINHASH_BIT_TYPE_FIELD_NAME = "minhash_bit_type"
 # list of signature lengths
 SHINGLE_LENGTHS = [9, 18] # 9 is the suggested length
 SIGNATURE_LENGTHS = [100, 200, 300]
-
 
 # Idea: 
 # with 32 bit shingle -> use 32 bit signature hash
@@ -83,11 +90,22 @@ BANDS_NUMBERS = [10, 20, 30] # 9 is the suggested length
 BUCKET_NUMBERS = [10**6, 5 * 10**6, 10**7]
 
 # Paths -----------------
-SAVE_FOLDER_LSH = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_params\\"
+LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_params\\"
+
+# final results
+LSH_RESULTS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_results\\"
+SIGNATURE_SIMILARITY_NAME_CSV = "signature_sim.csv"
+
+SIGNATURE_SIMILARITY_DOC1_HEADER = "doc1"
+SIGNATURE_SIMILARITY_DOC2_HEADER = "doc2"
+SIGNATURE_SIMILARITY_DOC1_SIGSIM_HEADER = "signature_similarity"
+
+TIME_POPULATE_LSH_NAME = "time_populate_lsh"
+TIME_FIND_SAME_BUCKET_NAME = "time_find_same_bucket"
+
 
 # (Only) Duplicates collections folder path
 ONLY_DUPLICATES_COLLECTION_FOLDER_PATH = "data_near_duplicate\\robust\\robust_clones\\"
 
 # Other Paths --------------------------------------------------------------------
 ROBUST_ORIGINAL_PATH = "data_near_duplicate\\robust\\robust_id2.json"
-

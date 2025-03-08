@@ -44,9 +44,9 @@ if __name__ == "__main__":
     
     # for each metadata file
     for param_filename in os.listdir(pm.MINHASH_PARAMS_FOLDER):
+        
         param_file_path = os.path.join(pm.MINHASH_PARAMS_FOLDER, param_filename)
-        
-        
+
         par_dict = LoadMinhashParamsFile(file_path = param_file_path)
         
         # check if 32 or 64 bit hash
