@@ -117,7 +117,6 @@ if __name__ == "__main__":
             stop_find_sim = time.time()
 
             SigSQL.close_database()
-            SigSQL.delete_database(ask_confirm = False)
 
             time_finding_id_same_bucket = stop_find_sim - start_find_sim
                 
