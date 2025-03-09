@@ -1,0 +1,3 @@
+Data are taken from https://www.kaggle.com/datasets/spsayakpaul/arxiv-paper-abstracts.
+After a bit of preprocessing a sample is taken and used as test data.
+The index contains pairs of id2 - id3 of document clones.
