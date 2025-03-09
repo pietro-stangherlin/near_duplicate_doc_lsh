@@ -190,16 +190,19 @@ with open(signature_sim_full_path, mode= 'w', newline='') as fout:
     writer = csv.writer(fout)
     
     # write header
+
     writer.writerow(['doc1_id', 'doc2_id', 'signature_similarity', "shared_buckets_number"])
     
     for ((first_el, second_el), value) in sorted_tuples_list:
         writer.writerow([first_el, second_el, value[0], value[1]])
 
 
+
 metadata_lsh_relative_path = "metadata_lsh.json"
 
 metadata_lsh_full_path = os.path.join(signature_sim_folder_path ,
                                       metadata_lsh_relative_path)
+
 
 
 with open(metadata_minhash_full_path, "r") as fin:
