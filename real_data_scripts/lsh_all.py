@@ -146,7 +146,7 @@ if __name__ == "__main__":
                                                           pm.BUCKETS_NUMBER_FIELD_NAME: n_buckets,
                                                           pm.TIME_POPULATE_LSH_NAME : time_populating_lsh,
                                                           pm.TIME_FIND_SAME_BUCKET_NAME: time_finding_id_same_bucket}
-            new_metadata_path = os.path.join(signature_folder_path,
+            new_metadata_path = os.path.join(lsh_result_folder,
                                              pm.METADATA_FILE_NAME)
             
             with open(new_metadata_path, "w") as fout:
