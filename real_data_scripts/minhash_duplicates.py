@@ -59,7 +59,12 @@ if __name__ == "__main__":
             new_signature_folder_relative_path = "_".join([signa_original_folder,
                                                        duplicates_folder])
             
+            # debug
+            print(f"signature db relative folder name: {new_signature_folder_relative_path}")
             if new_signature_folder_relative_path not in set_done_signature_db_clones_folder_names:
+                
+                # debug
+                print("signature db relative folder name is not present in the already done")
                 
                 set_done_signature_db_clones_folder_names.add(new_signature_folder_relative_path)
                 
@@ -119,7 +124,8 @@ if __name__ == "__main__":
                                   metadata_dict = metadata_dict)
                 
                  # overwrites done minhash result folder names
-                ut.UpdateCompletedFolders(pm.MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE)
+                ut.UpdateCompletedFolders(pm.MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE,
+                                          set_done_signature_db_clones_folder_names)
 
                 counter += 1
                 print(f"File {counter} written!")

@@ -51,8 +51,14 @@ if __name__ == "__main__":
             
             lsh_folder_relative_name = f"nba_{n_bands}_nbu_{n_buckets}_" + sig_folder
             
+            # debug
+            print(f"lsh relative folder name: {lsh_folder_relative_name}")
+            
             # checking needed
             if lsh_folder_relative_name not in set_already_done_lsh_result_folders:
+                
+                # debug
+                print("lsh relative folder name is not present in the already done")
                 
                 # write to set
                 set_already_done_lsh_result_folders.add(lsh_folder_relative_name)
@@ -153,7 +159,8 @@ if __name__ == "__main__":
                                                 pm.METADATA_FILE_NAME))
                 
                 # overwrite done lsh result folder names
-                ut.UpdateCompletedFolders(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE)
+                ut.UpdateCompletedFolders(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE,
+                                          set_already_done_lsh_result_folders)
 
                 counter += 1
                 print(f"File {counter} written!")

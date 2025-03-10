@@ -79,7 +79,7 @@ MINHASH_PARAMETERS_COPY_RELATIVE_NAME = "minhash_params.json"
 # + metadata file + index maybe, which is copied
 SIGNATURE_DB_DUPLICATES_FOLDER = "data_near_duplicate\\robust\\signatures_db_duplicates\\"
 
-MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts\\already_done\\signature_db_duplicates_done_names"
+MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts\\already_done\\signature_db_duplicates_done_names.txt"
 
 # LSH ----------------------------------------------------------------------------
 # name of the bands number length field in the dictionary
