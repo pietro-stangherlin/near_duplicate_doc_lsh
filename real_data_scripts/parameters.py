@@ -92,6 +92,10 @@ BUCKET_NUMBERS = [10**7, 2 * 10**7]
 # Paths -----------------
 LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_params\\"
 
+# each line is a name of already done
+# lsh result folder
+LSH_RESULT_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_names_result_done.txt"
+
 # final results
 LSH_RESULTS_FOLDER = "data_near_duplicate\\robust\\lsh_results\\"
 SIGNATURE_SIMILARITY_NAME_CSV = "signature_sim.csv"
