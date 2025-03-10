@@ -17,7 +17,7 @@ import random
 random.seed(123)
 
 # uncomment to actually write the line below
-temp_dict = rmcp.robust_only_clones_no_noise_100k
+temp_dict = rmcp.robust_only_clones_small_noise_100k
 
 fun_names_list = [fun.__name__ for fun in temp_dict["functions_edit_list"]]
 fun_params_list = temp_dict["functions_params_list"]
@@ -29,4 +29,4 @@ other_params_list = [temp_dict["n_lines_in_file"], temp_dict["n_random_lines"]]
 mc.WriteRandomLines(**temp_dict)
 mc.WriteMetadataCollection(param_names_list = fun_names_list + other_names_list,
                            param_values_list = fun_params_list + other_params_list ,
-                           file_out_path = rmcp.no_noise_100k_path + pm.METADATA_FILE_NAME)
+                           file_out_path = rmcp.small_noise_100k_path + pm.METADATA_FILE_NAME)

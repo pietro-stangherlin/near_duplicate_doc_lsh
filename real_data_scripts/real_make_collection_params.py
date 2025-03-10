@@ -64,6 +64,7 @@ small_noise_100k_path = robust_clones_path + "small_noise_100k\\"
 robust_only_clones_small_noise_100k = {"file_in": pm.ROBUST_ORIGINAL_PATH,
                                     "folder_path_out": small_noise_100k_path,
                                     "relative_file_out_collection": "robust_duplicates.json",
+                                    "relative_file_out_index": "robust_index.csv",
                                     "n_random_lines": 10**5,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": "id3",
