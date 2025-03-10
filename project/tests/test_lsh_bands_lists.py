@@ -14,7 +14,10 @@ MY_DOCS_AND_BUCKETS = {"doc1": [0,1,2],
 class LSHBandList(unittest.TestCase):
 
     def test_many_bands(self):
-        many_bands = lsh.LSHManyBandsBucketLists(n_bands = N_BANDS, n_buckets = N_BUCKETS)
+        many_bands = lsh.LSHManyBandsBucketLists(n_bands = N_BANDS,
+                                                 n_buckets = N_BUCKETS,
+                                                 signature_len = 3,
+                                                 hash_function_list = None)
         
         for key in MY_DOCS_AND_BUCKETS:
             many_bands.AddToBands(bucket_ids = MY_DOCS_AND_BUCKETS[key],

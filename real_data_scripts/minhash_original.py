@@ -2,30 +2,14 @@
 
 from near_duplicate_doc_lsh.project.src import hashing
 from near_duplicate_doc_lsh.project.src import macro
-from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
+from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
+from near_duplicate_doc_lsh.project.src import utils as ut
 
 import numpy as np
 import os
-import shutil
 import json
 
 # helper functions
-def MakeDir(path):
-    os.makedirs(path, exist_ok=True)
-    
-def LoadMetadata(file_path):
-    with open(file_path) as file:
-        return json.load(file)
-    
-def UpdateMetadata(file_path, metadata_dict):
-    with open(file_path, "w") as file:
-        json.dump(metadata_dict, file)
-
-def JoinPaths(path1, path2):
-    return(os.path.join(path1, path2))
-
-def CopyFile(src, dst):
-    shutil.copy(src, dst)
 
 # NOTE: IMPORTANT -> check where SIGNATURE LENGTH is used in the code
 # it's also possible it's implicitly used by counting the 
@@ -37,6 +21,7 @@ def CopyFile(src, dst):
 
 # MinHash load function
 def LoadMinhashParamsFile(file_path):
+    
     with open(file_path, 'r') as file:
         params = json.load(file)
         
@@ -63,7 +48,7 @@ if __name__ == "__main__":
     # for each metadata file
     for param_filename in os.listdir(pm.MINHASH_PARAMS_FOLDER):
         
-        param_file_path = JoinPaths(pm.MINHASH_PARAMS_FOLDER, param_filename)
+        param_file_path = ut.JoinPaths(pm.MINHASH_PARAMS_FOLDER, param_filename)
 
         par_dict = LoadMinhashParamsFile(file_path = param_file_path)
         
@@ -73,25 +58,22 @@ if __name__ == "__main__":
 
         
         # make folder (this can be turned into a function)
-        signature_folder_relative_path = "_".join([f"sgn_shl_{par_dict[pm.SHINGLE_LEN_FIELD_NAME]}",
-                                        f"sigl_{par_dict[pm.SIGNATURE_LEN_FIELD_NAME]}",
-                                        f"bit_{bit_type_str}\\"])
+        signature_folder_relative_path = ut.MakeRelativeSignatureFolderPath(shingle_len = par_dict[pm.SHINGLE_LEN_FIELD_NAME],
+                                                                            signature_len = par_dict[pm.SIGNATURE_LEN_FIELD_NAME],
+                                                                            bit_type = bit_type_str)
         
-        signature_folder_full_path = JoinPaths(pm.SIGNATURE_DB_ORIGINAL_FOLDER,
-                                               signature_folder_relative_path)
         
-         
+        signature_folder_full_path = ut.JoinPaths(pm.SIGNATURE_DB_ORIGINAL_FOLDER,
+                                               signature_folder_relative_path + "\\")
         
-        MakeDir(signature_folder_full_path)
+        ut.MakeDir(signature_folder_full_path)
         
-        signature_db_full_path = JoinPaths(signature_folder_full_path,
+        signature_db_full_path = ut.JoinPaths(signature_folder_full_path,
                                             pm.SIGNATURE_DB_FILE_NAME_RELATIVE)
         
         # copy param file in the subfolder
-        
-        
-        CopyFile(src = param_file_path,
-                dst = JoinPaths(signature_folder_full_path,
+        ut.CopyFile(src = param_file_path,
+                dst = ut.JoinPaths(signature_folder_full_path,
                                 pm.MINHASH_PARAMETERS_COPY_RELATIVE_NAME))
         
         # actual procedure

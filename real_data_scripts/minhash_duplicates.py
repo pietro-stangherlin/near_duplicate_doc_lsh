@@ -1,29 +1,18 @@
 # make the signature for the duplicates only data
 from near_duplicate_doc_lsh.project.src import macro
-from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
+from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
 # this import needs an "aestethic" fix, maybe
 from near_duplicate_doc_lsh.real_data_scripts import minhash_original as mho
+from near_duplicate_doc_lsh.project.src import utils as ut
 
 import time
 import numpy as np
 import os
-import shutil
-import json
 
 # instructions:
 # execute from LSH folder with:
 # > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_duplicates
 
-
-def LoadCompletedFolders(file_path):
-    with open(file_path) as file:
-        return set(line.strip() for line in file)
-
-def UpdateCompletedFolders(file_path, completed_folders):
-    with open(file_path, "w") as file:
-        for folder in completed_folders:
-            file.write(folder + "\n")
-    
 # cycle for all minhash parameters files
 # for each combination if the folder already exists: do nothing
 # else make it and populate with both:
@@ -32,41 +21,35 @@ def UpdateCompletedFolders(file_path, completed_folders):
 
 if __name__ == "__main__":
     
-    
-    
     # first load file where each row is a name of already done
-    # lsh result folder: if encountered this is skipped
-    set_done_signature_db_clones_folder_names = set()
-    
+    # signature result folder: if encountered this is skipped
     # NOTE: checking needed
-    with open(pm.MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE) as fin:
-        for line in fin:
-            set_done_signature_db_clones_folder_names.add(line.strip())
+    set_done_signature_db_clones_folder_names = ut.LoadCompletedFolders(pm.MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE)
 
     counter = 0
     
     # for each subfolder holding a signature_db
     for signa_original_folder in os.listdir(pm.SIGNATURE_DB_ORIGINAL_FOLDER):
-        signa_original_folder_path = os.path.join(pm.SIGNATURE_DB_ORIGINAL_FOLDER,
+        signa_original_folder_path = ut.JoinPaths(pm.SIGNATURE_DB_ORIGINAL_FOLDER,
                                                   signa_original_folder)
         
         # load parameters file: ----------------
-        par_dict = mho.LoadMinhashParamsFile(file_path = os.path.join(signa_original_folder_path,
-                                            pm.MINHASH_PARAMETERS_COPY_RELATIVE_NAME))
+        par_dict = mho.LoadMinhashParamsFile(file_path = ut.JoinPaths(signa_original_folder_path,
+                                                                      pm.MINHASH_PARAMETERS_COPY_RELATIVE_NAME))
         
         # check if 32 or 64 bit hash
         bit_type_str = par_dict[pm.MINHASH_BIT_TYPE_FIELD_NAME]
         bit_type = np.uint32 if bit_type_str == 'uint32' else np.uint64
         
         # original signature db file: --------------------
-        signature_db_original_file_path = os.path.join(signa_original_folder_path,
-                                              pm.SIGNATURE_DB_FILE_NAME_RELATIVE)
+        signature_db_original_file_path = ut.JoinPaths(signa_original_folder_path,
+                                                       pm.SIGNATURE_DB_FILE_NAME_RELATIVE)
         
         # ONLY DUPLICATES COLLECTION ----------------------------------------------
         for duplicates_folder in os.listdir(pm.ONLY_DUPLICATES_COLLECTION_FOLDER_PATH):
             
-            duplicates_collection_original_folder_path = os.path.join(pm.ONLY_DUPLICATES_COLLECTION_FOLDER_PATH,
-                                                  duplicates_folder)
+            duplicates_collection_original_folder_path = ut.JoinPaths(pm.ONLY_DUPLICATES_COLLECTION_FOLDER_PATH,
+                                                                      duplicates_folder)
             
             # collection of only duplicates
             robust_duplicates_file_path = duplicates_collection_original_folder_path + "\\" + pm.ROBUST_DUPLICATES_NAME
@@ -80,7 +63,7 @@ if __name__ == "__main__":
                 
                 set_done_signature_db_clones_folder_names.add(new_signature_folder_relative_path)
                 
-                new_signature_folder_full_path = os.path.join(pm.SIGNATURE_DB_DUPLICATES_FOLDER,
+                new_signature_folder_full_path = ut.JoinPaths(pm.SIGNATURE_DB_DUPLICATES_FOLDER,
                                                               new_signature_folder_relative_path + "\\")
 
                 os.makedirs(new_signature_folder_full_path, exist_ok = True)
@@ -88,20 +71,20 @@ if __name__ == "__main__":
                 # INDEX -------------------------------------------------------------------
                 # copy duplicates index in the new folder
                 # original index
-                duplicates_original_index_path = os.path.join(duplicates_collection_original_folder_path,
+                duplicates_original_index_path = ut.JoinPaths(duplicates_collection_original_folder_path,
                                                             pm.DUPLICATES_INDEX_NAME)
                 
-                copy_duplicates_index_path = os.path.join(new_signature_folder_full_path,
-                                                    pm.DUPLICATES_INDEX_NAME)
+                copy_duplicates_index_path = ut.JoinPaths(new_signature_folder_full_path,
+                                                          pm.DUPLICATES_INDEX_NAME)
                 
-                shutil.copy(src = duplicates_original_index_path,
+                ut.CopyFile(src = duplicates_original_index_path,
                             dst = copy_duplicates_index_path)
                 
                 # SIGNATURE DB COPY ----------------------------------------------------------
                 # the one where the duplicates are added
                 signature_db_copy_full_path = new_signature_folder_full_path + pm.SIGNATURE_DB_FILE_NAME_RELATIVE
                 # copy it in the new folder
-                shutil.copy(src = signature_db_original_file_path,
+                ut.CopyFile(src = signature_db_original_file_path,
                             dst = signature_db_copy_full_path)
 
                 # POPULATE SIGNATURE DB WITH DUPLICATES ---------------------------------------
@@ -123,27 +106,20 @@ if __name__ == "__main__":
                 
                 # METADATA -----------------------------------------------------------------
                 # update metadata and write them in the new folder
-                metadata_duplicates_original = os.path.join(duplicates_collection_original_folder_path,
-                                                    pm.METADATA_FILE_NAME)
-                
-                with open(metadata_duplicates_original) as metadata_fin:
-                    metadata_dict = json.load(metadata_fin)
+                metadata_dict = ut.LoadMetadata(ut.JoinPaths(duplicates_collection_original_folder_path,
+                                                            pm.METADATA_FILE_NAME))
                 
                 metadata_dict[pm.MINHASH_METADATA_PARAMS_NAME] = {pm.SHINGLE_LEN_FIELD_NAME: par_dict[pm.SHINGLE_LEN_FIELD_NAME],
                                                 pm.SIGNATURE_LEN_FIELD_NAME: par_dict[pm.SIGNATURE_LEN_FIELD_NAME],
                                                 pm.BIT_TYPE_NAME: bit_type_str,
                                                 pm.TIME_NAME: stop - start}
+            
                 
-                metadata_new_file_path = new_signature_folder_full_path + pm.METADATA_FILE_NAME
+                ut.WriteMetadata(file_path = new_signature_folder_full_path + pm.METADATA_FILE_NAME,
+                                  metadata_dict = metadata_dict)
                 
-                with open(metadata_new_file_path, "w") as fout:
-                    json.dump(metadata_dict, fout)
-                    
-                
-                 # overwrite sdone minhash result folder names
-                with open(pm.MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE, "w") as fout:
-                    for el in set_done_signature_db_clones_folder_names:
-                        fout.write(el + "\n")
-                
+                 # overwrites done minhash result folder names
+                ut.UpdateCompletedFolders(pm.MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE)
+
                 counter += 1
                 print(f"File {counter} written!")

@@ -1,6 +1,6 @@
 from near_duplicate_doc_lsh.data_creation.src import make_collection as mc
-from near_duplicate_doc_lsh.real_data_scripts import real_make_collection_params as rmcp
-from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
+from near_duplicate_doc_lsh.real_data_scripts.params import real_make_collection_params as rmcp
+from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
 import random
 
 # to do

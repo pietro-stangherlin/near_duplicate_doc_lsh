@@ -167,20 +167,33 @@ class LSHOneBandBucketLists:
 
 class LSHManyBandsBucketLists:
     
-    def __init__(self, n_bands: int, n_buckets: int):
+    def __init__(self,
+                 n_bands: int,
+                 n_buckets: int,
+                 signature_len: int,
+                 hash_function_list: list):
         '''Data structure to store many bands, each band is made of n_buckets buckets,
         A list of LSHOneBandBucketLists is made.
         Args:
+            - n_bands (int): number of bands
             - n_buckets (int): number of buckets
+            - signature_len (int): length of the signature to be hashed
+            - hash_function_list (list): list of hash function, one for each band
         '''
         self.bands_list = [LSHOneBandBucketLists(n_buckets = n_buckets) for i in range(n_bands)]
+        self.signature_len = signature_len
+        self.break_points = GenerateBreakPoints(n = signature_len, n_bands = n_bands)
+        self.hash_function_list = hash_function_list
+        
+        if n_bands != len(hash_function_list):
+            print(f"Warning: n_bands = {n_bands} != {len(hash_function_list)} = len(hash_function_list)")
 
     def AddToBands(self, bucket_ids: list, object):
         '''Add object to a bucket for each band.
         
         Args: 
             - bucket_ids (list of int): list of bucket ids ordered in the same way as the bands
-            - object (str): object to be place in the bucket, usually a document id
+            - object (str): object to be placed in the bucket, usually a document id
         '''
         # check 
         if len(bucket_ids) != len(self.bands_list):
@@ -189,6 +202,28 @@ class LSHManyBandsBucketLists:
         else:
             for i in range(len(bucket_ids)):
                 self.bands_list[i].AddToBucket(bucket_id = bucket_ids[i], object= object)
+    
+    def AddIdBySignature(self,
+                         id,
+                         signature):
+        '''Add id in different buckets in different bands based on signature hash.
+        Args: 
+            - id: document id
+            - signature: document signature
+        '''
+        self.AddToBands(bucket_ids = ComputeAllHashBands(signature = signature,
+                                                                    break_points = self.break_points,
+                                                                    hash_functions_list = self.hash_function_list),
+                                                                    object = id)
+    
+    def AddIter(self,
+                iterator):
+        '''Add each element from the iterator to the LSH band buckets.
+        Args:
+            - iterator (iter): assuming each iteration gives the tuple (id, signature)
+        '''
+        for row in iterator:
+                    self.AddIdBySignature(id = row[0], signature = row[1])
     
     def __str__(self):
         return(f'''LSH BAND with {len(self.bands_list)} bands each with {len(self.bands_list[0])} buckets''')

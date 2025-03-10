@@ -2,7 +2,7 @@ import json
 import numpy as np
 
 from near_duplicate_doc_lsh.project.src import hashing
-from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
+from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
 
 # This just creates json files, each with shingle and minhash parameters
 # which are saved in the minhash_params folder

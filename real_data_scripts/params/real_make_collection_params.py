@@ -1,5 +1,5 @@
 from near_duplicate_doc_lsh.data_creation.src import make_collection as mc
-from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
+from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
 
 robust_path = "data_near_duplicate\\robust\\"
 robust_clones_path = robust_path + "\\robust_clones\\"

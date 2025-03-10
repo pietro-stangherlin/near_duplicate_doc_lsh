@@ -119,15 +119,15 @@ with open(metadata_minhash_full_path, "w") as fout:
 # populate LSH band data structure
 
 # generate hash functions for lsh bands hashing
-my_lsh_hash_fun_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = tap.N_BANDS,
-                                                            band_size = tap.SIGNATURE_LEN // tap.N_BANDS,
-                                                            modulo = tap.N_BUCKETS,
-                                                            seed = SEED)
-
-my_break_points = lsh.GenerateBreakPoints(n = tap.SIGNATURE_LEN, n_bands = tap.N_BANDS)
 
 # initialize LSH bands list data instance
-LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = tap.N_BANDS, n_buckets = tap.N_BUCKETS)
+LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = tap.N_BANDS,
+                                           n_buckets = tap.N_BUCKETS,
+                                           signature_len = tap.SIGNATURE_LEN,
+                                           hash_function_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = tap.N_BANDS,
+                                                            band_size = tap.SIGNATURE_LEN // tap.N_BANDS,
+                                                            modulo = tap.N_BUCKETS,
+                                                            seed = SEED))
 
 
 # open database connection
@@ -140,15 +140,8 @@ fetched_rows_iterator = SigSQL.fetch_all_rows()
 
 start = time.time()
 
-for row in fetched_rows_iterator:
-    id_temp = row[0]
-    signature_temp = row[1]
-    
-    LshManyBands.AddToBands(bucket_ids =
-                            lsh.ComputeAllHashBands(signature = signature_temp,
-                                                    break_points = my_break_points,
-                                                    hash_functions_list = my_lsh_hash_fun_list),
-                                                    object = id_temp)
+LshManyBands.AddIter(fetched_rows_iterator)
+
 stop = time.time()
 
 print("Adding to LSH bands buckets")

@@ -1,11 +1,12 @@
 from near_duplicate_doc_lsh.project.src import macro
-from near_duplicate_doc_lsh.real_data_scripts import parameters as pm
 from near_duplicate_doc_lsh.project.src import lsh
 from near_duplicate_doc_lsh.project.src import minhash as mh
+from near_duplicate_doc_lsh.project.src import utils as ut
+
+from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
 
 import csv
 import os
-import shutil
 import json
 import time
 
@@ -28,13 +29,9 @@ if __name__ == "__main__":
     
     # first load file where each row is a name of already done
     # lsh result folder: if encountered this is skipped
-    set_already_done_lsh_result_folders = set()
-    
     # NOTE: checking needed
-    with open(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE) as fin:
-        for line in fin:
-            set_already_done_lsh_result_folders.add(line.strip())
-
+    set_already_done_lsh_result_folders = ut.LoadCompletedFolders(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE)
+    
     counter = 0
     
     # iterate over LSH parameters file
@@ -45,8 +42,6 @@ if __name__ == "__main__":
 
         n_bands = lsh_par_dict[pm.BANDS_NUMBER_FIELD_NAME]
         n_buckets = lsh_par_dict[pm.BUCKETS_NUMBER_FIELD_NAME]
-
-        print(n_buckets)
         
         # iterate over all duplicates (original + duplicates) signatures db folder
         for sig_folder in os.listdir(pm.SIGNATURE_DB_DUPLICATES_FOLDER):
@@ -62,30 +57,25 @@ if __name__ == "__main__":
                 # write to set
                 set_already_done_lsh_result_folders.add(lsh_folder_relative_name)
             
-                lsh_result_folder = os.path.join(pm.LSH_RESULTS_FOLDER,
+                lsh_result_folder = ut.JoinPaths(pm.LSH_RESULTS_FOLDER,
                                                 lsh_folder_relative_name + "\\")
                 
-                
-                
-                os.makedirs(lsh_result_folder, exist_ok = True)
+                ut.MakeDir(lsh_result_folder)
                 
                 # DUPLICATE INDEX COPY --------------------------------------
-                shutil.copy(src = os.path.join(signature_folder_path,
+                ut.CopyFile(src = os.path.join(signature_folder_path,
                                             pm.DUPLICATES_INDEX_NAME),
                             dst = os.path.join(lsh_result_folder,
                                             pm.DUPLICATES_INDEX_NAME))
                 
                 # get the signature database path
-                signature_db_path = os.path.join(signature_folder_path,
+                signature_db_path = ut.JoinPaths(signature_folder_path,
                                                 pm.SIGNATURE_DB_FILE_NAME_RELATIVE)
                 
                 
                 # read metadata to get signature length
-                metadata_path = os.path.join(signature_folder_path,
-                                                    pm.METADATA_FILE_NAME)
-                
-                with open(metadata_path, "r") as metadata_fin:
-                    metadata_dict = json.load(metadata_fin)
+                metadata_dict = ut.LoadMetadata(ut.JoinPaths(signature_folder_path,
+                                             pm.METADATA_FILE_NAME))
                     
                 signature_len = metadata_dict[pm.MINHASH_METADATA_PARAMS_NAME][pm.SIGNATURE_LEN_FIELD_NAME]
             
@@ -103,7 +93,12 @@ if __name__ == "__main__":
 
                 # initialize LSH bands list data instance
                 LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = n_bands,
-                                                        n_buckets = n_buckets)
+                                                        n_buckets = n_buckets,
+                                                        signature_len = signature_len,
+                                                        hash_function_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = n_bands,
+                                                                            band_size = signature_len // n_bands,
+                                                                            modulo = n_buckets,
+                                                                            seed = pm.SEED_LSH))
                 
                 # open database connection
                 SigSQL = mh.SignaturesSQLite(database_name = signature_db_path)
@@ -112,27 +107,16 @@ if __name__ == "__main__":
                 fetched_rows_iterator = SigSQL.fetch_all_rows()
                 
                 start = time.time()
-
-                for row in fetched_rows_iterator:   
-
-                    id_temp = row[0]
-                    signature_temp = row[1]
-                    
-                    LshManyBands.AddToBands(bucket_ids =
-                                            lsh.ComputeAllHashBands(signature = signature_temp,
-                                                                    break_points = my_break_points,
-                                                                    hash_functions_list = my_lsh_hash_fun_list),
-                                                                    object = id_temp)
+                LshManyBands.AddIter(iterator = fetched_rows_iterator)
                 stop = time.time()   
 
                 time_populating_lsh = stop - start
                 print(f"LSH populated in {int(stop - start)} seconds")
 
+                #!!!!!!!!! Bootleneck !!!!!!
                 start_find_sim = time.time()
-
                 temp_all_combinations = macro.FindAllCombinations(lsh_many_bands = LshManyBands,
-                                                                sig_sql = SigSQL)
-
+                                                                  sig_sql = SigSQL)
                 stop_find_sim = time.time()
 
                 SigSQL.close_database()
@@ -143,7 +127,7 @@ if __name__ == "__main__":
                 sorted_tuples_list = sorted(temp_all_combinations.items())
 
                 # write signature similarity csv
-                signature_sim_full_path = os.path.join(lsh_result_folder,
+                signature_sim_full_path = ut.JoinPaths(lsh_result_folder,
                                                     pm.SIGNATURE_SIMILARITY_NAME_CSV)
 
 
@@ -164,18 +148,13 @@ if __name__ == "__main__":
                                                             pm.BUCKETS_NUMBER_FIELD_NAME: n_buckets,
                                                             pm.TIME_POPULATE_LSH_NAME : time_populating_lsh,
                                                             pm.TIME_FIND_SAME_BUCKET_NAME: time_finding_id_same_bucket}
-                new_metadata_path = os.path.join(lsh_result_folder,
-                                                pm.METADATA_FILE_NAME)
                 
-                with open(new_metadata_path, "w") as fout:
-                    json.dump(metadata_dict, fout)
-
-                counter += 1
+                ut.WriteMetadata(ut.JoinPaths(lsh_result_folder,
+                                                pm.METADATA_FILE_NAME))
                 
                 # overwrite done lsh result folder names
-                with open(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE, "w") as fout:
-                    for el in set_already_done_lsh_result_folders:
-                        fout.write(el + "\n")
-                
+                ut.UpdateCompletedFolders(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE)
+
+                counter += 1
                 print(f"File {counter} written!")
 
