@@ -31,8 +31,8 @@ if __name__ == "__main__":
     set_already_done_lsh_result_folders = set()
     
     # NOTE: checking needed
-    with open(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE) as lsh_result_names_done:
-        for line in lsh_result_names_done:
+    with open(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE) as fin:
+        for line in fin:
             set_already_done_lsh_result_folders.add(line.strip())
 
     counter = 0
@@ -58,6 +58,9 @@ if __name__ == "__main__":
             
             # checking needed
             if lsh_folder_relative_name not in set_already_done_lsh_result_folders:
+                
+                # write to set
+                set_already_done_lsh_result_folders.add(lsh_folder_relative_name)
             
                 lsh_result_folder = os.path.join(pm.LSH_RESULTS_FOLDER,
                                                 lsh_folder_relative_name + "\\")
@@ -168,5 +171,11 @@ if __name__ == "__main__":
                     json.dump(metadata_dict, fout)
 
                 counter += 1
+                
+                # overwrite done lsh result folder names
+                with open(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE, "w") as fout:
+                    for el in set_already_done_lsh_result_folders:
+                        fout.write(el + "\n")
+                
                 print(f"File {counter} written!")
 
