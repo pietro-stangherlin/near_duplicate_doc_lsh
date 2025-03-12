@@ -155,8 +155,8 @@ if __name__ == "__main__":
                                                             pm.TIME_POPULATE_LSH_NAME : time_populating_lsh,
                                                             pm.TIME_FIND_SAME_BUCKET_NAME: time_finding_id_same_bucket}
                 
-                ut.WriteMetadata(ut.JoinPaths(lsh_result_folder,
-                                                pm.METADATA_FILE_NAME))
+                ut.WriteMetadata(file_path = ut.JoinPaths(lsh_result_folder, pm.METADATA_FILE_NAME),
+                                 metadata_dict = metadata_dict)
                 
                 # overwrite done lsh result folder names
                 ut.UpdateCompletedFolders(pm.LSH_RESULT_DONE_FOLDERS_NAMES_FILE,
