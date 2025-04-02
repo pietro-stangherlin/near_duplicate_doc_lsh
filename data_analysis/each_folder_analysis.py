@@ -8,16 +8,10 @@ import os
 import pandas as pd
 import near_duplicate_doc_lsh.data_analysis.analysis_funs as anfn
 
-def list_subfolders(folder_path):
-    # Use os.walk to iterate through the directory
-    subfolders = [f.name for f in os.scandir(folder_path) if f.is_dir()]
-    return subfolders
-
 
 if __name__ == "__main__":
-    # Replace 'your_folder_path' with the path of your target folder
     base_directory = "data_near_duplicate\\robust\\lsh_results"
-    subfolder_names = list_subfolders(base_directory)
+    subfolder_names = anfn.ListSubfolders(base_directory)
 
     # Relative file names to read in each subfolder
     collection_index = "robust_index.csv"

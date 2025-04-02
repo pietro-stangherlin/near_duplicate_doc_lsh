@@ -44,6 +44,11 @@ import matplotlib.pyplot as plt
 # how the different implementations scale
 # and also it varies across different hardware 
 
+def ListSubfolders(folder_path):
+    # Use os.walk to iterate through the directory
+    subfolders = [f.name for f in os.scandir(folder_path) if f.is_dir()]
+    return subfolders
+
 def MakeReverseDictionary(signature_sim_df: pd.DataFrame,
                           doc1_id_name: str = "doc1_id",
                           doc2_id_name: str = "doc2_id",
