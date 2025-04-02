@@ -1,4 +1,3 @@
-import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -8,10 +7,10 @@ import matplotlib.pyplot as plt
 # (from notepad++ encoding, or another way)
 
 # If data is in test_data: (use this in testing)
-# >>> python -m data_analysis.analysis_script
+# >>> python -m data_analysis.analysis_funs
 
 # if data is in external folder:
-# >>> python -m near_duplicate_doc_lsh.data_analysis.analysis_script
+# >>> python -m near_duplicate_doc_lsh.data_analysis.analysis_funs
 
 # for a fixed set of parameters
 # NOTE: the two files should have the same header names for the first two columns
@@ -43,11 +42,13 @@ import matplotlib.pyplot as plt
 # NOTE: I also need another analysis relative to the time used,
 # even though is less important because it's sufficient to measure 
 # how the different implementations scale
+# and also it varies across different hardware 
 
 def MakeReverseDictionary(signature_sim_df: pd.DataFrame,
                           doc1_id_name: str = "doc1_id",
                           doc2_id_name: str = "doc2_id",
-                          signature_similarity_name: str = "signature_similarity"):
+                          signature_similarity_name: str = "signature_similarity",
+                          shared_buckets_number_name: str = "shared_buckets_number"):
     '''
     Make dictionary with tuples of the first two columns as keys and the third column as values (float)
     
@@ -57,20 +58,19 @@ def MakeReverseDictionary(signature_sim_df: pd.DataFrame,
         - doc2_id_name (str): column name id of second document
         - signature_similarity_name (str): column name of signature similarity measure
     Return:
-        - reverse dictionary (dict)
+        - reverse dictionary (dict) with
+        key : signature similarity, value : (doc1_id, doc2_id, shared_bucket_number)
     '''
     signature_similarity_reverse_dict = {}
     
     for _, row in signature_sim_df.iterrows():
-        value = row[signature_similarity_name]
-        key = (int(row[doc1_id_name]), int(row[doc2_id_name]))
-        if value not in signature_similarity_reverse_dict:
-            signature_similarity_reverse_dict[value] = set()
-        signature_similarity_reverse_dict[value].add(key)
+        sig_sim = row[signature_similarity_name]
+        value = (int(row[doc1_id_name]), int(row[doc2_id_name]))
+        if sig_sim not in signature_similarity_reverse_dict:
+            signature_similarity_reverse_dict[sig_sim] = set()
+        signature_similarity_reverse_dict[sig_sim].add(value)
     
     return signature_similarity_reverse_dict
-
-# make the reverse dictionary
 
 
 
@@ -86,7 +86,7 @@ def RetrievedSetFixedSignatureSimilarityThreshold(signature_sim_reverse_dict: di
         value = set of tuples of docs with that signature similarity
         - signature_sim_threshold (float): signature similarity threshold to consider 
     Return: 
-        - set (set) of tuples of documents id for which the signature similarity is greater 
+        - set (set) of tuples of (doc1_id, doc2_id) for which the signature similarity is greater 
         than the specified threshold 
     '''
     greater_than_threshold_set = set()
@@ -222,17 +222,19 @@ def PlotPrecisionRecallVsSignatureSimilarity(my_metrics_df: pd.DataFrame,
 
 if __name__ == "__main__":
     # Read the true near duplicated documents file
-    true_duplicates_df = pd.read_csv('test_data\\arxiv_clones_first_1000_index.csv')
+    true_duplicates_df = pd.read_csv('test_data\\arxiv_duplicates\\arxiv_clones_1000_index.csv')
     # extract tuples 
     true_duplicates_tuples_set = set(tuple(row) for row in true_duplicates_df.itertuples(index = False, name = None))
 
     # read the documents with computed signature similarity file
-    signature_sim_df = pd.read_csv('test_data\\arxiv_clones_first_1000_signature_sim.csv')
+    signature_sim_df = pd.read_csv('test_data\\arxiv_duplicates\\sig_config1\\lsh1\\arxiv_clones_first_1000_signature_sim.csv')
     
     signature_similarity_reverse_dict = MakeReverseDictionary(signature_sim_df = signature_sim_df)
     
     t = ComputePrecisionRecallVsSignatureSimilarity(true_duplicates_tuples_set = true_duplicates_tuples_set,
                                              signature_similarity_reverse_dict = signature_similarity_reverse_dict)
+    
+    print(t)
     
     PlotPrecisionRecallVsSignatureSimilarity(my_metrics_df = t)
     
