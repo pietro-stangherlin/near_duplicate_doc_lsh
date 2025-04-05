@@ -4,7 +4,7 @@ from ..src import line_reading as lr
 
 from itertools import combinations
 from collections import defaultdict
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
 
 import regex as re
 import numpy as np
@@ -101,7 +101,7 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
     SigSQL.end_transaction()
     SigSQL.close_database()
 
-def MinHashPopulateSignatureSQL(file_in_full_path: str,
+def MinHashPopulateSignatureSQLBatch(file_in_full_path: str,
                                  signature_db_full_path: str,
                                  id_name: str,
                                  content_name: str,
@@ -161,9 +161,9 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
 
                 # Check if the batch is full
                 if batch_index == batch_size:
-                    SigSQL.begin_transaction()  # Start a new transaction
                     SigSQL.bulk_insert(batch)  # Bulk insert the batch into the database
                     SigSQL.end_transaction()  # Commit the transaction
+                    SigSQL.begin_transaction()  # Start a new transaction
                     batch_index = 0  # Reset the batch index
                     
                     stop = time.time()
@@ -206,19 +206,22 @@ def process_line(line, match_string, id_name, content_name, shingle_len, shingle
         )
     return None
 
-def MinHashPopulateSignatureSQLParallel(file_in_full_path: str,
-                                 signature_db_full_path: str,
-                                 id_name: str,
-                                 content_name: str,
-                                 shingle_len: int,
-                                 shingle_hash_fun,
-                                 minhash_hash_param_matrix,
-                                 minhash_hash_fun,
-                                 minhash_int_type,
-                                 batch_size: int,
-                                 match_string: str = r'\{(.*)\}'):
+def MinHashPopulateSignatureSQLParallel(
+        file_in_full_path: str,
+        signature_db_full_path: str,
+        id_name: str,
+        content_name: str,
+        shingle_len: int,
+        shingle_hash_fun,
+        minhash_hash_param_matrix,
+        minhash_hash_fun,
+        minhash_int_type,
+        batch_size: int,
+        num_threads: int = 4,
+        match_string: str = r'\{(.*)\}'
+    ):
     """
-    Function for populating a signature database using batches with transaction management.
+    Function for populating a signature database using streaming batches and concurrency.
     Args:
         - file_in_full_path: Path to the input file.
         - signature_db_full_path: Path to the SQLite database.
@@ -227,58 +230,71 @@ def MinHashPopulateSignatureSQLParallel(file_in_full_path: str,
         - shingle_hash_fun: Function for hashing shingles.
         - minhash_hash_param_matrix, minhash_hash_fun, minhash_int_type: MinHash parameters.
         - batch_size: Number of insertions per batch.
+        - num_threads: Number of threads for concurrency.
         - match_string: Regex pattern for matching.
     """
 
-    # Open a connection to the database
-    SigSQL = minhash.SignaturesSQLite(database_name=signature_db_full_path)
+    def process_batch(batch):
+        """Insert a batch into the database with transaction management."""
+        SigSQL = minhash.SignaturesSQLite(database_name=signature_db_full_path)
+        try:
+            SigSQL.begin_transaction()
+            SigSQL.bulk_insert(batch)
+            SigSQL.end_transaction()
+        finally:
+            SigSQL.close_database()
 
-    # Pre-allocate a batch with fixed size
-    batch = [None] * batch_size
-    batch_index = 0  # Track the current index in the batch
-    
     start = time.time()
 
-    with open(file_in_full_path, 'r', encoding="utf-8") as fin:
-        for line in fin:
-            # Use regular expression to extract content inside brackets
-            match = re.search(match_string, line)
-            if match:
-                # Generate the (id, signature) tuple
-                tuple_id_signature = ToMatchFromIdAndSignature(
-                    my_match=match,
-                    id_name=id_name,
-                    content_name=content_name,
-                    shingle_len=shingle_len,
-                    shingle_hash_fun=shingle_hash_fun,
-                    minhash_hash_param_matrix=minhash_hash_param_matrix,
-                    minhash_hash_fun=minhash_hash_fun,
-                    minhash_int_type=minhash_int_type
-                )
+    # Use ThreadPoolExecutor for concurrent database insertions
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        futures = []
+        batch = []
+        
+        with open(file_in_full_path, 'r', encoding="utf-8") as fin:
+            for line in fin:
+                match = re.search(match_string, line)
+                if match:
+                    tuple_id_signature = ToMatchFromIdAndSignature(
+                        my_match=match,
+                        id_name=id_name,
+                        content_name=content_name,
+                        shingle_len=shingle_len,
+                        shingle_hash_fun=shingle_hash_fun,
+                        minhash_hash_param_matrix=minhash_hash_param_matrix,
+                        minhash_hash_fun=minhash_hash_fun,
+                        minhash_int_type=minhash_int_type
+                    )
+                    batch.append((tuple_id_signature[0], tuple_id_signature[1]))
 
-                # Add the tuple to the batch
-                batch[batch_index] = (tuple_id_signature[0], tuple_id_signature[1])
-                batch_index += 1
-
-                # If the batch is full, insert it into the database
-                if batch_index == batch_size:
-                    SigSQL.begin_transaction()  # Start a new transaction
-                    SigSQL.bulk_insert(batch)  # Bulk insert the batch into the database
-                    SigSQL.end_transaction()  # Commit the transaction
-                    batch_index = 0  # Reset the batch index
+                    if len(batch) == batch_size:
+                        # Submit the batch for concurrent processing
+                        futures.append(executor.submit(process_batch, batch))
+                        batch = []  # Reset the batch
                     
-                    stop = time.time()
-                    print(f"[INFO]: batch_size {batch_size} in time {round(stop - start)}")
-                    start = time.time()
+                        # Optionally wait for some tasks to complete to limit memory usage
+                        if len(futures) >= num_threads:
+                            for future in futures:
+                                future.result()
+                            futures.clear()
 
-    # Insert any remaining records in the batch
-    if batch_index > 0:
-        SigSQL.begin_transaction()  # Start a new transaction
-        SigSQL.bulk_insert(batch[:batch_index])  # Handle the final partial batch
-        SigSQL.end_transaction()  # Commit the transaction
+                        stop = time.time()
+                        print(f"[INFO]: Processed batch_size {batch_size} in time {round(stop - start)}")
+                        start = time.time()
 
-    # Close the database
-    SigSQL.close_database()
+        # Process the final batch if it contains any records
+        if batch:
+            futures.append(executor.submit(process_batch, batch))
+            batch = []
+
+        # Wait for all remaining tasks to complete
+        for future in futures:
+            future.result()
+
+    print("[INFO]: All batches processed.")
+
+
+
 
 
 

@@ -80,7 +80,7 @@ if __name__ == "__main__":
         # Add original data (no clones) to Signature database
 
         # here take always the original
-        macro.MinHashPopulateSignatureSQLParallel(file_in_full_path = pm.ROBUST_ORIGINAL_PATH,
+        macro.MinHashPopulateSignatureSQL(file_in_full_path = pm.ROBUST_ORIGINAL_PATH,
                                     signature_db_full_path = signature_db_full_path,
                                     id_name = pm.ID_FIELD_NAME,
                                     content_name = pm.CONTENT_FIELD_NAME,
