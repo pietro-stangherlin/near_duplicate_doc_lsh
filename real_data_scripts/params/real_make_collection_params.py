@@ -3,7 +3,8 @@ from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
 
 robust_path = "data_near_duplicate\\robust\\"
 robust_clones_path = robust_path + "\\robust_clones\\"
-file_in = robust_path + "robust_id2_unq.json"
+
+
 robust_no_duplicates_nlines = 522281
 
 

@@ -40,7 +40,7 @@ SHINGLE_HASH_FUN_FIELD_NAME = "shingle_hash_fun"
 
 # Minhash ----------------------------------------------------------------------
 
-NUM_SQL_INSERTIONS = 1000
+NUM_SQL_INSERTIONS = 10000
 
 # Parameters name ---------
 # name of the signature length field in the dictionary
@@ -52,7 +52,7 @@ MINHASH_BIT_TYPE_FIELD_NAME = "minhash_bit_type"
 
 # Parameters values  -------------------
 # list of signature lengths
-SHINGLE_LENGTHS = [9, 18] # 9 is the suggested length
+SHINGLE_LENGTHS = [9] # 9 is the suggested length
 SIGNATURE_LENGTHS = [100, 200, 300]
 
 # Idea: 
@@ -61,9 +61,7 @@ SIGNATURE_LENGTHS = [100, 200, 300]
 
 # hash functions dict:
 MINHASH_HASH_DICT = {INT_TYPE_32: (hashing.MurmUns32Hash.__name__, # shingle
-                    hashing.NumbaNaiveHashU32Params.__name__), # minhash
-             INT_TYPE_64: (hashing.MurmUns64Hash.__name__, # shingle
-                    hashing.NumbaNaiveHashU64Params.__name__)} # minhash
+                    hashing.NumbaNaiveHashU32Params.__name__)} # minhash
 
 # Paths ------------------
 MINHASH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\minhash_params\\"
@@ -115,4 +113,4 @@ TIME_FIND_SAME_BUCKET_NAME = "time_find_same_bucket"
 ONLY_DUPLICATES_COLLECTION_FOLDER_PATH = "data_near_duplicate\\robust\\robust_clones\\"
 
 # Other Paths --------------------------------------------------------------------
-ROBUST_ORIGINAL_PATH = "data_near_duplicate\\robust\\robust_id2.json"
+ROBUST_ORIGINAL_PATH = "data_near_duplicate\\robust\\robust_id2_ready.json"
