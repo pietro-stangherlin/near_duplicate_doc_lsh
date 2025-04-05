@@ -5,10 +5,32 @@ Due to license reason the collection and the related files are not included in t
 
 All the commands below assume your in the folder above this and that theres a subfodler named "data_near_duplicate" with files and folder as specified in the scripts
 
-1) Adds numerical ids in order to evaluate method.
+From command line:
 
 ```bash
-python -m near_duplicate_doc_lsh.real_data_scripts.real_add_number_id
+python -m near_duplicate_doc_lsh.data_creation.src.add_num_ids .\\data_near_duplicate\\robust\\tipster_45_all_docs.json .\\data_near_duplicate\\robust\\robust_id2.json id2
+```
+
+1) For robust we also initially remove documents original duplicates or near duplicates
+found with our methodology in order to have more interpretable results.
+So after the steps described:
+
+a) we lunch our lsh on original dataset
+b) get and index of much similar documents
+c) use this index to remove duplicates from the collection
+d) recompute the id_2
+
+Assuming we have an index of really similar documents which we call `original_index`.
+
+```bash
+python -m near_duplicate_doc_lsh.data_creation.src.make_unique_collection data_near_duplicate\\robust\\original_index.csv data_near_duplicate\\robust\\robust_id2.json data_near_duplicate\\robust\\robust_id2_uniques.json
+```
+
+This will produce the file `robust_id2_uniques.json.`
+On which we recompute the id_2 by (first argument: input, second output, third new_id_name)
+
+```bash
+python -m near_duplicate_doc_lsh.data_creation.src.add_num_ids .\\data_near_duplicate\\robust\\robust_id2_uniques.json .\\data_near_duplicate\\robust\\robust_id2_ready.json id2
 ```
 
 2) Make difference version of only duplicates of the robust_id2 collection: save them in different subfolders with their metadata file.

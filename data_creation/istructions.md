@@ -1,8 +1,10 @@
 
 # Data Creation Instructions
+
 Assume there's a document collection json like with, at least one id and one content fields.
 
 Example: file_toy.json
+
 ```json
 {"id": "aab6": "content": "the apple is green"},
 {"id": "ahb8": "content": "eternal sunshine"},
@@ -10,36 +12,38 @@ Example: file_toy.json
 ```
 
 In order to create a new file of desired format:
+
 1) run add_num_ids.py on the original file to create a new file adding a new id based on the row number
 2) run make_collection.py on the file created at point 1
-
 
 **IMPORTANT**: the console examples assume you're in the folder external to near_duplicate_doc_lsh
 -> example:
 
+```
 ﻿/dir1
 |-- near_duplicate_doc_lsh
 |-- data_folder
+```
 
+## Cleaning and adding integer ids instructions
 
-## 1. Instructions to use add_sum_ids.py
-
-### Actual instructions
 Parameters: file_in_name, file_out_name, original_id_name, new_id_name.
-From command line: python 
-```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\file_in_name.json file_out_name new_id_name ```
+From command line: python
 
+```bash
+python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\file_in_name.json file_out_name new_id_name
+```
 
 Arxiv data specific example.
-```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\arxiv\arxiv_cleaned_js.json .\data_near_duplicate\arxiv\arxiv_cleaned_js_id2.json id id2 ```
 
-Robust specific example.
-From command line:
-```python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\tipster_45_all_docs.json robust_2.json id id2 ```
+```bash
+python .\near_duplicate_doc_lsh\data_creation\src\add_num_ids.py .\data_near_duplicate\arxiv\arxiv_cleaned_js.json .\data_near_duplicate\arxiv\arxiv_cleaned_js_id2.json id2
+```
 
-### Result example 
+### Result example
 
 Input file:
+
 ```json
 {"id": "aab6", "content": "the apple is green"},
 {"id": "ahb8", "content": "eternal sunshine"},
@@ -47,13 +51,14 @@ Input file:
 ```
 
 Output file:
+
 ```json
 {"id": "aab6", "content": "the apple is green", "id2": "1"},
 {"id": "ahb8", "content": "eternal sunshine", "id2": "2"},
 {"id": "hrr93", "content": "dust in the wind", "id2": "3"}
 ```
 
-## 2. Instructions to use make_collection.py
+## 2. Only Duplicates creation: Instructions to use make_collection.py
 
 ### Actual instructions
 
@@ -80,10 +85,10 @@ Exectute the script as a module.
 Example (because in the tests folder there's indeed such a script)
 ```python -m near_duplicate_doc_lsh.data_creation.tests.test_make_collection```
 
-### Result example 
+### Result example
 
 Input file:
-```json
+
 ```json
 {"id": "aab6", "content": "the apple is green", "id2": "1"},
 {"id": "ahb8", "content": "eternal sunshine", "id2": "2"},

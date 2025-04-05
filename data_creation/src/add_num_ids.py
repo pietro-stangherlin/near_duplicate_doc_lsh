@@ -1,4 +1,5 @@
 import json
+import sys
 
 # convert all the ids to int and add a new id field
 # to that field
@@ -51,3 +52,8 @@ def FromStrToIntConvert(text: str, other: int) -> int:
         encoded_string += str(ord(text[i])) 
     
     return int(encoded_string)
+
+if __name__ == "__main__":
+    ConvertID(file_in = sys.argv[1],
+              file_out = sys.argv[2],
+              id_new_name = sys.argv[3])

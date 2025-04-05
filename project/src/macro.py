@@ -95,6 +95,7 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
     SigSQL.close_database()
 
 
+# naive old slow version (no signature caching)
 def FindAllCombinations(lsh_many_bands,
                         sig_sql) -> dict:
     '''
@@ -221,9 +222,3 @@ def FindAllCombinationsPreload(lsh_many_bands, sig_sql, batch_size=10000) -> dic
     print(f"[INFO] Finished calculating similarities for {len(temp_all_combinations)} pairs.")
 
     return dict(temp_all_combinations)
-
-
-
-
-
-            
