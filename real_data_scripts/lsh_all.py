@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
                 #!!!!!!!!! Bootleneck !!!!!!
                 start_find_sim = time.time()
-                temp_all_combinations = macro.FindAllCombinations(lsh_many_bands = LshManyBands,
+                temp_all_combinations = macro.FindAllCombinationsPreload(lsh_many_bands = LshManyBands,
                                                                   sig_sql = SigSQL)
                 stop_find_sim = time.time()
 
