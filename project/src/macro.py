@@ -4,9 +4,11 @@ from ..src import line_reading as lr
 
 from itertools import combinations
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import regex as re
 import numpy as np
+import time
 
 # this file holds macro function useful to the evaluation
 
@@ -59,13 +61,15 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
                                 minhash_hash_param_matrix,
                                 minhash_hash_fun,
                                 minhash_int_type,
-                                num_sql_insertions: int,
+                                batch_size: int,
                                 match_string: str = r'\{(.*)\}'):
     '''
     '''
     SigSQL = minhash.SignaturesSQLite(database_name = signature_db_full_path)
 
     SigSQL.begin_transaction()
+    
+    start = time.time()
     
     with open(file_in_full_path, 'r', encoding = "utf-8") as fin:
         insertion_counter = 0
@@ -83,9 +87,12 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
                                                            minhash_int_type = minhash_int_type)
 
                 # add key (doc id) value (signature) pair to the SignatureSQL
-                if insertion_counter % num_sql_insertions == 0:
+                if insertion_counter % batch_size == 0:
                     SigSQL.end_transaction()
                     SigSQL.begin_transaction()
+                    stop = time.time()
+                    print(f"[INFO]: batch_size {batch_size} in time {round(stop - start)}")
+                    start = time.time()
             
                 SigSQL.insert_id_signature_pair(id_value = tuple_id_signature[0],
                                             signature_value = tuple_id_signature[1])
@@ -93,6 +100,186 @@ def MinHashPopulateSignatureSQL(file_in_full_path: str,
                     
     SigSQL.end_transaction()
     SigSQL.close_database()
+
+def MinHashPopulateSignatureSQL(file_in_full_path: str,
+                                 signature_db_full_path: str,
+                                 id_name: str,
+                                 content_name: str,
+                                 shingle_len: int,
+                                 shingle_hash_fun,
+                                 minhash_hash_param_matrix,
+                                 minhash_hash_fun,
+                                 minhash_int_type,
+                                 batch_size: int,
+                                 match_string: str = r'\{(.*)\}'):
+    """
+    Optimized function for populating a signature database using pre-allocated batches.
+    Args:
+        file_in_full_path: Path to the input file containing data.
+        signature_db_full_path: Path to the SQLite database.
+        id_name: Field name for document ID.
+        content_name: Field name for content.
+        shingle_len: Length of the shingles.
+        shingle_hash_fun: Function to hash shingles.
+        minhash_hash_param_matrix: MinHash hash parameters.
+        minhash_hash_fun: MinHash function.
+        minhash_int_type: Integer type for MinHash.
+        batch_size: Fixed size for each batch.
+        match_string: Regular expression pattern for extracting content.
+    """
+    # Open a connection to the database
+    SigSQL = minhash.SignaturesSQLite(database_name=signature_db_full_path)
+
+    # Start a transaction
+    SigSQL.begin_transaction()
+
+    # Pre-allocate batch storage
+    batch = [None] * batch_size
+    batch_index = 0  # Track the current index in the batch
+
+    start = time.time()
+    
+    with open(file_in_full_path, 'r', encoding="utf-8") as fin:
+        for line in fin:
+            # Use regular expression to extract content inside brackets
+            match = re.search(match_string, line)
+            if match:
+                tuple_id_signature = ToMatchFromIdAndSignature(
+                    my_match=match,
+                    id_name=id_name,
+                    content_name=content_name,
+                    shingle_len=shingle_len,
+                    shingle_hash_fun=shingle_hash_fun,
+                    minhash_hash_param_matrix=minhash_hash_param_matrix,
+                    minhash_hash_fun=minhash_hash_fun,
+                    minhash_int_type=minhash_int_type
+                )
+                
+                # Add the (id, signature) tuple to the batch
+                batch[batch_index] = (tuple_id_signature[0], tuple_id_signature[1])
+                batch_index += 1
+
+                # Check if the batch is full
+                if batch_index == batch_size:
+                    SigSQL.begin_transaction()  # Start a new transaction
+                    SigSQL.bulk_insert(batch)  # Bulk insert the batch into the database
+                    SigSQL.end_transaction()  # Commit the transaction
+                    batch_index = 0  # Reset the batch index
+                    
+                    stop = time.time()
+                    print(f"[INFO]: batch_size {batch_size} in time {round(stop - start)}")
+                    start = time.time()
+
+    # Insert any remaining records in the batch
+    if batch_index > 0:
+        SigSQL.bulk_insert(batch[:batch_index])  # Handle the final partial batch
+
+    # Commit the transaction and close the database
+    SigSQL.end_transaction()
+    SigSQL.close_database()
+
+
+def process_line(line, match_string, id_name, content_name, shingle_len, shingle_hash_fun,
+                 minhash_hash_param_matrix, minhash_hash_fun, minhash_int_type):
+    """
+    Process a single line to extract (id, signature) tuple.
+    Args:
+        - line: Line of text from the input file.
+        - match_string: Regex pattern for matching.
+        - id_name, content_name: Field names for document ID and content.
+        - shingle_len, shingle_hash_fun, minhash_hash_param_matrix, minhash_hash_fun, minhash_int_type:
+          Parameters for MinHash.
+    Returns:
+        - tuple: (id, signature) if matched, else None.
+    """
+    match = re.search(match_string, line)
+    if match:
+        return ToMatchFromIdAndSignature(
+            my_match=match,
+            id_name=id_name,
+            content_name=content_name,
+            shingle_len=shingle_len,
+            shingle_hash_fun=shingle_hash_fun,
+            minhash_hash_param_matrix=minhash_hash_param_matrix,
+            minhash_hash_fun=minhash_hash_fun,
+            minhash_int_type=minhash_int_type
+        )
+    return None
+
+def MinHashPopulateSignatureSQLParallel(file_in_full_path: str,
+                                 signature_db_full_path: str,
+                                 id_name: str,
+                                 content_name: str,
+                                 shingle_len: int,
+                                 shingle_hash_fun,
+                                 minhash_hash_param_matrix,
+                                 minhash_hash_fun,
+                                 minhash_int_type,
+                                 batch_size: int,
+                                 match_string: str = r'\{(.*)\}'):
+    """
+    Function for populating a signature database using batches with transaction management.
+    Args:
+        - file_in_full_path: Path to the input file.
+        - signature_db_full_path: Path to the SQLite database.
+        - id_name, content_name: Field names for document ID and content.
+        - shingle_len: Length of shingles.
+        - shingle_hash_fun: Function for hashing shingles.
+        - minhash_hash_param_matrix, minhash_hash_fun, minhash_int_type: MinHash parameters.
+        - batch_size: Number of insertions per batch.
+        - match_string: Regex pattern for matching.
+    """
+
+    # Open a connection to the database
+    SigSQL = minhash.SignaturesSQLite(database_name=signature_db_full_path)
+
+    # Pre-allocate a batch with fixed size
+    batch = [None] * batch_size
+    batch_index = 0  # Track the current index in the batch
+    
+    start = time.time()
+
+    with open(file_in_full_path, 'r', encoding="utf-8") as fin:
+        for line in fin:
+            # Use regular expression to extract content inside brackets
+            match = re.search(match_string, line)
+            if match:
+                # Generate the (id, signature) tuple
+                tuple_id_signature = ToMatchFromIdAndSignature(
+                    my_match=match,
+                    id_name=id_name,
+                    content_name=content_name,
+                    shingle_len=shingle_len,
+                    shingle_hash_fun=shingle_hash_fun,
+                    minhash_hash_param_matrix=minhash_hash_param_matrix,
+                    minhash_hash_fun=minhash_hash_fun,
+                    minhash_int_type=minhash_int_type
+                )
+
+                # Add the tuple to the batch
+                batch[batch_index] = (tuple_id_signature[0], tuple_id_signature[1])
+                batch_index += 1
+
+                # If the batch is full, insert it into the database
+                if batch_index == batch_size:
+                    SigSQL.begin_transaction()  # Start a new transaction
+                    SigSQL.bulk_insert(batch)  # Bulk insert the batch into the database
+                    SigSQL.end_transaction()  # Commit the transaction
+                    batch_index = 0  # Reset the batch index
+                    
+                    stop = time.time()
+                    print(f"[INFO]: batch_size {batch_size} in time {round(stop - start)}")
+                    start = time.time()
+
+    # Insert any remaining records in the batch
+    if batch_index > 0:
+        SigSQL.begin_transaction()  # Start a new transaction
+        SigSQL.bulk_insert(batch[:batch_index])  # Handle the final partial batch
+        SigSQL.end_transaction()  # Commit the transaction
+
+    # Close the database
+    SigSQL.close_database()
+
 
 
 # naive old slow version (no signature caching)

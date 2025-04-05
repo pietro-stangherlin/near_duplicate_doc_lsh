@@ -200,6 +200,34 @@ class SQLiteOneTable:
         '''
         return pickle.loads(self.connect.execute(f"SELECT {self.col2_name} FROM {self.table_name} WHERE {self.col1_name}=?",
                                      (col1_value,)).fetchone()[0])
+    
+    def bulk_insert(self, data):
+        """
+        Insert multiple rows into the database in a single transaction.
+        
+        Args:
+            - data: List of tuples, where each tuple contains (col1_value, col2_value)
+        """
+        use_pickle = self.do_pickle
+        
+        if not data:
+            return  # No data to insert
+
+        placeholders = ",".join(["(?, ?)"] * len(data))  # Generate placeholders for all rows
+        query = f"INSERT INTO {self.table_name} VALUES {placeholders}"
+        
+        if use_pickle:
+            # Apply pickle.dumps to col2_value for all rows
+            formatted_data = [(col1, pickle.dumps(col2)) for col1, col2 in data]
+        else:
+            formatted_data = data
+
+        # Flatten the formatted_data for SQLite placeholders
+        flattened_data = [item for row in formatted_data for item in row]
+
+        # Execute the query
+        self.connect.execute(query, flattened_data)
+
         
     def _get_col2_by_col1_no_pickle(self, col1_value):
         '''(hidden) Return value relative to col1_value.
@@ -213,7 +241,9 @@ class SQLiteOneTable:
         return self.connect.execute(f"SELECT {self.col2_name} FROM {self.table_name} WHERE {self.col1_name}=?",
                                      (col1_value,)).fetchone()[0]
     
-    # ---------------- SQLite one table database ------------------------#
+
+# NOTE: NOT used
+# ---------------- SQLite one table database ------------------------#
 # This class will be used for storing both signatures and buckets
 # (with slightly different specifications).
 # NOTE: this is the working in progress version of the more general SQL data structure

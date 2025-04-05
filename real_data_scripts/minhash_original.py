@@ -80,7 +80,7 @@ if __name__ == "__main__":
         # Add original data (no clones) to Signature database
 
         # here take always the original
-        macro.MinHashPopulateSignatureSQL(file_in_full_path = pm.ROBUST_ORIGINAL_PATH,
+        macro.MinHashPopulateSignatureSQLParallel(file_in_full_path = pm.ROBUST_ORIGINAL_PATH,
                                     signature_db_full_path = signature_db_full_path,
                                     id_name = pm.ID_FIELD_NAME,
                                     content_name = pm.CONTENT_FIELD_NAME,
@@ -89,7 +89,7 @@ if __name__ == "__main__":
                                     minhash_hash_param_matrix = par_dict[pm.MINHASH_HASH_PARAM_MATRIX_FIELD_NAME],
                                     minhash_hash_fun = par_dict[pm.MINHASH_HASH_FUN_FIELD_NAME],
                                     minhash_int_type = bit_type,
-                                    num_sql_insertions = pm.NUM_SQL_INSERTIONS,
+                                    batch_size = pm.NUM_SQL_INSERTIONS,
                                     match_string = r'\{(.*)\}')
         
         counter += 1

@@ -40,7 +40,7 @@ SHINGLE_HASH_FUN_FIELD_NAME = "shingle_hash_fun"
 
 # Minhash ----------------------------------------------------------------------
 
-NUM_SQL_INSERTIONS = 10000
+NUM_SQL_INSERTIONS = 5000
 
 # Parameters name ---------
 # name of the signature length field in the dictionary
