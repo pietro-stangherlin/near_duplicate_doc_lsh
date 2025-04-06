@@ -344,7 +344,9 @@ def FindAllCombinations(lsh_many_bands,
 
 import pickle
 
-def fetch_rows_by_doc_ids(cursor, table_name, doc_ids_batch,
+# this function has to be integrated in minhash Sql data structure
+def fetch_rows_by_doc_ids(cursor, table_name,
+                          doc_ids_batch,
                           unpickle_col=True,
                           doc_id_col_name = "id_doc"):
     """
@@ -375,7 +377,7 @@ def FindAllCombinationsPreload(lsh_many_bands, sig_sql, batch_size=10000) -> dic
     """
     Optimized function with print statements to track progress.
     """
-    temp_all_combinations = defaultdict(lambda: [0, 0])  # Default value: [0 (similarity), 0 (shared buckets)]
+    temp_all_combinations = defaultdict(lambda: [0, 0])  # [0 (similarity), 0 (shared buckets)]
     visited_doc_ids = set()
 
     print("[INFO] Starting to process LSH bands...")
@@ -383,6 +385,7 @@ def FindAllCombinationsPreload(lsh_many_bands, sig_sql, batch_size=10000) -> dic
     # Step 1: Populate visited_doc_ids
     for band_index, band_object in enumerate(lsh_many_bands.bands_list):
         print(f"[DEBUG] Processing band {band_index + 1}/{len(lsh_many_bands.bands_list)}...")
+        # visit only buckets with more than one elements
         for k in band_object.more_than_one_index:
             temp_bucket = band_object.band[k]
 
@@ -393,17 +396,20 @@ def FindAllCombinationsPreload(lsh_many_bands, sig_sql, batch_size=10000) -> dic
                 temp_all_combinations[temp_key][1] += 1  # Increment shared bucket count
 
     print(f"[INFO] Finished processing LSH bands. Found {len(visited_doc_ids)} unique document IDs.")
+    
 
     # Step 2: Fetch only the visited document IDs in batches
     signature_cache = {}
-    visited_doc_ids = list(visited_doc_ids)  # Convert to list for indexing
+    visited_doc_ids = list(visited_doc_ids)  # convert to list for indexing
     print("[INFO] Starting to preload document signatures...")
     for i in range(0, len(visited_doc_ids), batch_size):
         batch = visited_doc_ids[i:i + batch_size]
         print(f"[DEBUG] Fetching batch {i // batch_size + 1} containing {len(batch)} document IDs...")
-        rows = fetch_rows_by_doc_ids(sig_sql.cursor, sig_sql.table_name, batch)
+        rows = fetch_rows_by_doc_ids(cursor = sig_sql.cursor,
+                                    table_name = sig_sql.table_name,
+                                    doc_ids_batch = batch)
         for row in rows:
-            signature_cache[row[0]] = row[1]  # Assuming row[0] is doc_id and row[1] is the signature
+            signature_cache[row[0]] = row[1]  # row[0] = doc_id and row[1] is the signature
     print(f"[INFO] Finished preloading document signatures. Cached {len(signature_cache)} signatures.")
 
     # debug
@@ -412,15 +418,15 @@ def FindAllCombinationsPreload(lsh_many_bands, sig_sql, batch_size=10000) -> dic
     # Step 3: Calculate signature similarities for unique pairs
     print("[INFO] Starting to calculate signature similarities...")
     for progress, temp_key in enumerate(temp_all_combinations, 1):
-        if progress % 100000 == 0:  # Print every 1000 iterations to avoid excessive output
+        if progress % 1000000 == 0:
             print(f"[DEBUG] Processing similarity for pair {progress}/{len(temp_all_combinations)}...")
         doc_id1, doc_id2 = temp_key
         value1 = signature_cache[doc_id1]
         value2 = signature_cache[doc_id2]
-        sig_sim = minhash.SignatureSimilarity(value1, value2)  # Assuming minhash.SignatureSimilarity exists
+        sig_sim = minhash.SignatureSimilarity(value1, value2)
 
-        if sig_sim != 0:
-            temp_all_combinations[temp_key][0] = sig_sim  # Store similarity
+        if sig_sim > 0:
+            temp_all_combinations[temp_key][0] = sig_sim  # store similarity
 
     print(f"[INFO] Finished calculating similarities for {len(temp_all_combinations)} pairs.")
 
