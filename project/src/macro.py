@@ -345,7 +345,8 @@ def FindAllCombinations(lsh_many_bands,
 import pickle
 
 # this function has to be integrated in minhash Sql data structure
-def fetch_rows_by_doc_ids(cursor, table_name,
+def fetch_rows_by_doc_ids(cursor,
+                          table_name,
                           doc_ids_batch,
                           unpickle_col=True,
                           doc_id_col_name = "id_doc"):

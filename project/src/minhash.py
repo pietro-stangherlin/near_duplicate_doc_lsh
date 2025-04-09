@@ -1,6 +1,8 @@
 import numpy as np
 import numba
 from typing import Callable
+import pickle
+
 from BTrees._LOBTree import LOBTree
 from . import sqlite_one_table
 
@@ -181,4 +183,46 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
                             id_value):
         
         return(super().get_col2_by_col1(col1_value = id_value))
+    
+    # testing needed
+    def fetch_rows_by_doc_ids(self,
+                              doc_ids_batch):
+        """
+        Fetch rows from the database for the specified document IDs.
+        Args:
+            - cursor: SQL cursor object
+            - table_name: Name of the database table
+            - doc_ids_batch: A batch of document IDs
+        Returns:
+            - List of rows corresponding to the specified document IDs, with unpickled values if needed.
+        """
+        placeholders = ','.join(['?'] * len(doc_ids_batch))  # Create placeholders for the query
+        query = f"SELECT * FROM {self.table_name} WHERE {self.col1_name} IN ({placeholders})"
+        self.cursor.execute(query, doc_ids_batch)
+        rows = self.cursor.fetchall()
+
+        # Unpickle the values in column2 if requested
+        if self.do_pickle:
+            rows = [(row[0], pickle.loads(row[1])) for row in rows]
+
+        return rows
+
+# NOT USED -> to USE
+# here the MinHash class stores (as it should)
+# the MinhasParameters making less error prone
+class MinHashSQLite:
+    
+    def __init__(self,
+                 minhash_hash_param_matrix,
+                 minhash_hash_fun,
+                 minhash_int_type,
+                 **signature_sqlite_kwargs):
+        
+        # MinHashParameters
+        self.minhash_hash_param_matrix = minhash_hash_param_matrix
+        self.minhash_hash_fun = minhash_hash_fun
+        self.minhash_int_type = minhash_int_type
+        
+        # signature instance
+        self.signature_sql = SignaturesSQLite(**signature_sqlite_kwargs)
         

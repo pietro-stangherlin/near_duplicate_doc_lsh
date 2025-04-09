@@ -1,8 +1,12 @@
 import numpy as np 
 from typing import Callable
+from itertools import combinations
+from collections import defaultdict
+
 from BTrees._LOBTree import LOBTree
 from . import sqlite_one_table
 from . import hashing
+
 import subprocess #used to call sqlite dot-command
 # see: https://stackoverflow.com/questions/2346074/execute-sqlite3-dot-commands-from-python-or-register-collation-in-command-line
 
@@ -163,6 +167,8 @@ class LSHOneBandBucketLists:
     def __str__(self):
         return(f'''LSH BAND with {len(self.band)} buckets and {len(self.more_than_one_index)} buckets with more than one elements''')
 
+
+# Used
 # --------- LSH many bands buckets Lists data structure --------------- # 
 
 class LSHManyBandsBucketLists:
@@ -225,9 +231,37 @@ class LSHManyBandsBucketLists:
         for row in iterator:
                     self.AddIdBySignature(id = row[0], signature = row[1])
     
+    
+    def FindAllPairs(self) -> dict:
+        '''Assuming the LSH has all documents:
+        find all pairs of documents
+        along with the number of shared buckets
+        
+        Return:
+            dictionary (dict): with
+            key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
+            value = number of shared buckets
+        '''
+        temp_all_combinations = defaultdict(lambda: 0)  # 0 (shared buckets)
+
+        print("[INFO] Starting to process LSH bands...")
+
+        for band_index, band_object in enumerate(self.bands_list):
+            print(f"[DEBUG] Processing band {band_index + 1}/{len(self.bands_list)}...")
+            # visit only buckets with more than one elements
+            for k in band_object.more_than_one_index:
+                # Generate unique pairs using combinations
+                for doc_id1, doc_id2 in combinations(band_object.band[k], 2):  # Add to the visited set
+                    temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
+                    temp_all_combinations[temp_key][1] += 1  # Increment shared bucket count
+        
+        return temp_all_combinations
+    
     def __str__(self):
         return(f'''LSH BAND with {len(self.bands_list)} bands each with {len(self.bands_list[0])} buckets''')
 
+
+# NOT used
 # ---------------- LSH bands BTree data structure ------------------- # 
 
 # NOTE: this still needs to be completed, after the SQL class is completed
@@ -340,7 +374,8 @@ class LSHManyBandsBucketsBTree:
             
             band_index += 1
     
-    
+
+# NOT USED
 # ---------------- LSH bands SQL data structure ------------------- # 
 
 # option 1
