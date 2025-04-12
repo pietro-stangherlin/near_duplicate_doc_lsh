@@ -87,7 +87,7 @@ BUCKETS_NUMBER_FIELD_NAME = "bucket_numbers"
 
 # list of signature lengths
 BANDS_NUMBERS = [10, 20, 30]
-BUCKET_NUMBERS = [10**7, 2 * 10**7]
+BUCKET_NUMBERS = [5 * 10**6, 10**7, 2 * 10**7]
 
 # Paths -----------------
 LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_params\\"

@@ -24,6 +24,16 @@ def LoadLshParamsFile(file_path):
     
         return params_dict
 
+# debug
+def print_first_10_rows(cursor, table_name):
+    query = f"SELECT * FROM {table_name} LIMIT 10"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+
+    print(f"First 10 rows from table '{table_name}':")
+    for row in rows:
+        print(row)
+
 
 if __name__ == "__main__":
     
@@ -102,12 +112,13 @@ if __name__ == "__main__":
                                                         n_buckets = n_buckets,
                                                         signature_len = signature_len,
                                                         hash_function_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = n_bands,
-                                                                            band_size = signature_len // n_bands,
-                                                                            modulo = n_buckets,
-                                                                            seed = pm.SEED_LSH))
+                                                        band_size = signature_len // n_bands,
+                                                        modulo = n_buckets,
+                                                        seed = pm.SEED_LSH))
                 
                 # open database connection
                 SigSQL = mh.SignaturesSQLite(database_name = signature_db_path)
+
 
                 # define rows iterator
                 fetched_rows_iterator = SigSQL.fetch_all_rows()
@@ -158,11 +169,16 @@ if __name__ == "__main__":
                                     doc1_col_name = pm.SIGNATURE_SIMILARITY_DOC1_HEADER,
                                     doc2_col_name = pm.SIGNATURE_SIMILARITY_DOC2_HEADER)
                 
+                # debug try
+                unique_doc_ids = [int(el) for el in unique_doc_ids]
+                
+                # debug
+                
                 print(f"got unique doc ids")
                 
                 # populate {document: signature} cache dictionary
                 signature_dict = SigSQL.GetDocSignatureSubsetDictionary(doc_ids_subset = unique_doc_ids,
-                                                                                   batch_size = 10**4)
+                                                                        batch_size = 10**4)
                 
                 #debug
                 # check type of signature dict key

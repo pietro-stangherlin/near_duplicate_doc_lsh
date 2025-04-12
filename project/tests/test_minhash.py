@@ -10,9 +10,6 @@ import unittest
 # If data is in test_data: (use this in testing)
 # >>> python -m project.tests.test_minhash
 
-# if data is in external folder:
-# >>> python -m near_duplicate_doc_lsh.project.tests.test_minhash
-
 
 # constants
 W = 9 # shingle len
@@ -211,11 +208,6 @@ class TestMinHash_SQL_and_BTree(unittest.TestCase):
               Should be less than 1''')
         
         self.assertLess(sim_doc1_doc2, 1)
-
-
-# Warning: this script has to be executed 
-# from the (external) project directory as 
-# python -m unittest tests.test_minhash
 
 if __name__ == "__main__":
     unittest.main()

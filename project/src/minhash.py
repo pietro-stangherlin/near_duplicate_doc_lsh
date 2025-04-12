@@ -147,17 +147,8 @@ def GetSignatureSimilarityArray(pairs_sharedbukets_pd: pd.DataFrame,
 
     for i, row in enumerate(pairs_sharedbukets_pd.itertuples(index=False)):
         if i % 10^6 == 0:
-            print(f"[DEBUG] Processing similarity for pair {i}/{len(n_row)}...")
+            print(f"[DEBUG] Processing similarity for pair {i}/{n_row}...")
 
-        # debug: 
-        print(f"[DEBUG] row[doc1_index] = {row[doc1_index]}")
-        print(f"[DEBUG] type(row[doc1_index]) = {type(row[doc1_index])}")
-
-        print(f"[DEBUG] row[doc2_index] = {row[doc2_index]}")
-        print(f"[DEBUG] type(row[doc2_index]) = {type(row[doc2_index])}")
-
-
-        
 
         value1 = doc_signature_dict[row[doc1_index]]
         value2 = doc_signature_dict[row[doc2_index]]
@@ -250,6 +241,7 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
         rows = self.cursor.fetchall()
 
         # unpickle the values in column2 if requested
+
         if self.do_pickle:
             rows = [(row[0], pickle.loads(row[1])) for row in rows]
 
@@ -274,8 +266,8 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
             batch = doc_ids_subset[i:i + batch_size]
             print(f"[DEBUG] Fetching batch {i // batch_size + 1} containing {len(batch)} document IDs...")
             rows = self.fetch_rows_by_doc_ids(doc_ids_batch = batch)
+
             for row in rows:
-                print(f"[DEBUG] row = {row}")
                 signature_cache[row[0]] = row[1]  # row[0] = doc_id and row[1] is the signature
         
         print(f"[INFO] Finished preloading document signatures. Cached {len(signature_cache)} signatures.")

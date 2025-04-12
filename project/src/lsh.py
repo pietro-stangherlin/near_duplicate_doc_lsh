@@ -179,14 +179,16 @@ def ConvertAllPairsListToPdDataframe(pairs_sharedbuckets_list: dict,
     return(pd_df)
 
 # used for signature caching
+# WARNING: inefficient but at the moment
+# all works only if the ids are integers: this has to be fixed
 def GetUniquesIdSet(pairs_sharedbukets_pd: pd.DataFrame,
                     doc1_col_name: str = "doc1",
-                    doc2_col_name: str = "doc2") -> np.array:
+                    doc2_col_name: str = "doc2") -> list:
     '''Given a pandas dataframe with document ids columns
-    return a np.array of uniques document ids
+    return a list of uniques document integer ids
     '''
-    return(pd.concat([pairs_sharedbukets_pd[doc1_col_name], 
-                      pairs_sharedbukets_pd[doc2_col_name]]).unique())
+    return([int(el) for el in pd.concat([pairs_sharedbukets_pd[doc1_col_name], 
+                      pairs_sharedbukets_pd[doc2_col_name]]).unique()])
 
 
 # ---------------- LSH bands Lists data structure ------------------- # 
