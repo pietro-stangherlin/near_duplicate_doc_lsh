@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import numba
 from typing import Callable
 import pickle
@@ -116,7 +117,45 @@ def SignatureSimilarity(sig1: np.array, sig2: np.array) -> float:
     
     return equals / sig1.size
 
+# Testing needed
+def GetSignatureSimilarityArray(pairs_sharedbukets_pd: pd.DataFrame,
+                                doc_signature_dict: dict,
+                                doc1_col_name: str = "doc1",
+                                doc2_col_name: str = "doc2") -> np.array:
+    '''Given a pandas dataframe with document ids columns and a dictionary
+    with key = doc_id and value = signature return a sorted (same order of pairs_sharedbukets_pd rows) array
+    of signature similarities
 
+    Args:
+    - pairs_sharedbuckets_dict (dict): with
+                key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
+                value = number of shared buckets
+    - doc_signature_dict (dict): key = doc_id and value = signature
+    - doc1_col_name (str)
+    - doc2_col_name (str)
+
+    Return:
+        - numpy array (np.array): sorted (same order of pairs_sharedbukets_pd rows) array
+    of signature similarities
+    '''
+    n_row = pairs_sharedbukets_pd.shape[0]
+    signatures_similarities_np_array = np.zeros(n_row)
+
+    for i, row in enumerate(pairs_sharedbukets_pd.itertuples(index=False)):
+        if i % 10^6 == 0:
+            print(f"[DEBUG] Processing similarity for pair {i}/{len(n_row)}...")
+
+        doc_id1 = row.doc1
+        doc_id2 = row.doc2
+
+        value1 = doc_signature_dict[doc_id1]
+        value2 = doc_signature_dict[doc_id2]
+
+        signatures_similarities_np_array[i] = SignatureSimilarity(value1, value2)
+    
+    return(signatures_similarities_np_array)
+
+# NOT USED
 # --------- Signatures set data structure ---------------
 class SignaturesBTree(LOBTree):
     '''BTree used to store doc id as keys and doc signatures as values.
@@ -201,11 +240,38 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
         self.cursor.execute(query, doc_ids_batch)
         rows = self.cursor.fetchall()
 
-        # Unpickle the values in column2 if requested
+        # unpickle the values in column2 if requested
         if self.do_pickle:
             rows = [(row[0], pickle.loads(row[1])) for row in rows]
 
         return rows
+    
+    def GetDocSignatureSubsetDictionary(self,
+                                        doc_ids_subset: np.array,
+                                        batch_size: int) -> dict:
+        '''Given an array of document id return a dictionary with key = doc_id, value = signature.
+
+        Args: 
+            - doc_ids_subset (np.array): array of document ids to fetch
+            - batch_size (int): batch size for each iteration
+        
+        Return:
+            - dictionary (dict): with key = doc_id, value = signatur for the document subset
+        '''
+
+        signature_cache = {}
+        print("[INFO] Starting to preload document signatures...")
+        for i in range(0, len(doc_ids_subset), batch_size):
+            batch = doc_ids_subset[i:i + batch_size]
+            print(f"[DEBUG] Fetching batch {i // batch_size + 1} containing {len(batch)} document IDs...")
+            rows = self.fetch_rows_by_doc_ids(cursor = self.cursor,
+                                        table_name = self.table_name,
+                                        doc_ids_batch = batch)
+            for row in rows:
+                signature_cache[row[0]] = row[1]  # row[0] = doc_id and row[1] is the signature
+        
+        return signature_cache
+        print(f"[INFO] Finished preloading document signatures. Cached {len(signature_cache)} signatures.")
 
 # NOT USED -> to USE
 # here the MinHash class stores (as it should)

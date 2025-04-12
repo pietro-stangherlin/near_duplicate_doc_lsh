@@ -1,4 +1,5 @@
 import numpy as np 
+import pandas as pd
 from typing import Callable
 from itertools import combinations
 from collections import defaultdict
@@ -137,25 +138,55 @@ def ComputeAllHashBands(signature: np.array,
     
     return bucket_ids_list
 
-def ConvertAllPairsDictToPdDataframe(all_pairs_dict: dict,
-                                     shared_bucket_threshold: int = 1,
-                                     doc1_col_name: str = "doc1",
-                                     doc2_col_name: str = "doc2",
-                                     shared_bucket_number_col_name: str = "shared_bucket"):
+# this can be easily parallelized
+def FilterAllPairsDictBySharedBucketThreshold(pairs_sharedbuckets_dict: dict,
+                                              shared_bucket_threshold: int = 1):
     '''Given a dictionary with document pairs as key and number of shared bucket as value
-    return a correspondent pandas dataframe filtering the pairs with shared bucket value
-    greater than the specified threshold
+    return a filtered dictionary with pairs having shared bucket value >= specified threshold
 
     Args:
-        all_pairs_dict (dict): with
+        - pairs_sharedbuckets_dict (dict): with
                 key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
                 value = number of shared buckets
-        shared_bucket_threshold (int): pick only pairs with shared buckets number greater than this threshold
+        - shared_bucket_threshold (int): shared buckets number threshold
+    
+    Return:
+        - dictionary with filtered values
+
+    '''
+    return {k: v for k, v in pairs_sharedbuckets_dict.items() if v >= shared_bucket_threshold}
+
+def ConvertAllPairsDictToPdDataframe(pairs_sharedbuckets_dict: dict,
+                                     doc1_col_name: str = "doc1",
+                                     doc2_col_name: str = "doc2",
+                                     shared_bucket_number_col_name: str = "shared_bucket") -> pd.DataFrame:
+    '''Given a dictionary with document pairs as key and number of shared bucket as value
+    return a correspondent pandas dataframe
+
+    Args:
+        - pairs_sharedbuckets_dict (dict): with
+                key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
+                value = number of shared buckets
+        - doc1_col_name (str)
+        - doc2_col_name (str)
+        - shared_bucket_number_col_name (str)
 
     Return:
         pd dataframe
     '''
-    pass
+    pd_df = pd.DataFrame.from_dict(pairs_sharedbuckets_dict, orient='index').reset_index()
+    pd_df.columns = [doc1_col_name, doc2_col_name, shared_bucket_number_col_name]
+    return(pd_df)
+
+# used for signature caching
+def GetUniquesIdSet(pairs_sharedbukets_pd: pd.DataFrame,
+                    doc1_col_name: str = "doc1",
+                    doc2_col_name: str = "doc2") -> np.array:
+    '''Given a pandas dataframe with document ids columns
+    return a np.array of uniques document ids
+    '''
+    return(pd.concat([pairs_sharedbukets_pd[doc1_col_name], 
+                      pairs_sharedbukets_pd[doc2_col_name]]).unique())
 
 
 # ---------------- LSH bands Lists data structure ------------------- # 
@@ -261,7 +292,8 @@ class LSHManyBandsBucketLists:
         
         Return:
             dictionary (dict): with
-                key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
+                key = (doc1_id, doc2_id) 
+                    (NOTE: to avoid duplicates doc1_id < doc2_id, and also doc1_id != doc2_id)
                 value = number of shared buckets
         '''
         temp_all_combinations = defaultdict(lambda: 0)  # 0 (shared buckets)
@@ -274,8 +306,10 @@ class LSHManyBandsBucketLists:
             for k in band_object.more_than_one_index:
                 # Generate unique pairs using combinations
                 for doc_id1, doc_id2 in combinations(band_object.band[k], 2):  # Add to the visited set
-                    temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
-                    temp_all_combinations[temp_key][1] += 1  # Increment shared bucket count
+                    # exclude same documents
+                    if(doc_id1 != doc_id2):
+                        temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
+                        temp_all_combinations[temp_key][1] += 1  # Increment shared bucket count
         
         return temp_all_combinations
     

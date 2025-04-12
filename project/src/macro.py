@@ -6,6 +6,7 @@ from itertools import combinations
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
 
+import pickle
 import regex as re
 import numpy as np
 import time
@@ -342,8 +343,6 @@ def FindAllCombinations(lsh_many_bands,
 
     return temp_all_combinations
 
-import pickle
-
 # this function has to be integrated in minhash Sql data structure
 def fetch_rows_by_doc_ids(cursor,
                           table_name,
@@ -413,8 +412,6 @@ def FindAllCombinationsPreload(lsh_many_bands, sig_sql, batch_size=10000) -> dic
             signature_cache[row[0]] = row[1]  # row[0] = doc_id and row[1] is the signature
     print(f"[INFO] Finished preloading document signatures. Cached {len(signature_cache)} signatures.")
 
-    # debug
-    print(f"One set element")
 
     # Step 3: Calculate signature similarities for unique pairs
     print("[INFO] Starting to calculate signature similarities...")
