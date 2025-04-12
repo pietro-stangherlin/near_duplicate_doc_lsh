@@ -121,35 +121,84 @@ if __name__ == "__main__":
 
                 #!!!!!!!!! Bootleneck !!!!!!
                 start_find_sim = time.time()
-                temp_all_combinations = macro.FindAllCombinationsPreload(lsh_many_bands = LshManyBands,
-                                                                  sig_sql = SigSQL)
+
+                # previous implementation for all steps (NOT USED)
+                # temp_all_combinations = macro.FindAllCombinationsPreload(lsh_many_bands = LshManyBands,
+                                                                        # sig_sql = SigSQL)
+
+                # get dictionary with
+                # key = document pair
+                # value = shared buckets number
+                doc1_doc2_sharedbucket_dict = LshManyBands.FindAllPairs()
+
+                print(f"got all pairs")
+
+                # delete lsh data structure to save memory
+                del LshManyBands
+
+                # in general filter by shared buckets number threshold
+                # here is done only to convert to list
+
+                doc1_doc2_sharedbucket_dict = lsh.FilterAllPairsDictBySharedBucketThreshold(pairs_sharedbuckets_dict= doc1_doc2_sharedbucket_dict,
+                                                                                            shared_bucket_threshold = 1)
+
+                print(f"filtered by shared bucket number")
+                # convert to pd.dataframe
+                lsh_pd_df = lsh.ConvertAllPairsListToPdDataframe(pairs_sharedbuckets_list = doc1_doc2_sharedbucket_dict,
+                                                                 doc1_col_name = pm.SIGNATURE_SIMILARITY_DOC1_HEADER,
+                                                                 doc2_col_name = pm.SIGNATURE_SIMILARITY_DOC2_HEADER,
+                                                                 shared_bucket_number_col_name = pm.DOC1_DOC2_SHARED_BUCKETS_NUMBER)
+                
+                print(f"conversion to pd dataframe")
+                # delete dictionary to save memory
+                del doc1_doc2_sharedbucket_dict
+
+                # get unique document ids
+                unique_doc_ids = lsh.GetUniquesIdSet(pairs_sharedbukets_pd = lsh_pd_df,
+                                    doc1_col_name = pm.SIGNATURE_SIMILARITY_DOC1_HEADER,
+                                    doc2_col_name = pm.SIGNATURE_SIMILARITY_DOC2_HEADER)
+                
+                print(f"got unique doc ids")
+                
+                # populate {document: signature} cache dictionary
+                signature_dict = SigSQL.GetDocSignatureSubsetDictionary(doc_ids_subset = unique_doc_ids,
+                                                                                   batch_size = 10**4)
+                
+                #debug
+                # check type of signature dict key
+
+                first_key = next(iter(signature_dict))
+                print(f"[DEBUG]: signature_dict first key = {first_key}")
+                print(f"[DEBUG]: signature_dict type(first key) = {type(first_key)}")
+
+                print(f"got cached signature dict")
+                
+                # add signature similarity column
+                lsh_pd_df[pm.SIGNATURE_SIMILARITY_DOC1_SIGSIM_HEADER] = mh.GetSignatureSimilarityArray(pairs_sharedbukets_pd = lsh_pd_df,
+                                                                                                       doc_signature_dict = signature_dict,
+                                                                                                       doc1_col_name = pm.SIGNATURE_SIMILARITY_DOC1_HEADER,
+                                                                                                        doc2_col_name = pm.SIGNATURE_SIMILARITY_DOC2_HEADER)
+
+                print(f"added signature similarity column")
+                # filter out columns for which signature similarity is 0
+                lsh_pd_df = lsh_pd_df[lsh_pd_df[pm.SIGNATURE_SIMILARITY_DOC1_SIGSIM_HEADER] > 0]
+
+                print(f"filtered out similarities <= 0")
+
                 stop_find_sim = time.time()
 
                 SigSQL.close_database()
-                
-                del LshManyBands
+            
 
                 time_finding_id_same_bucket = stop_find_sim - start_find_sim
                     
-                # sort key values
-                sorted_tuples_list = sorted(temp_all_combinations.items())
 
                 # write signature similarity csv
                 signature_sim_full_path = ut.JoinPaths(lsh_result_folder,
                                                     pm.SIGNATURE_SIMILARITY_NAME_CSV)
+                
+                lsh_pd_df.to_csv(signature_sim_full_path, index=False)
 
-
-                with open(signature_sim_full_path, mode= 'w', newline='') as fout:
-                    writer = csv.writer(fout)
-                    
-                    # write header
-                    writer.writerow([pm.SIGNATURE_SIMILARITY_DOC1_HEADER,
-                                    pm.SIGNATURE_SIMILARITY_DOC2_HEADER,
-                                    pm.SIGNATURE_SIMILARITY_DOC1_SIGSIM_HEADER,
-                                    pm.DOC1_DOC2_SHARED_BUCKETS_NUMBER])
-                    
-                    for ((first_el, second_el), value) in sorted_tuples_list:
-                        writer.writerow([first_el, second_el, value[0], value[1]])
                 
                 # UPDATE AND WRITE METADATA ----------------------------------------------
                 metadata_dict[pm.LSH_METADATA_PARAMS_NAME] = {pm.BANDS_NUMBER_FIELD_NAME: n_bands,

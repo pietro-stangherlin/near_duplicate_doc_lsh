@@ -140,9 +140,9 @@ def ComputeAllHashBands(signature: np.array,
 
 # this can be easily parallelized
 def FilterAllPairsDictBySharedBucketThreshold(pairs_sharedbuckets_dict: dict,
-                                              shared_bucket_threshold: int = 1):
+                                              shared_bucket_threshold: int = 1) -> list:
     '''Given a dictionary with document pairs as key and number of shared bucket as value
-    return a filtered dictionary with pairs having shared bucket value >= specified threshold
+    return a filtered list with pairs having shared bucket value >= specified threshold
 
     Args:
         - pairs_sharedbuckets_dict (dict): with
@@ -151,22 +151,22 @@ def FilterAllPairsDictBySharedBucketThreshold(pairs_sharedbuckets_dict: dict,
         - shared_bucket_threshold (int): shared buckets number threshold
     
     Return:
-        - dictionary with filtered values
+        - list with filtered values (unpacked values: doc1, doc2, shared bucket number order)
 
     '''
-    return {k: v for k, v in pairs_sharedbuckets_dict.items() if v >= shared_bucket_threshold}
 
-def ConvertAllPairsDictToPdDataframe(pairs_sharedbuckets_dict: dict,
+    
+    return([(*key, value) for key, value in pairs_sharedbuckets_dict.items() if value > shared_bucket_threshold])
+
+def ConvertAllPairsListToPdDataframe(pairs_sharedbuckets_list: dict,
                                      doc1_col_name: str = "doc1",
                                      doc2_col_name: str = "doc2",
                                      shared_bucket_number_col_name: str = "shared_bucket") -> pd.DataFrame:
-    '''Given a dictionary with document pairs as key and number of shared bucket as value
+    '''Given a list with doc1_id, doc2_id as first two elements and number of shared bucket third element
     return a correspondent pandas dataframe
 
     Args:
-        - pairs_sharedbuckets_dict (dict): with
-                key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
-                value = number of shared buckets
+        - pairs_sharedbuckets_list (list): each element is a tuple (doc1_id, doc2_id, shared_bucket_number)
         - doc1_col_name (str)
         - doc2_col_name (str)
         - shared_bucket_number_col_name (str)
@@ -174,8 +174,8 @@ def ConvertAllPairsDictToPdDataframe(pairs_sharedbuckets_dict: dict,
     Return:
         pd dataframe
     '''
-    pd_df = pd.DataFrame.from_dict(pairs_sharedbuckets_dict, orient='index').reset_index()
-    pd_df.columns = [doc1_col_name, doc2_col_name, shared_bucket_number_col_name]
+    pd_df = pd.DataFrame(pairs_sharedbuckets_list,
+                          columns = [doc1_col_name, doc2_col_name, shared_bucket_number_col_name])
     return(pd_df)
 
 # used for signature caching
@@ -309,7 +309,7 @@ class LSHManyBandsBucketLists:
                     # exclude same documents
                     if(doc_id1 != doc_id2):
                         temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
-                        temp_all_combinations[temp_key][1] += 1  # Increment shared bucket count
+                        temp_all_combinations[temp_key] += 1  # Increment shared bucket count
         
         return temp_all_combinations
     

@@ -141,15 +141,26 @@ def GetSignatureSimilarityArray(pairs_sharedbukets_pd: pd.DataFrame,
     n_row = pairs_sharedbukets_pd.shape[0]
     signatures_similarities_np_array = np.zeros(n_row)
 
+    # get doc1 and doc2 indexes
+    doc1_index = pairs_sharedbukets_pd.columns.get_loc(doc1_col_name)
+    doc2_index = pairs_sharedbukets_pd.columns.get_loc(doc2_col_name)
+
     for i, row in enumerate(pairs_sharedbukets_pd.itertuples(index=False)):
         if i % 10^6 == 0:
             print(f"[DEBUG] Processing similarity for pair {i}/{len(n_row)}...")
 
-        doc_id1 = row.doc1
-        doc_id2 = row.doc2
+        # debug: 
+        print(f"[DEBUG] row[doc1_index] = {row[doc1_index]}")
+        print(f"[DEBUG] type(row[doc1_index]) = {type(row[doc1_index])}")
 
-        value1 = doc_signature_dict[doc_id1]
-        value2 = doc_signature_dict[doc_id2]
+        print(f"[DEBUG] row[doc2_index] = {row[doc2_index]}")
+        print(f"[DEBUG] type(row[doc2_index]) = {type(row[doc2_index])}")
+
+
+        
+
+        value1 = doc_signature_dict[row[doc1_index]]
+        value2 = doc_signature_dict[row[doc2_index]]
 
         signatures_similarities_np_array[i] = SignatureSimilarity(value1, value2)
     
@@ -229,8 +240,6 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
         """
         Fetch rows from the database for the specified document IDs.
         Args:
-            - cursor: SQL cursor object
-            - table_name: Name of the database table
             - doc_ids_batch: A batch of document IDs
         Returns:
             - List of rows corresponding to the specified document IDs, with unpickled values if needed.
@@ -264,14 +273,14 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
         for i in range(0, len(doc_ids_subset), batch_size):
             batch = doc_ids_subset[i:i + batch_size]
             print(f"[DEBUG] Fetching batch {i // batch_size + 1} containing {len(batch)} document IDs...")
-            rows = self.fetch_rows_by_doc_ids(cursor = self.cursor,
-                                        table_name = self.table_name,
-                                        doc_ids_batch = batch)
+            rows = self.fetch_rows_by_doc_ids(doc_ids_batch = batch)
             for row in rows:
+                print(f"[DEBUG] row = {row}")
                 signature_cache[row[0]] = row[1]  # row[0] = doc_id and row[1] is the signature
         
-        return signature_cache
         print(f"[INFO] Finished preloading document signatures. Cached {len(signature_cache)} signatures.")
+        return signature_cache
+        
 
 # NOT USED -> to USE
 # here the MinHash class stores (as it should)
