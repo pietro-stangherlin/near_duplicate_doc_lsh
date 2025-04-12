@@ -144,7 +144,7 @@ if __name__ == "__main__":
                     
                     # write header
                     writer.writerow([pm.SIGNATURE_SIMILARITY_DOC1_HEADER,
-                                    pm.SIGNATURE_SIMILARITY_DOC1_HEADER,
+                                    pm.SIGNATURE_SIMILARITY_DOC2_HEADER,
                                     pm.SIGNATURE_SIMILARITY_DOC1_SIGSIM_HEADER,
                                     pm.DOC1_DOC2_SHARED_BUCKETS_NUMBER])
                     

@@ -136,6 +136,28 @@ def ComputeAllHashBands(signature: np.array,
                                              hash_fun = hash_functions_list[i])
     
     return bucket_ids_list
+
+def ConvertAllPairsDictToPdDataframe(all_pairs_dict: dict,
+                                     shared_bucket_threshold: int = 1,
+                                     doc1_col_name: str = "doc1",
+                                     doc2_col_name: str = "doc2",
+                                     shared_bucket_number_col_name: str = "shared_bucket"):
+    '''Given a dictionary with document pairs as key and number of shared bucket as value
+    return a correspondent pandas dataframe filtering the pairs with shared bucket value
+    greater than the specified threshold
+
+    Args:
+        all_pairs_dict (dict): with
+                key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
+                value = number of shared buckets
+        shared_bucket_threshold (int): pick only pairs with shared buckets number greater than this threshold
+
+    Return:
+        pd dataframe
+    '''
+    pass
+
+
 # ---------------- LSH bands Lists data structure ------------------- # 
 
 # --------- LSH one band buckets Lists data structure --------------- # 
@@ -239,8 +261,8 @@ class LSHManyBandsBucketLists:
         
         Return:
             dictionary (dict): with
-            key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
-            value = number of shared buckets
+                key = (doc1_id, doc2_id) (NOTE: to avoid duplicates doc1_id < doc2_id)
+                value = number of shared buckets
         '''
         temp_all_combinations = defaultdict(lambda: 0)  # 0 (shared buckets)
 
