@@ -33,7 +33,7 @@ def ComputeHashBand(signature: np.array,
         - hash_fun: hash function used
     
     Return:
-        hash value (int)
+        - hash value (int)
     '''
     return int(hash_fun(signature[band_inf_index : band_sup_index]))
 
@@ -332,8 +332,8 @@ class LSHOneBandBucketsBTree(LOBTree):
     https://btrees.readthedocs.io/
     
     Args: 
-        key (unsigned_integer): bucket id
-        value (set): set of doc ids
+        - key (unsigned_integer): bucket id
+        - value (set): set of doc ids
     '''
     # change if necessary
     # max number of elements a leaf can have

@@ -53,14 +53,14 @@ def GenerateNumpyArray(num_rows: int,
         All the integers generated are >= 1.
 
         Args:
-            num_rows: number of array's rows
-            num_cols: number of array's columns
-            seed: used for reproducibility
-            reshape: reshape the array into a matrix num_rows * num_cols
-            int_type: type of int used, numpy types
+            - num_rows: number of array's rows
+            - num_cols: number of array's columns
+            - seed: used for reproducibility
+            - reshape: reshape the array into a matrix num_rows * num_cols
+            - int_type: type of int used, numpy types
 
         Returns:
-            numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
+            - numpy array of dimensions num_rows * num_cols of unsigned 64 bit integer
         '''
 
         np.random.seed(seed)
@@ -95,14 +95,14 @@ def NaiveHashU32Params(x : np.uint32, params: np.array) -> np.uint32:
     '''Compute unsigned 32bit of unsigned 32 bit integer.
     
     Args:
-        x (uint32): integer to be hashed 
-        params (array of 2 uint64): params a and b in the formula
+        - x (uint32): integer to be hashed 
+        - params (array of 2 uint64): params a and b in the formula
     
     NOTE: 
     a and b should be randomly uniformly generated to get universal hashing
         
     Returns: 
-        hash (uint32): hashed integer
+        - hash (uint32): hashed integer
     '''
     x = np.uint64(x)
     p = 2**61 - 1
@@ -112,14 +112,14 @@ def NaiveHashU64Params(x : np.uint64, params: np.array) -> np.uint64:
     '''Compute unsigned 64 bit of unsigned 64 bit integer.
     
     Args:
-        x (uint32): integer to be hashed 
-        params (array of 2 uint64): params a and b in the formula
+        - x (uint32): integer to be hashed 
+        - params (array of 2 uint64): params a and b in the formula
     
     NOTE: 
     a and b should be randomly uniformly generated to get universal hashing
         
     Returns: 
-        hash (uint32): hashed integer
+        - hash (uint32): hashed integer
     '''
     x = np.uint64(x)
     p = 2**61 - 1
@@ -132,14 +132,14 @@ def NumbaNaiveHashU32Params(x, params):
     '''Compute unsigned 32bit of unsigned 32 bit integer.
     
     Args:
-        x (uint32): integer to be hashed 
-        params (array of 2 uint64): params a and b in the formula
+        - x (uint32): integer to be hashed 
+        - params (array of 2 uint64): params a and b in the formula
     
     NOTE: 
     a and b should be randomly uniformly generated to get universal hashing
         
     Returns: 
-        hash (uint32): hashed integer
+        - hash (uint32): hashed integer
     '''
     x = np.uint64(x)
     p = 2**61 - 1
@@ -151,14 +151,14 @@ def NumbaNaiveHashU64Params(x, params):
     '''Compute unsigned 32bit of unsigned 32 bit integer.
     
     Args:
-        x (uint64): integer to be hashed 
-        params (array of 2 uint64): params a and b in the formula
+        - x (uint64): integer to be hashed 
+        - params (array of 2 uint64): params a and b in the formula
     
     NOTE: 
     a and b should be randomly uniformly generated to get universal hashing
         
     Returns: 
-        hash (uint64): hashed integer
+        - hash (uint64): hashed integer
     '''
     x = np.uint64(x)
     p = 2**61 - 1
@@ -171,9 +171,9 @@ def MotwaniBandArrayHash(v: np.array,
     '''Implementation of band hash functions as described by Motwani et. al. article.
     
         Args:
-            v: np.array of unsigned integers of length k
-            random_int_array: array of (pseudo) random integers of length k
-            modulo: biggest possible hash value - 1
+            - v: np.array of unsigned integers of length k
+            - random_int_array: array of (pseudo) random integers of length k
+            - modulo: biggest possible hash value - 1
         
         Returns:
             - hash value computed (int)

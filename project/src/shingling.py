@@ -16,13 +16,13 @@ def TextToShinglesDuplicates(text: str,
         array([4, 2, 1], dtype=int16)
 
     Args:
-        text: text from which to compute she shingles
-        shingle_len: each shingle length
-        hash_fun: hash function applied to each shingle
-        int_type: type of integere used in the numpy array
+        - text: text from which to compute she shingles
+        - shingle_len: each shingle length
+        - hash_fun: hash function applied to each shingle
+        - int_type: type of integere used in the numpy array
 
     Returns:
-        array: (numpy.array) array of ints of hashed shingles
+        - array: (numpy.array) array of ints of hashed shingles
     '''
     # number of possibile consecutive shingles of the chosen length
     shingles_num = len(text) - shingle_len + 1
@@ -46,13 +46,13 @@ def TextToShinglesUniques(text: str,
         {1, 2, 4}
 
     Args:
-        text: text from which to compute she shingles
-        shingle_len: each shingle length
-        hash_fun: hash function applied to each shingle
-        int_type: type of integere used in the numpy array
+        - text: text from which to compute she shingles
+        - shingle_len: each shingle length
+        - hash_fun: hash function applied to each shingle
+        - int_type: type of integere used in the numpy array
 
     Returns:
-        set of uniques hashed shingles
+        - set of uniques hashed shingles
     '''
     # number of possibile consecutive shingles of the chosen length
     shingles_num = len(text) - shingle_len + 1
