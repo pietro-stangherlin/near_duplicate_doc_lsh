@@ -77,7 +77,7 @@ if __name__ == "__main__":
             else:
                     print(f"One or both files are missing in {subfolder}")
             
-            if not os.path.exists(output_signature_file_path):
+            if not os.path.exists(output_shared_buckets_file_path):
                 metrics_shared_buckets_df = anfn.PrecisionRecallVsSelectedMetric(lsh_results_pd = signature_sim_df,
                                                                     true_duplicates_tuple_set = true_duplicates_tuples_set,
                                                                     selected_metric_col_name = SHARED_BUCKETS_NUMBER_COL_NAME,

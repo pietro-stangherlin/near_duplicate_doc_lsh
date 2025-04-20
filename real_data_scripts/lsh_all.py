@@ -115,6 +115,7 @@ if __name__ == "__main__":
                                                         band_size = signature_len // n_bands,
                                                         modulo = n_buckets,
                                                         seed = pm.SEED_LSH))
+
                 
                 # open database connection
                 SigSQL = mh.SignaturesSQLite(database_name = signature_db_path)
