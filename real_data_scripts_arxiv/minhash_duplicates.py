@@ -11,7 +11,7 @@ import os
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_duplicates
+# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.minhash_duplicates
 
 # cycle for all minhash parameters files
 # for each combination if the folder already exists: do nothing
@@ -52,7 +52,7 @@ if __name__ == "__main__":
                                                                       duplicates_folder)
             
             # collection of only duplicates
-            robust_duplicates_file_path = duplicates_collection_original_folder_path + "\\" + pm.ROBUST_DUPLICATES_NAME
+            arxiv_duplicates_file_path = duplicates_collection_original_folder_path + "\\" + pm.ARXIV_DUPLICATES_NAME
             
             # try to concatenate names, hoping in no path length problems
             # make folder (this can be turned into a function)
@@ -95,7 +95,7 @@ if __name__ == "__main__":
                 # POPULATE SIGNATURE DB WITH DUPLICATES ---------------------------------------
                 start = time.time()
                 # actual procedure
-                macro.MinHashPopulateSignatureSQL(file_in_full_path = robust_duplicates_file_path,
+                macro.MinHashPopulateSignatureSQL(file_in_full_path = arxiv_duplicates_file_path,
                                         signature_db_full_path = signature_db_copy_full_path,
                                         id_name = pm.ID_FIELD_NAME,
                                         content_name = pm.CONTENT_FIELD_NAME,

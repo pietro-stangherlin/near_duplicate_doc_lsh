@@ -5,10 +5,12 @@ from near_duplicate_doc_lsh.project.src import hashing
 
 # Collection ------------------------------------------------
 
+arxiv_no_duplicates_nlines = 2776569
+
 ID_FIELD_NAME = "id2"
 CONTENT_FIELD_NAME = "content"
 
-arxiv_DUPLICATES_NAME = "arxiv_duplicates.json"
+ARXIV_DUPLICATES_NAME = "arxiv_duplicates.json"
 DUPLICATES_INDEX_NAME = "arxiv_index.csv"
 
 # METADATA -------------------------------------
@@ -87,7 +89,9 @@ BUCKETS_NUMBER_FIELD_NAME = "bucket_numbers"
 
 # list of signature lengths
 BANDS_NUMBERS = [10, 20, 30]
-BUCKET_NUMBERS = [5 * 10**6, 10**7, 2 * 10**7]
+BUCKET_NUMBERS = [5 * arxiv_no_duplicates_nlines,
+                    25 * arxiv_no_duplicates_nlines,
+                    50 * arxiv_no_duplicates_nlines]
 
 # Paths -----------------
 LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_params\\"
@@ -113,4 +117,4 @@ TIME_FIND_SAME_BUCKET_NAME = "time_find_same_bucket"
 ONLY_DUPLICATES_COLLECTION_FOLDER_PATH = "data_near_duplicate\\arxiv\\arxiv_clones\\"
 
 # Other Paths --------------------------------------------------------------------
-arxiv_ORIGINAL_PATH = "data_near_duplicate\\arxiv\\arxiv_id2_ready.json"
+ARXIV_ORIGINAL_PATH = "data_near_duplicate\\arxiv\\arxiv_id2.json"

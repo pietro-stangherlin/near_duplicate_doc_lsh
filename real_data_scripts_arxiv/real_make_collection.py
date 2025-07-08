@@ -10,7 +10,7 @@ import random
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.real_make_collection
+# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.real_make_collection
 
 
 for i in range(len(rmcp.all_config_list)):

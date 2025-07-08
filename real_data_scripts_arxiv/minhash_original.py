@@ -17,7 +17,7 @@ import json
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original
+# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.minhash_original
 
 # MinHash load function
 def LoadMinhashParamsFile(file_path):
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         # Add original data (no clones) to Signature database
 
         # here take always the original
-        macro.MinHashPopulateSignatureSQL(file_in_full_path = pm.ROBUST_ORIGINAL_PATH,
+        macro.MinHashPopulateSignatureSQL(file_in_full_path = pm.ARXIV_ORIGINAL_PATH,
                                     signature_db_full_path = signature_db_full_path,
                                     id_name = pm.ID_FIELD_NAME,
                                     content_name = pm.CONTENT_FIELD_NAME,

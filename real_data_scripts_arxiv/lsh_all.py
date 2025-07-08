@@ -12,7 +12,7 @@ import time
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.lsh_all
+# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.lsh_all
 
 def LoadLshParamsFile(file_path):
     with open(file_path, 'r') as file:
@@ -59,7 +59,7 @@ if __name__ == "__main__":
             signature_folder_path = os.path.join(pm.SIGNATURE_DB_DUPLICATES_FOLDER,
                                                  sig_folder + "\\")
             
-            lsh_folder_relative_name = f"nba_{n_bands}_nbu_{n_buckets}_" + sig_folder
+            lsh_folder_relative_name = f"nba_{n_bands}_nbu_{int(n_buckets // pm.arxiv_no_duplicates_nlines)}_" + sig_folder
             
             # debug
             print(f"lsh relative folder name: {lsh_folder_relative_name}")
@@ -219,7 +219,7 @@ if __name__ == "__main__":
                 
                 # UPDATE AND WRITE METADATA ----------------------------------------------
                 metadata_dict[pm.LSH_METADATA_PARAMS_NAME] = {pm.BANDS_NUMBER_FIELD_NAME: n_bands,
-                                                            pm.BUCKETS_NUMBER_FIELD_NAME: n_buckets,
+                                                            pm.BUCKETS_NUMBER_FIELD_NAME: int(n_buckets // pm.arxiv_no_duplicates_nlines),
                                                             pm.TIME_POPULATE_LSH_NAME : time_populating_lsh,
                                                             pm.TIME_FIND_SAME_BUCKET_NAME: time_finding_id_same_bucket}
                 
