@@ -3,7 +3,7 @@ from near_duplicate_doc_lsh.project.src import lsh
 from near_duplicate_doc_lsh.project.src import minhash as mh
 from near_duplicate_doc_lsh.project.src import utils as ut
 
-from near_duplicate_doc_lsh.real_data_scripts.params import parameters as pm
+from near_duplicate_doc_lsh.real_data_scripts_arxiv.params import parameters as pm
 
 import csv
 import os
