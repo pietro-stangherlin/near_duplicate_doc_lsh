@@ -5,7 +5,7 @@ from near_duplicate_doc_lsh.project.src import hashing
 
 # Collection ------------------------------------------------
 
-arxiv_no_duplicates_nlines = 2776569
+arxiv_no_duplicates_nlines = 1000000
 
 ID_FIELD_NAME = "id2"
 CONTENT_FIELD_NAME = "content"
