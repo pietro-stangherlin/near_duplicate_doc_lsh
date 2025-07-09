@@ -2,10 +2,13 @@
 # using the real data
 
 from near_duplicate_doc_lsh.project.src import hashing
+from near_duplicate_doc_lsh.data_creation.src import count_lines as cl
 
 # Collection ------------------------------------------------
 
-arxiv_no_duplicates_nlines = 1000000
+ARXIV_ORIGINAL_PATH = "data_near_duplicate\\arxiv\\arxiv_id2.json"
+# count lines
+arxiv_no_duplicates_nlines = cl.rawgencount(ARXIV_ORIGINAL_PATH)
 
 ID_FIELD_NAME = "id2"
 CONTENT_FIELD_NAME = "content"
@@ -55,7 +58,7 @@ MINHASH_BIT_TYPE_FIELD_NAME = "minhash_bit_type"
 # Parameters values  -------------------
 # list of signature lengths
 SHINGLE_LENGTHS = [9] # 9 is the suggested length
-SIGNATURE_LENGTHS = [100, 200, 300]
+SIGNATURE_LENGTHS = [100, 200]
 
 # Idea: 
 # with 32 bit shingle -> use 32 bit signature hash
@@ -66,7 +69,7 @@ MINHASH_HASH_DICT = {INT_TYPE_32: (hashing.MurmUns32Hash.__name__, # shingle
                     hashing.NumbaNaiveHashU32Params.__name__)} # minhash
 
 # Paths ------------------
-MINHASH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\minhash_params\\"
+MINHASH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\minhash_params\\"
 
 # folder of signatures
 SIGNATURE_DB_ORIGINAL_FOLDER = "data_near_duplicate\\arxiv\\signatures_db_original\\"
@@ -79,7 +82,7 @@ MINHASH_PARAMETERS_COPY_RELATIVE_NAME = "minhash_params.json"
 # + metadata file + index maybe, which is copied
 SIGNATURE_DB_DUPLICATES_FOLDER = "data_near_duplicate\\arxiv\\signatures_db_duplicates\\"
 
-MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts\\already_done\\signature_db_duplicates_done_names.txt"
+MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\already_done\\signature_db_duplicates_done_names.txt"
 
 # LSH ----------------------------------------------------------------------------
 # name of the bands number length field in the dictionary
@@ -94,11 +97,11 @@ BUCKET_NUMBERS = [5 * arxiv_no_duplicates_nlines,
                     50 * arxiv_no_duplicates_nlines]
 
 # Paths -----------------
-LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\lsh_params\\"
+LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\lsh_params\\"
 
 # each line is a name of already done
 # lsh result folder
-LSH_RESULT_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts\\already_done\\lsh_names_result_done.txt"
+LSH_RESULT_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\already_done\\lsh_names_result_done.txt"
 
 # final results
 LSH_RESULTS_FOLDER = "data_near_duplicate\\arxiv\\lsh_results\\"
@@ -116,5 +119,3 @@ TIME_FIND_SAME_BUCKET_NAME = "time_find_same_bucket"
 # (Only) Duplicates collections folder path
 ONLY_DUPLICATES_COLLECTION_FOLDER_PATH = "data_near_duplicate\\arxiv\\arxiv_clones\\"
 
-# Other Paths --------------------------------------------------------------------
-ARXIV_ORIGINAL_PATH = "data_near_duplicate\\arxiv\\arxiv_id2.json"
