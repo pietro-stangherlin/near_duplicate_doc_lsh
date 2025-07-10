@@ -51,7 +51,9 @@ if __name__ == "__main__":
         print(lsh_par_dict)
 
         n_bands = lsh_par_dict[pm.BANDS_NUMBER_FIELD_NAME]
-        n_buckets = lsh_par_dict[pm.BUCKETS_NUMBER_FIELD_NAME]
+        
+
+        times_buckets = lsh_par_dict[pm.BUCKETS_NUMBER_FIELD_NAME]
         
         # iterate over all duplicates (original + duplicates) signatures db folder
         for sig_folder in os.listdir(pm.SIGNATURE_DB_DUPLICATES_FOLDER):
@@ -59,7 +61,7 @@ if __name__ == "__main__":
             signature_folder_path = os.path.join(pm.SIGNATURE_DB_DUPLICATES_FOLDER,
                                                  sig_folder + "\\")
             
-            lsh_folder_relative_name = f"nba_{n_bands}_nbu_{int(n_buckets // pm.arxiv_no_duplicates_nlines)}_" + sig_folder
+            lsh_folder_relative_name = f"nba_{n_bands}_nbu_{int(times_buckets // pm.arxiv_no_duplicates_nlines)}_" + sig_folder
             
             # debug
             print(f"lsh relative folder name: {lsh_folder_relative_name}")
@@ -94,7 +96,9 @@ if __name__ == "__main__":
                                              pm.METADATA_FILE_NAME))
                     
                 signature_len = metadata_dict[pm.MINHASH_METADATA_PARAMS_NAME][pm.SIGNATURE_LEN_FIELD_NAME]
-            
+
+                n_documents = int(metadata_dict[pm.COLLECTION_PARAMS_NAME][pm.ORIGINAL_DOC_NUMBER_NAME]) + int(metadata_dict[pm.COLLECTION_PARAMS_NAME][pm.DUPLICATES_DOC_NUMBER_NAME])
+                n_buckets = times_buckets * n_documents
                 # Iterates over all signature database rows
                 # populate LSH band data structure
 
@@ -219,7 +223,7 @@ if __name__ == "__main__":
                 
                 # UPDATE AND WRITE METADATA ----------------------------------------------
                 metadata_dict[pm.LSH_METADATA_PARAMS_NAME] = {pm.BANDS_NUMBER_FIELD_NAME: n_bands,
-                                                            pm.BUCKETS_NUMBER_FIELD_NAME: int(n_buckets // pm.arxiv_no_duplicates_nlines),
+                                                            pm.BUCKETS_NUMBER_FIELD_NAME: times_buckets,
                                                             pm.TIME_POPULATE_LSH_NAME : time_populating_lsh,
                                                             pm.TIME_FIND_SAME_BUCKET_NAME: time_finding_id_same_bucket}
                 

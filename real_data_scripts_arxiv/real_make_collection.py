@@ -21,7 +21,7 @@ for i in range(len(rmcp.all_config_list)):
     fun_names_list = [fun.__name__ for fun in config_dict["functions_edit_list"]]
     fun_params_list = config_dict["functions_params_list"]
 
-    other_names_list = ["original_doc_number", "duplicates_number"]
+    other_names_list = [pm.ORIGINAL_DOC_NUMBER_NAME, pm.DUPLICATES_DOC_NUMBER_NAME]
     other_params_list = [config_dict["n_lines_in_file"], config_dict["n_random_lines"]]
 
 

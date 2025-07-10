@@ -25,6 +25,11 @@ LSH_METADATA_PARAMS_NAME = "lsh_params"
 BIT_TYPE_NAME = "bit_type"
 TIME_NAME = "time"
 
+COLLECTION_PARAMS_NAME = "collection_params"
+
+ORIGINAL_DOC_NUMBER_NAME = "original_doc_number"
+DUPLICATES_DOC_NUMBER_NAME = "duplicates_number"
+
 # Constants ------------------------------------
 
 # NOTE: one should add the string "np." as a prefix, like "np.uint32"
@@ -92,8 +97,10 @@ BUCKETS_NUMBER_FIELD_NAME = "bucket_numbers"
 
 # list of signature lengths
 BANDS_NUMBERS = [10, 20]
-BUCKET_NUMBERS = [5 * arxiv_no_duplicates_nlines,
-                    25 * arxiv_no_duplicates_nlines]
+# NOTE: those number multiply the total observation number in the collection
+# so if a collection has 1000 documents
+# and the first number is 5 then the bucket number would be 5 * 1000
+BUCKET_NUMBERS = [2,5,10,25]
 
 # Paths -----------------
 LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\lsh_params\\"
