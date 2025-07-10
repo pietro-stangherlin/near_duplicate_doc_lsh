@@ -111,15 +111,18 @@ def UnionAll(list_of_sets):
 
 # ROBUST
 # index_csv_fin = "data_near_duplicate\\robust\\original_index.csv"
-# collection_fin = "data_near_duplicate\\robust\\robust_id2.json"
+# collection_fin = "data_near_duplicate\\robust\\robust.json"
 # collection_fout = "data_near_duplicate\\robust\\robust_id2_uniques.json"
+
+# > python -m near_duplicate_doc_lsh.data_creation.src.make_unique_collection data_near_duplicate\\robust\\original_index.csv data_near_duplicate\\robust\\robust.json data_near_duplicate\\robust\\robust_id2_uniques.json
+
 
 # ARXIV
 # index_csv_fin = "data_near_duplicate\\arxiv\\original_index.csv"
 # collection_fin = "data_near_duplicate\\arxiv\\arxiv_reduced.json"
-# collection_fout = "data_near_duplicate\\arxiv\\arxiv_id2.json"
+# collection_fout = "data_near_duplicate\\arxiv\\arxiv_id2_to_number.json"
 
-# > python -m near_duplicate_doc_lsh.data_creation.src.make_unique_collection data_near_duplicate\\arxiv\\original_index.csv data_near_duplicate\\arxiv\\arxiv_reduced.json data_near_duplicate\\arxiv\\arxiv_id2.json
+# > python -m near_duplicate_doc_lsh.data_creation.src.make_unique_collection data_near_duplicate\\arxiv\\original_index.csv data_near_duplicate\\arxiv\\arxiv_reduced.json data_near_duplicate\\arxiv\\arxiv_id2_to_number.json
 
 if __name__ == "__main__":
     

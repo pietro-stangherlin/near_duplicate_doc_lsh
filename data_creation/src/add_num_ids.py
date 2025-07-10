@@ -6,7 +6,7 @@ import sys
 
 def ConvertID(file_in: str,
               file_out: str,
-              id_new_name: str) -> None:
+              id_new_name: str = "id2") -> None:
     '''Write in file_out the lines of file_in with id_new added.
     
     Args: 
@@ -52,6 +52,15 @@ def FromStrToIntConvert(text: str, other: int) -> int:
         encoded_string += str(ord(text[i])) 
     
     return int(encoded_string)
+
+
+# ROBUST
+# > python -m near_duplicate_doc_lsh.data_creation.src.add_num_ids data_near_duplicate\\robust\\robust_id2_uniques.json data_near_duplicate\\robust\\robust_id2.json id2
+
+
+# ARXIV
+# > python -m near_duplicate_doc_lsh.data_creation.src.add_num_ids data_near_duplicate\\arxiv\\arxiv_id2_to_number.json data_near_duplicate\\arxiv\\arxiv_id2.json id2
+
 
 if __name__ == "__main__":
     ConvertID(file_in = sys.argv[1],
