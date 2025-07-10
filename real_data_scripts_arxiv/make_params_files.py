@@ -10,7 +10,7 @@ from near_duplicate_doc_lsh.real_data_scripts_arxiv.params import parameters as 
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.make_params_files
+# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.make_params_files
 
 # MinHash function -----------------------------------------------------------
 def SaveMinhashParamsFiles(shingle_lenghts,
