@@ -61,7 +61,7 @@ if __name__ == "__main__":
             signature_folder_path = os.path.join(pm.SIGNATURE_DB_DUPLICATES_FOLDER,
                                                  sig_folder + "\\")
             
-            lsh_folder_relative_name = f"nba_{n_bands}_nbu_{int(times_buckets // pm.arxiv_no_duplicates_nlines)}_" + sig_folder
+            lsh_folder_relative_name = f"nba_{n_bands}_nbu_{times_buckets}_" + sig_folder
             
             # debug
             print(f"lsh relative folder name: {lsh_folder_relative_name}")
