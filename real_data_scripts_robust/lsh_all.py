@@ -5,6 +5,11 @@ from near_duplicate_doc_lsh.project.src import utils as ut
 
 from near_duplicate_doc_lsh.real_data_scripts_robust.params import parameters as pm
 
+# python -m near_duplicate_doc_lsh.real_data_scripts_robust.real_make_collection
+# python -m near_duplicate_doc_lsh.real_data_scripts_robust.minhash_original
+# python -m near_duplicate_doc_lsh.real_data_scripts_robust.minhash_duplicates
+# python -m near_duplicate_doc_lsh.real_data_scripts_robust.lsh_all
+
 import csv
 import os
 import json
