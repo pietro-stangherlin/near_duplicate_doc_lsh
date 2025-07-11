@@ -5,11 +5,7 @@ from itertools import combinations
 from collections import defaultdict
 
 from BTrees._LOBTree import LOBTree
-from . import sqlite_one_table
 from . import hashing
-
-import subprocess #used to call sqlite dot-command
-# see: https://stackoverflow.com/questions/2346074/execute-sqlite3-dot-commands-from-python-or-register-collation-in-command-line
 
 # Assuming we have a set of elements with fields: id; signature
 
@@ -431,99 +427,4 @@ class LSHManyBandsBucketsBTree:
                                                             id_doc = id_doc)
             
             band_index += 1
-    
 
-# NOT USED
-# ---------------- LSH bands SQL data structure ------------------- # 
-
-# option 1
-# ------------- LSH one band: SQL TABLE(id_bucket, id_doc) --------#
-
-class LSHOneBandSQLite_id_bucket_id_doc(sqlite_one_table.SQLiteOneTableGeneral):
-    '''Conditional to one band, write the table TABLE(id_bucket, id_doc), 
-    also create an index on id_bucket.
-    The table will be used to find all id_docs with the same id_bucket value.
-    '''
-    
-    def __init__(self,
-                 col_types_list: list = ["INTEGER", "INTEGER"],
-                 table_name: str = "table_1",
-                 database_name: str = "db_name"):
-        
-        super().__init__(col_names_list = ["id_bucket", "id_doc"],
-                         col_types_list = col_types_list,
-                         col_do_pickle_bool_list = [False, False],
-                         col_not_null_bool_list = [False, False],
-                         col_is_unique_bool_list = [False, True],
-                         col_create_index_bool_list = [True, False],
-                         table_name = table_name,
-                         database_name = database_name)
-
-    # rename methods
-    def insert_bucket_doc_pair(self,
-                                 bucket_value,
-                                 id_doc_value):
-        
-        super().insert_record_values(values_list = [bucket_value, id_doc_value])
-    
-    # this will manly will used for debug
-    # to finish
-    def getDocIdsByBucketDebugFetch(self,
-                          output_path: str):
-        ''' Method to get all document ids in the same bucket
-        (only for buckets with more than one document,
-        i.e. bucket id values that compare at least twice)
-        
-        NOTE: each output row follows the pattern id_bucket_value1|id_doc_value1,id_doc_value2,..
-        so in order to extract the id_doc_values each row has to parsed.
-        
-        Args:
-            - self
-            - output_path: path where to store the result (can be a .txt file)
-        
-        Return: 
-        '''
-        # change output
-        subprocess.call(["sqlite3", self.database_name,
-                         f".output {output_path}"])
-        
-        # execute query
-        self.connect.execute(f'''SELECT {self.col_names_list[0]},
-                                GROUP_CONCAT({self.col_names_list[1]}) AS ids_doc
-                                FROM {self.table_name}
-                                GROUP BY {self.col_names_list[0]}
-                                HAVING COUNT({self.col_names_list[0]}) >= 2;
-                             ''')
-        
-        # restore default ouptut
-        subprocess.call(["sqlite3", self.database_name,
-                         ".output stdout"])
-    
-    def getDocIdsByBucket(self,
-                          output_path: str):
-        ''' Method to get all document ids in the same bucket
-        (only for buckets with more than one document,
-        i.e. bucket id values that compare at least twice)
-        
-        NOTE: each output row follows the pattern id_bucket_value1|id_doc_value1,id_doc_value2,..
-        so in order to extract the id_doc_values each row has to parsed.
-        
-        Args:
-            - self
-            - output_path: path where to store the result (can be a .txt file)
-        '''
-        # change output
-        subprocess.call(["sqlite3", self.database_name,
-                         f".output {output_path}"])
-        
-        # execute query
-        self.connect.execute(f'''SELECT {self.col_names_list[0]},
-                                GROUP_CONCAT({self.col_names_list[1]}) AS ids_doc
-                                FROM {self.table_name}
-                                GROUP BY {self.col_names_list[0]}
-                                HAVING COUNT({self.col_names_list[0]}) >= 2;
-                             ''')
-        
-        # restore default ouptut
-        subprocess.call(["sqlite3", self.database_name,
-                         ".output stdout"])
