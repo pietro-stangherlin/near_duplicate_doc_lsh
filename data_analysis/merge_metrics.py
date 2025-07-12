@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     # Relative file names to read in each subfolder
     metadata_name = "metadata.json"
-    metrics_name = "metrics.csv"
+    metrics_name = "metrics_signature_similarity.csv"
 
     # Iterate through each subfolder
     for subfolder in os.listdir(base_directory):
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                     "collection_params": metadata["collection_params"],
                     "minhash_params": metadata["minhash_params"],
                     "lsh_params": metadata["lsh_params"],
-                    "sorted_signature_similarity": list(metrics["sorted_signature_similarities"]),
+                    "sorted_signature_similarity": list(metrics["signature_similarity"]),
                     "precision": list(metrics["precision"]),
                     "recall": list(metrics["recall"])
                 }

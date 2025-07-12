@@ -1,6 +1,7 @@
 rm(list = ls())
 
-dir_list <- list.dirs(path = "../../data_near_duplicate/robust/lsh_results")
+# do the same for robust
+dir_list <- list.dirs(path = "../../data_near_duplicate/arxiv/lsh_results")
 dir_list
 
 # CONSTANTS -----------------
@@ -13,9 +14,26 @@ PCH_RECALL = 8
 
 
 # parameters sets ------------
-nbu <- c("5000000", "10000000", "20000000")
-sigl <- c(100, 200, 300)
+nbu <- c("2", "5", "10")
+sigl <- c(100, 200)
 nba <- c(10, 20)
+noise_quant <- c("no_noise", "small_noise", "mid_noise")
+# small noise 2%, mid 5%
+duplicates_percent = c(1, 5, 10, 25)
+
+
+# compare one parameter fixing all the others
+
+
+# Signature Length ----------------------------------------------
+
+# Noise quantity ------------------------------------------------
+
+# Duplicates percentage -----------------------------------------
+
+# Number of bands -----------------------------------------------
+
+# Number of buckets ---------------------------------------------
 
 
 # Plotting function ------------
