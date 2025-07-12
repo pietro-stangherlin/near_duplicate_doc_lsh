@@ -2,8 +2,10 @@
 # save the result as a csv
 
 # Instructions
-# >>> python -m near_duplicate_doc_lsh.data_analysis.each_folder_analysis
+# >>> python -m near_duplicate_doc_lsh.data_analysis.each_folder_analysis --collection arxiv
+# >>> python -m near_duplicate_doc_lsh.data_analysis.each_folder_analysis --collection robust
 
+import argparse
 import os
 import pandas as pd
 import near_duplicate_doc_lsh.data_analysis.analysis_funs as anfn
@@ -23,11 +25,22 @@ METRICS_SIGNATURES_SIM_FILE_NAME = "metrics_signature_similarity.csv"
 METRICS_SHARED_BUCKETS_NUMBER_FILE_NAME = "metrics_shared_buckets_number.csv"
 
 if __name__ == "__main__":
-    base_directory = "data_near_duplicate\\robust\\lsh_results"
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+    "--collection",
+    type=str,
+    required=True,
+    help="collection name (e.g. 'arxiv', 'robust')"
+    )
+    args = parser.parse_args()
+
+    
+    base_directory = f"data_near_duplicate\\{args.collection}\\lsh_results"
     subfolder_names = anfn.ListSubfolders(base_directory)
 
     # Relative file names to read in each subfolder
-    collection_index = "robust_index.csv"
+    collection_index = "index.csv"
     sig_sim = "signature_sim.csv"
 
 

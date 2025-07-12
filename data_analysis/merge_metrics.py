@@ -2,18 +2,33 @@
 # and save it as a csv
 
 # Testing needed
-
+import argparse
 import json
 import os
 import pandas as pd
 import near_duplicate_doc_lsh.data_analysis.analysis_funs as anfn
 
+# Instructions
+# >>> python -m near_duplicate_doc_lsh.data_analysis.merge_metrics --collection arxiv
+# >>> python -m near_duplicate_doc_lsh.data_analysis.merge_metrics --collection robust
+
+
+
 if __name__ == "__main__":
     
     combined_meta_metrics = []
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+    "--collection",
+    type=str,
+    required=True,
+    help="collection name (e.g. 'arxiv', 'robust')"
+    )
+    args = parser.parse_args()
+
     
-    
-    base_directory = "data_near_duplicate\\robust\\lsh_results"
+    base_directory = f"data_near_duplicate\\{args.collection}\\lsh_results"
     subfolder_names = anfn.ListSubfolders(base_directory)
     
     output_json_path = "combined_meta_metrics.json"

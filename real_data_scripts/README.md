@@ -2,6 +2,13 @@
 
 ## Short Instructions
 
+First add num id.
+Example
+
+```bash
+python -m near_duplicate_doc_lsh.data_creation.src.add_num_ids .\\data_near_duplicate\\robust\\tipster_45_all_docs.json .\\data_near_duplicate\\robust\\robust_id2.json id2
+```
+
 ### Arxiv
 
 ```bash
