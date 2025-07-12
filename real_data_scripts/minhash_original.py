@@ -2,8 +2,10 @@
 
 from near_duplicate_doc_lsh.project.src import hashing
 from near_duplicate_doc_lsh.project.src import macro
-from near_duplicate_doc_lsh.real_data_scripts_arxiv.params import parameters as pm
 from near_duplicate_doc_lsh.project.src import utils as ut
+
+import importlib
+import argparse
 
 import numpy as np
 import os
@@ -20,18 +22,25 @@ import json
 # > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original --collection arxiv
 
 # MinHash load function
-def LoadMinhashParamsFile(file_path):
+def LoadMinhashParamsFile(file_path,
+                          shingle_len_field_name,
+                           shingle_hash__fun_field_name,
+                           signature_len_field_name,
+                           minhash_hash_fun_field_name,
+                           minhash_bit_type_field_name,
+                           minhash_hash_param_matrix_field_name,
+                           int_type):
     
     with open(file_path, 'r') as file:
         params = json.load(file)
         
         params_dict = {
-        pm.SHINGLE_LEN_FIELD_NAME: params[pm.SHINGLE_LEN_FIELD_NAME],
-        pm.SHINGLE_HASH_FUN_FIELD_NAME: getattr(hashing, params[pm.SHINGLE_HASH_FUN_FIELD_NAME]),
-        pm.SIGNATURE_LEN_FIELD_NAME: params[pm.SIGNATURE_LEN_FIELD_NAME],
-        pm.MINHASH_HASH_FUN_FIELD_NAME: getattr(hashing, params[pm.MINHASH_HASH_FUN_FIELD_NAME]),
-        pm.MINHASH_HASH_PARAM_MATRIX_FIELD_NAME: np.array(params[pm.MINHASH_HASH_PARAM_MATRIX_FIELD_NAME], dtype = pm.INT_TYPE_64),
-        pm.MINHASH_BIT_TYPE_FIELD_NAME: params[pm.MINHASH_BIT_TYPE_FIELD_NAME]}
+        shingle_len_field_name: params[shingle_len_field_name],
+        shingle_hash__fun_field_name: getattr(hashing, params[shingle_hash__fun_field_name]),
+        signature_len_field_name: params[signature_len_field_name],
+        minhash_hash_fun_field_name: getattr(hashing, params[minhash_hash_fun_field_name]),
+        minhash_hash_param_matrix_field_name: np.array(params[minhash_hash_param_matrix_field_name], dtype = int_type),
+        minhash_bit_type_field_name: params[minhash_bit_type_field_name]}
     
         return params_dict
     
@@ -42,6 +51,18 @@ def LoadMinhashParamsFile(file_path):
 # - metadata file
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+    "--collection",
+    type=str,
+    required=True,
+    help="collection name (e.g. 'arxiv', 'robust')"
+    )
+    args = parser.parse_args()
+
+    # Import the parameters module
+    pm = importlib.import_module(f"near_duplicate_doc_lsh.real_data_scripts.{args.collection}.params.parameters")
+
 
     counter = 0
     
@@ -50,7 +71,14 @@ if __name__ == "__main__":
         
         param_file_path = ut.JoinPaths(pm.MINHASH_PARAMS_FOLDER, param_filename)
 
-        par_dict = LoadMinhashParamsFile(file_path = param_file_path)
+        par_dict = LoadMinhashParamsFile(file_path = param_file_path,
+                                         shingle_len_field_name = pm.SHINGLE_LEN_FIELD_NAME,
+                                        shingle_hash__fun_field_name = pm.SHINGLE_HASH_FUN_FIELD_NAME,
+                                        signature_len_field_name = pm.SIGNATURE_LEN_FIELD_NAME,
+                                        minhash_hash_fun_field_name = pm.MINHASH_HASH_FUN_FIELD_NAME,
+                                        minhash_bit_type_field_name = pm.MINHASH_BIT_TYPE_FIELD_NAME,
+                                        minhash_hash_param_matrix_field_name = pm.MINHASH_HASH_PARAM_MATRIX_FIELD_NAME,
+                                        int_type = pm.INT_TYPE_64)
         
         # check if 32 or 64 bit hash
         bit_type_str = par_dict[pm.MINHASH_BIT_TYPE_FIELD_NAME]
@@ -80,7 +108,7 @@ if __name__ == "__main__":
         # Add original data (no clones) to Signature database
 
         # here take always the original
-        macro.MinHashPopulateSignatureSQL(file_in_full_path = pm.ARXIV_ORIGINAL_PATH,
+        macro.MinHashPopulateSignatureSQL(file_in_full_path = pm.ORIGINAL_PATH,
                                     signature_db_full_path = signature_db_full_path,
                                     id_name = pm.ID_FIELD_NAME,
                                     content_name = pm.CONTENT_FIELD_NAME,
