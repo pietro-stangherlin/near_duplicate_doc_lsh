@@ -40,3 +40,5 @@ def MakeRelativeSignatureFolderPath(shingle_len: int,
     return("_".join([f"sgn_shl_{shingle_len}",
                      f"sigl_{signature_len}",
                      f"bit_{bit_type}"]))
+
+

@@ -4,17 +4,52 @@
 from near_duplicate_doc_lsh.project.src import hashing
 from near_duplicate_doc_lsh.data_creation.src import count_lines as cl
 
+# PATHS ------------------------------------------------
+ORIGINAL_PATH = "data_near_duplicate\\arxiv\\arxiv_id2.json"
+
+MINHASH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\arxiv\\minhash_params\\"
+
+# MinHash ------------
+# folder of signatures
+SIGNATURE_DB_ORIGINAL_FOLDER = "data_near_duplicate\\arxiv\\signatures_db_original\\"
+# relative name of the signature sql database file
+SIGNATURE_DB_FILE_NAME_RELATIVE = "signature_db"
+
+MINHASH_PARAMETERS_COPY_RELATIVE_NAME = "minhash_params.json"
+
+# folder with subfolder of complete signature_db (original + duplicates)
+# + metadata file + index maybe, which is copied
+SIGNATURE_DB_DUPLICATES_FOLDER = "data_near_duplicate\\arxiv\\signatures_db_duplicates\\"
+
+MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts\\arxiv\\already_done\\signature_db_duplicates_done_names.txt"
+
+# Lsh ------------------
+LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts\\arxiv\\lsh_params\\"
+
+# each line is a name of already done
+# lsh result folder
+LSH_RESULT_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts\\arxiv\\already_done\\lsh_names_result_done.txt"
+
+# final results
+LSH_RESULTS_FOLDER = "data_near_duplicate\\arxiv\\lsh_results\\"
+
+# (Only) Duplicates collections folder path
+ONLY_DUPLICATES_COLLECTION_FOLDER_PATH = "data_near_duplicate\\arxiv\\clones\\"
+
+
 # Collection ------------------------------------------------
 
-ARXIV_ORIGINAL_PATH = "data_near_duplicate\\arxiv\\arxiv_id2.json"
+
 # count lines
-arxiv_no_duplicates_nlines = cl.rawgencount(ARXIV_ORIGINAL_PATH)
+no_duplicates_nlines = cl.rawgencount(ORIGINAL_PATH)
 
 ID_FIELD_NAME = "id2"
 CONTENT_FIELD_NAME = "content"
 
-ARXIV_DUPLICATES_NAME = "arxiv_duplicates.json"
-DUPLICATES_INDEX_NAME = "arxiv_index.csv"
+DUPLICATES_NAME = "duplicates.json"
+DUPLICATES_INDEX_NAME = "index.csv"
+
+DUPLICATES_NEW_ID = "id3"
 
 # METADATA -------------------------------------
 METADATA_FILE_NAME = "metadata.json"
@@ -74,20 +109,6 @@ MINHASH_HASH_DICT = {INT_TYPE_32: (hashing.MurmUns32Hash.__name__, # shingle
                     hashing.NumbaNaiveHashU32Params.__name__)} # minhash
 
 # Paths ------------------
-MINHASH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\minhash_params\\"
-
-# folder of signatures
-SIGNATURE_DB_ORIGINAL_FOLDER = "data_near_duplicate\\arxiv\\signatures_db_original\\"
-# relative name of the signature sql database file
-SIGNATURE_DB_FILE_NAME_RELATIVE = "signature_db"
-
-MINHASH_PARAMETERS_COPY_RELATIVE_NAME = "minhash_params.json"
-
-# folder with subfolder of complete signature_db (original + duplicates)
-# + metadata file + index maybe, which is copied
-SIGNATURE_DB_DUPLICATES_FOLDER = "data_near_duplicate\\arxiv\\signatures_db_duplicates\\"
-
-MINHASH_SIGNATURE_DB_DUPLICATES_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\already_done\\signature_db_duplicates_done_names.txt"
 
 # LSH ----------------------------------------------------------------------------
 # name of the bands number length field in the dictionary
@@ -102,15 +123,6 @@ BANDS_NUMBERS = [10, 20]
 # and the first number is 5 then the bucket number would be 5 * 1000
 BUCKET_NUMBERS = [2,5,10,25]
 
-# Paths -----------------
-LSH_PARAMS_FOLDER = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\lsh_params\\"
-
-# each line is a name of already done
-# lsh result folder
-LSH_RESULT_DONE_FOLDERS_NAMES_FILE = "near_duplicate_doc_lsh\\real_data_scripts_arxiv\\already_done\\lsh_names_result_done.txt"
-
-# final results
-LSH_RESULTS_FOLDER = "data_near_duplicate\\arxiv\\lsh_results\\"
 SIGNATURE_SIMILARITY_NAME_CSV = "signature_sim.csv"
 
 SIGNATURE_SIMILARITY_DOC1_HEADER = "doc1"
@@ -120,8 +132,4 @@ DOC1_DOC2_SHARED_BUCKETS_NUMBER = "shared_buckets_number"
 
 TIME_POPULATE_LSH_NAME = "time_populate_lsh"
 TIME_FIND_SAME_BUCKET_NAME = "time_find_same_bucket"
-
-
-# (Only) Duplicates collections folder path
-ONLY_DUPLICATES_COLLECTION_FOLDER_PATH = "data_near_duplicate\\arxiv\\arxiv_clones\\"
 

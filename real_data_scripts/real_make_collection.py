@@ -1,7 +1,8 @@
 from near_duplicate_doc_lsh.data_creation.src import make_collection as mc
-from near_duplicate_doc_lsh.real_data_scripts_robust.params import real_make_collection_params as rmcp
-from near_duplicate_doc_lsh.real_data_scripts_robust.params import parameters as pm
 import random
+
+import importlib
+import argparse
 
 # to do
 # idea: make it once for a set of parameters:
@@ -10,7 +11,21 @@ import random
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts_robust.real_make_collection
+# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.real_make_collection
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--collection",
+    type=str,
+    required=True,
+    help="collection name (e.g. 'arxiv', 'robust')"
+    )
+args = parser.parse_args()
+
+# Import the parameters module
+pm = importlib.import_module(f"near_duplicate_doc_lsh.real_data_scripts.{args.collection}.params.parameters")
+rmcp = importlib.import_module(f"near_duplicate_doc_lsh.real_data_scripts.{args.collection}.params.real_make_collection_params")
 
 
 for i in range(len(rmcp.all_config_list)):

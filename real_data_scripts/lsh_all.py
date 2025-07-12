@@ -1,11 +1,11 @@
-from near_duplicate_doc_lsh.project.src import macro
 from near_duplicate_doc_lsh.project.src import lsh
 from near_duplicate_doc_lsh.project.src import minhash as mh
 from near_duplicate_doc_lsh.project.src import utils as ut
 
-from near_duplicate_doc_lsh.real_data_scripts_arxiv.params import parameters as pm
+import importlib
+import argparse
 
-import csv
+
 import os
 import json
 import time
@@ -36,6 +36,19 @@ def print_first_10_rows(cursor, table_name):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+    "--collection",
+    type=str,
+    required=True,
+    help="collection name (e.g. 'arxiv', 'robust')"
+    )
+    args = parser.parse_args()
+
+    # Import the parameters module
+    pm = importlib.import_module(f"near_duplicate_doc_lsh.real_data_scripts.{args.collection}.params.parameters")
+
+
     
     # first load file where each row is a name of already done
     # lsh result folder: if encountered this is skipped
