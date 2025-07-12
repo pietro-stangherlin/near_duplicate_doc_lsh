@@ -296,6 +296,7 @@ class LSHManyBandsBucketLists:
         '''
         temp_all_combinations = defaultdict(lambda: 0)  # 0 (shared buckets)
 
+
         print("[INFO] Starting to process LSH bands...")
 
         for band_index, band_object in enumerate(self.bands_list):
@@ -308,6 +309,7 @@ class LSHManyBandsBucketLists:
                     if(doc_id1 != doc_id2):
                         temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
                         temp_all_combinations[temp_key] += 1  # Increment shared bucket count
+
         
         return temp_all_combinations
     

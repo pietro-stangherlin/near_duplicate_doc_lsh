@@ -3,6 +3,13 @@ import pandas as pd
 import numba
 from typing import Callable
 import pickle
+import time
+import regex as re
+import json
+
+from ..src import shingling
+from ..src import hashing
+from ..src import line_reading as lr 
 
 from BTrees._LOBTree import LOBTree
 from . import sqlite_one_table
@@ -157,6 +164,8 @@ def GetSignatureSimilarityArray(pairs_sharedbukets_pd: pd.DataFrame,
     
     return(signatures_similarities_np_array)
 
+
+
 # NOT USED
 # --------- Signatures set data structure ---------------
 class SignaturesBTree(LOBTree):
@@ -292,4 +301,5 @@ class MinHashSQLite:
         
         # signature instance
         self.signature_sql = SignaturesSQLite(**signature_sqlite_kwargs)
-        
+
+
