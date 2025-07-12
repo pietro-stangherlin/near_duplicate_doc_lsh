@@ -1,4 +1,26 @@
-# Description
+# Real data scripts
+
+## Short Instructions
+
+### Arxiv
+
+```bash
+python -m near_duplicate_doc_lsh.real_data_scripts.make_params_files --collection arxiv
+python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original --collection arxiv
+python -m near_duplicate_doc_lsh.real_data_scripts.minhash_duplicates --collection arxiv
+python -m near_duplicate_doc_lsh.real_data_scripts.lsh_all --collection arxiv
+```
+
+### Robust
+
+```bash
+python -m near_duplicate_doc_lsh.real_data_scripts.make_params_files --collection robust
+python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original --collection robust
+python -m near_duplicate_doc_lsh.real_data_scripts.minhash_duplicates --collection robust
+python -m near_duplicate_doc_lsh.real_data_scripts.lsh_all --collection robust
+```
+
+## Description
 
 This folder contains the scripts used for the actual analysis of the robust2004 corpus.
 Due to license reason the collection and the related files are not included in the project folder.

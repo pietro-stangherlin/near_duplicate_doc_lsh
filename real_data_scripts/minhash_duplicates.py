@@ -13,7 +13,7 @@ import os
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.minhash_duplicates
+# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_duplicates --collection arxiv
 
 # cycle for all minhash parameters files
 # for each combination if the folder already exists: do nothing
@@ -22,7 +22,7 @@ import os
 # - metadata file
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
     "--collection",

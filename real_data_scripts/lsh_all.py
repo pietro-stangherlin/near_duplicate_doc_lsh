@@ -12,7 +12,7 @@ import time
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.lsh_all
+# > python -m near_duplicate_doc_lsh.real_data_scripts.lsh_all --collection arxiv
 
 def LoadLshParamsFile(file_path):
     with open(file_path, 'r') as file:

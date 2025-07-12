@@ -17,7 +17,7 @@ import json
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts_arxiv.minhash_original
+# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original --collection arxiv
 
 # MinHash load function
 def LoadMinhashParamsFile(file_path):
