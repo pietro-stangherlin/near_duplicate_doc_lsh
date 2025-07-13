@@ -10,25 +10,25 @@ SMALL_NOISE_PER_a = 0.02
 MID_NOISE_PER_a = 0.05
 
 # 1%
-per1 = int(pm.no_duplicates_nlines * 0.01)
+per_1 = int(pm.no_duplicates_nlines * 0.01)
 # 5%
-per5 = int(pm.no_duplicates_nlines * 0.05)
+per_5 = int(pm.no_duplicates_nlines * 0.05)
 # 10 %
-per10 = int(pm.no_duplicates_nlines * 0.1)
+per_10 = int(pm.no_duplicates_nlines * 0.1)
 # 25 %
-per25 = int(pm.no_duplicates_nlines * 0.25)
+per_25 = int(pm.no_duplicates_nlines * 0.25)
 
 
 
 # No noise: exact duplicates -----------------------------------------------------
 
-no_noise_per1_path = clones_path + "no_noise_per1\\"
+noise_no_per_1_path = clones_path + "noise_no_per_1\\"
 
-only_clones_no_noise_per1 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": no_noise_per1_path,
+only_clones_noise_no_per_1 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_no_per_1_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per1,
+                                    "n_random_lines": per_1,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -39,13 +39,13 @@ only_clones_no_noise_per1 = {"file_in": pm.ORIGINAL_PATH,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
 # make this first as a test
-no_noise_per5_path = clones_path + "no_noise_per5\\"
+noise_no_per_5_path = clones_path + "noise_no_per_5\\"
 
-only_clones_no_noise_per5 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": no_noise_per5_path,
+only_clones_noise_no_per_5 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_no_per_5_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per5,
+                                    "n_random_lines": per_5,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -56,13 +56,13 @@ only_clones_no_noise_per5 = {"file_in": pm.ORIGINAL_PATH,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
 
-no_noise_per10_path = clones_path + "no_noise_per10\\"
+noise_no_per_10_path = clones_path + "noise_no_per_10\\"
 
-only_clones_no_noise_per10 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": no_noise_per10_path,
+only_clones_noise_no_per_10 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_no_per_10_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per10,
+                                    "n_random_lines": per_10,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -72,13 +72,13 @@ only_clones_no_noise_per10 = {"file_in": pm.ORIGINAL_PATH,
                                     "n_lines_in_file": pm.no_duplicates_nlines,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
-no_noise_per25_path = clones_path + "no_noise_per25\\"
+noise_no_per_25_path = clones_path + "noise_no_per_25\\"
 
-only_clones_no_noise_per25 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": no_noise_per25_path,
+only_clones_noise_no_per_25 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_no_per_25_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per25,
+                                    "n_random_lines": per_25,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -91,13 +91,13 @@ only_clones_no_noise_per25 = {"file_in": pm.ORIGINAL_PATH,
 
 # Small noise: not exact duplicates -----------------------------------------------------
 
-small_noise_per1_path = clones_path + "small_noise_per1\\"
+noise_small_per_1_path = clones_path + "noise_small_per_1\\"
 
-only_clones_small_noise_per1 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": small_noise_per1_path,
+only_clones_noise_small_per_1 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_small_per_1_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per1,
+                                    "n_random_lines": per_1,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -107,29 +107,13 @@ only_clones_small_noise_per1 = {"file_in": pm.ORIGINAL_PATH,
                                     "n_lines_in_file": pm.no_duplicates_nlines,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
-small_noise_per5_path = clones_path + "small_noise_per5\\"
+noise_small_per_5_path = clones_path + "noise_small_per_5\\"
 
-only_clones_small_noise_per5 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": small_noise_per5_path,
+only_clones_noise_small_per_5 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_small_per_5_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per5,
-                                     "id_int_unique_field_name": pm.ID_FIELD_NAME,
-                                    "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
-                                    "content_field_name": pm.CONTENT_FIELD_NAME,
-                                    "functions_edit_list": mc.ocr_functions_list,
-                                    "functions_params_list": [0, 0, SMALL_NOISE_PER_a],
-                                    "write_original_lines": False,
-                                    "n_lines_in_file": pm.no_duplicates_nlines,
-                                    "id_int_unique_last_index": pm.no_duplicates_nlines}
-
-
-small_noise_per10_path = clones_path + "small_noise_per10\\"
-only_clones_small_noise_per10 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": small_noise_per10_path,
-                                    "relative_file_out_collection": pm.DUPLICATES_NAME,
-                                    "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per10,
+                                    "n_random_lines": per_5,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -140,12 +124,28 @@ only_clones_small_noise_per10 = {"file_in": pm.ORIGINAL_PATH,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
 
-small_noise_per25_path = clones_path + "small_noise_per25\\"
-only_clones_small_noise_per25 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": small_noise_per25_path,
+noise_small_per_10_path = clones_path + "noise_small_per_10\\"
+only_clones_noise_small_per_10 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_small_per_10_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per25,
+                                    "n_random_lines": per_10,
+                                     "id_int_unique_field_name": pm.ID_FIELD_NAME,
+                                    "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
+                                    "content_field_name": pm.CONTENT_FIELD_NAME,
+                                    "functions_edit_list": mc.ocr_functions_list,
+                                    "functions_params_list": [0, 0, SMALL_NOISE_PER_a],
+                                    "write_original_lines": False,
+                                    "n_lines_in_file": pm.no_duplicates_nlines,
+                                    "id_int_unique_last_index": pm.no_duplicates_nlines}
+
+
+noise_small_per_25_path = clones_path + "noise_small_per_25\\"
+only_clones_noise_small_per_25 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_small_per_25_path,
+                                    "relative_file_out_collection": pm.DUPLICATES_NAME,
+                                    "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
+                                    "n_random_lines": per_25,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -157,13 +157,13 @@ only_clones_small_noise_per25 = {"file_in": pm.ORIGINAL_PATH,
 
 # Mid noise: not exact duplicates -----------------------------------------------------
 
-mid_noise_per1_path = clones_path + "mid_noise_per1\\"
+noise_mid_per_1_path = clones_path + "noise_mid_per_1\\"
 
-only_clones_mid_noise_per1 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": mid_noise_per1_path,
+only_clones_noise_mid_per_1 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_mid_per_1_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per1,
+                                    "n_random_lines": per_1,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -173,29 +173,13 @@ only_clones_mid_noise_per1 = {"file_in": pm.ORIGINAL_PATH,
                                     "n_lines_in_file": pm.no_duplicates_nlines,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
-mid_noise_per5_path = clones_path + "mid_noise_per5\\"
+noise_mid_per_5_path = clones_path + "noise_mid_per_5\\"
 
-only_clones_mid_noise_per5 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": mid_noise_per5_path,
+only_clones_noise_mid_per_5 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_mid_per_5_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per5,
-                                     "id_int_unique_field_name": pm.ID_FIELD_NAME,
-                                    "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
-                                    "content_field_name": pm.CONTENT_FIELD_NAME,
-                                    "functions_edit_list": mc.ocr_functions_list,
-                                    "functions_params_list": [0, 0, MID_NOISE_PER_a],
-                                    "write_original_lines": False,
-                                    "n_lines_in_file": pm.no_duplicates_nlines,
-                                    "id_int_unique_last_index": pm.no_duplicates_nlines}
-
-
-mid_noise_per10_path = clones_path + "mid_noise_per10\\"
-only_clones_mid_noise_per10 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": mid_noise_per10_path,
-                                    "relative_file_out_collection": pm.DUPLICATES_NAME,
-                                    "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per10,
+                                    "n_random_lines": per_5,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -206,12 +190,28 @@ only_clones_mid_noise_per10 = {"file_in": pm.ORIGINAL_PATH,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
 
-mid_noise_per25_path = clones_path + "mid_noise_per25\\"
-only_clones_mid_noise_per25 = {"file_in": pm.ORIGINAL_PATH,
-                                    "folder_path_out": mid_noise_per25_path,
+noise_mid_per_10_path = clones_path + "noise_mid_per_10\\"
+only_clones_noise_mid_per_10 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_mid_per_10_path,
                                     "relative_file_out_collection": pm.DUPLICATES_NAME,
                                     "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
-                                    "n_random_lines": per25,
+                                    "n_random_lines": per_10,
+                                     "id_int_unique_field_name": pm.ID_FIELD_NAME,
+                                    "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
+                                    "content_field_name": pm.CONTENT_FIELD_NAME,
+                                    "functions_edit_list": mc.ocr_functions_list,
+                                    "functions_params_list": [0, 0, MID_NOISE_PER_a],
+                                    "write_original_lines": False,
+                                    "n_lines_in_file": pm.no_duplicates_nlines,
+                                    "id_int_unique_last_index": pm.no_duplicates_nlines}
+
+
+noise_mid_per_25_path = clones_path + "noise_mid_per_25\\"
+only_clones_noise_mid_per_25 = {"file_in": pm.ORIGINAL_PATH,
+                                    "folder_path_out": noise_mid_per_25_path,
+                                    "relative_file_out_collection": pm.DUPLICATES_NAME,
+                                    "relative_file_out_index": pm.DUPLICATES_INDEX_NAME,
+                                    "n_random_lines": per_25,
                                      "id_int_unique_field_name": pm.ID_FIELD_NAME,
                                     "id_int_link_field_name": pm.DUPLICATES_NEW_ID,
                                     "content_field_name": pm.CONTENT_FIELD_NAME,
@@ -222,28 +222,28 @@ only_clones_mid_noise_per25 = {"file_in": pm.ORIGINAL_PATH,
                                     "id_int_unique_last_index": pm.no_duplicates_nlines}
 
 # error prone, to be changed
-all_config_list = [only_clones_no_noise_per1,
-                  only_clones_no_noise_per5,
-                  only_clones_no_noise_per10,
-                  only_clones_no_noise_per25,
-                  only_clones_small_noise_per1,
-                  only_clones_small_noise_per5,
-                  only_clones_small_noise_per10,
-                  only_clones_small_noise_per25,
-                    only_clones_mid_noise_per1,
-                  only_clones_mid_noise_per5,
-                  only_clones_mid_noise_per10,
-                  only_clones_mid_noise_per25]
+all_config_list = [only_clones_noise_no_per_1,
+                  only_clones_noise_no_per_5,
+                  only_clones_noise_no_per_10,
+                  only_clones_noise_no_per_25,
+                  only_clones_noise_small_per_1,
+                  only_clones_noise_small_per_5,
+                  only_clones_noise_small_per_10,
+                  only_clones_noise_small_per_25,
+                    only_clones_noise_mid_per_1,
+                  only_clones_noise_mid_per_5,
+                  only_clones_noise_mid_per_10,
+                  only_clones_noise_mid_per_25]
 
-all_config_path_list = [no_noise_per1_path,
-                        no_noise_per5_path,
-                        no_noise_per10_path,
-                        no_noise_per25_path,
-                        small_noise_per1_path,
-                        small_noise_per5_path,
-                        small_noise_per10_path,
-                        small_noise_per25_path,
-                        mid_noise_per1_path,
-                        mid_noise_per5_path,
-                        mid_noise_per10_path,
-                        mid_noise_per25_path]
+all_config_path_list = [noise_no_per_1_path,
+                        noise_no_per_5_path,
+                        noise_no_per_10_path,
+                        noise_no_per_25_path,
+                        noise_small_per_1_path,
+                        noise_small_per_5_path,
+                        noise_small_per_10_path,
+                        noise_small_per_25_path,
+                        noise_mid_per_1_path,
+                        noise_mid_per_5_path,
+                        noise_mid_per_10_path,
+                        noise_mid_per_25_path]
