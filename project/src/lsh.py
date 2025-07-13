@@ -189,6 +189,19 @@ def GetUniquesIdSet(pairs_sharedbukets_pd: pd.DataFrame,
 
 # ---------------- LSH bands Lists data structure ------------------- # 
 
+class LinkedList:
+    def __init__(self, value):
+        '''
+        '''
+        pass 
+
+    def Concatenate(self, value):
+        pass
+
+    def ToList(self):
+        pass
+
+
 # --------- LSH one band buckets Lists data structure --------------- # 
 class LSHOneBandBucketLists:
     

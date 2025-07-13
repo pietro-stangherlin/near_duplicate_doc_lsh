@@ -133,6 +133,28 @@ class SQLiteOneTable:
         else:
             os.remove(self.database_name)
     
+    def count_rows(self):
+        '''Return the number of records
+        '''
+        self.cursor.execute(f"SELECT COUNT(*) FROM {self.table_name};")
+        return self.cursor.fetchall()
+    
+
+    def fetch_first_rows(self,
+                       do_unpickle_col2: bool = True,
+                        row_count = 1):
+        '''Return first row, eventually pickle.
+        '''
+        self.cursor.execute(f"SELECT * FROM {self.table_name} LIMIT {row_count};")
+        rows = self.cursor.fetchall()
+
+        for row in rows:
+            if do_unpickle_col2:
+                row = (row[0], pickle.loads(row[1]))
+            yield row
+
+
+    
     def fetch_all_rows(self,
                        batch_size: int = 10000,
                        do_unpickle_col2: bool = True):
