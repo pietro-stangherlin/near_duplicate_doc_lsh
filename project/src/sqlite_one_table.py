@@ -137,21 +137,22 @@ class SQLiteOneTable:
         '''Return the number of records
         '''
         self.cursor.execute(f"SELECT COUNT(*) FROM {self.table_name};")
-        return self.cursor.fetchall()
+        result = self.cursor.fetchone()
+        return result[0] if result else 0
     
 
-    def fetch_first_rows(self,
-                       do_unpickle_col2: bool = True,
-                        row_count = 1):
+    def fetch_first_row(self,
+                       do_unpickle_col2: bool = True):
         '''Return first row, eventually pickle.
         '''
-        self.cursor.execute(f"SELECT * FROM {self.table_name} LIMIT {row_count};")
-        rows = self.cursor.fetchall()
+        self.cursor.execute(f"SELECT * FROM {self.table_name} LIMIT 1;")
+        row = self.cursor.fetchone()
+        if not row:
+            return None
 
-        for row in rows:
-            if do_unpickle_col2:
-                row = (row[0], pickle.loads(row[1]))
-            yield row
+        if do_unpickle_col2:
+            row = (row[0], pickle.loads(row[1]))
+        return row
 
 
     

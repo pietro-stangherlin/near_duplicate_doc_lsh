@@ -47,9 +47,14 @@ def WriteSignatureDbToBandBucketCsv(in_db_file_name: str,
 
     # get signature len
     # since it's a numpy array
-    signature_len = SigSQL.fetch_first_rows(do_unpickle_col2 = do_unpickle, row_count = 1)[1].ndim
+    signature_len = len(SigSQL.fetch_first_row(do_unpickle_col2 = do_unpickle)[1])
 
-    n_rows = SigSQL.count_rows()
+    n_rows = int(SigSQL.count_rows())
+
+    print(signature_len)
+    print(n_rows)
+    print(n_bands)
+    print(times_buckets)
     n_buckets = times_buckets * n_rows
 
 
@@ -86,6 +91,9 @@ def WriteSignatureDbToBandBucketCsv(in_db_file_name: str,
     SigSQL.close_database()
 
 if __name__ == "__main__":
+
+    # python -m near_duplicate_doc_lsh.real_data_scripts.from_sigdb_to_bucktes_csv --db_name_in near_duplicate_doc_lsh\test_data\arxiv_duplicates\sig_config1\signature_db --csv_name_out near_duplicate_doc_lsh\test_data\arxiv_duplicates\sig_config1\bucktes.csv
+
     parser = argparse.ArgumentParser()
     
     parser.add_argument(
@@ -120,9 +128,23 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    WriteSignatureDbToBandBucketCsv(in_db_file_name = parser.db_name_in,
-                                    out_csv_file_name = parser.csv_name_out,
-                                    n_bands = parser.n_bands,
-                                    times_buckets = parser.times_buckets,
-                                    do_unpickle = parser.do_unpickle,
-                                    seed = parser.seed)
+    if args.n_bands == None:
+        args.n_bands = 10
+
+    if args.times_buckets == None:
+        args.times_buckets = 5
+
+    if args.do_unpickle == None:
+        args.do_unpickle = True
+
+    if args.seed == None:
+        args.seed = 123 
+    
+    
+
+    WriteSignatureDbToBandBucketCsv(in_db_file_name = args.db_name_in,
+                                    out_csv_file_name = args.csv_name_out,
+                                    n_bands = args.n_bands,
+                                    times_buckets = args.times_buckets,
+                                    do_unpickle = args.do_unpickle,
+                                    seed = args.seed)

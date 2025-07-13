@@ -44,7 +44,13 @@ hash_params_matrix = hashing.GenerateNumpyArray(num_rows = tap.SIGNATURE_LEN,
 # first make subfolder, with respect to the duplicates file folder
 # where to store the signature database
 
+SigSQL = mh.SignaturesSQLite(database_name = signature_db_full_path)
+SigSQL.delete_database(ask_confirm = False)
+SigSQL.close_database()
+
 # Actual procedure ------------------------------------------------------
+
+
 
 # 1) Add original Data
 # Add original data (no clones) to Signature database
@@ -60,7 +66,7 @@ macro.MinHashPopulateSignatureSQL(file_in_full_path = tap.file_name_original_onl
                                 minhash_hash_param_matrix = hash_params_matrix,
                                 minhash_hash_fun = tap.MINHASH_HASH_FUN,
                                 minhash_int_type = tap.MINHASH_INT_TYPE,
-                                num_sql_insertions = tap.NUM_SQL_INSERTIONS,
+                                batch_size = tap.NUM_SQL_INSERTIONS,
                                 match_string = r'\{(.*)\}')
 
 stop = time.time()
@@ -84,7 +90,7 @@ macro.MinHashPopulateSignatureSQL(file_in_full_path = tap.file_name_duplicates_o
                                 minhash_hash_param_matrix = hash_params_matrix,
                                 minhash_hash_fun = tap.MINHASH_HASH_FUN,
                                 minhash_int_type = tap.MINHASH_INT_TYPE,
-                                num_sql_insertions = tap.NUM_SQL_INSERTIONS,
+                                batch_size = tap.NUM_SQL_INSERTIONS,
                                 match_string = r'\{(.*)\}')
 
 stop = time.time()
@@ -156,7 +162,6 @@ temp_all_combinations = macro.FindAllCombinations(lsh_many_bands = LshManyBands,
 stop_find_sim = time.time()
 
 SigSQL.close_database()
-SigSQL.delete_database(ask_confirm = False)
 
 print("Finding documents in the same bucket LSH bands")
 print(f"Time: {stop_find_sim - start_find_sim}")
