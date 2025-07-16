@@ -1,7 +1,6 @@
 rm(list = ls())
 
-# do the same for robust
-dir_list_all <- list.dirs(path = "../../data_near_duplicate/arxiv/lsh_results")
+dir_list_all <- list.dirs(path = "../../data_near_duplicate/robust/lsh_results")
 dir_list = dir_list_all[2:length(dir_list_all)]
 
 
@@ -192,8 +191,6 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
          pch = c(PCH_PRECISION, PCH_RECALL),
          bty = "n")
   
-  # TO DO: LEGEND
-  
   legend("bottomleft",
          legend = paste(not_fixed_par_name, ": ", params_list[[index_not_fixed_param]]),
          col = 1:color_index,
@@ -214,7 +211,7 @@ temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT
 temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[1]
 temp_param_list[[SIGL_NAME]] = SIGL[1]
 temp_param_list[[NBA_NAME]] = NBA[1]
-temp_param_list[[NBU_NAME]] = NBU[2]
+temp_param_list[[NBU_NAME]] = NBU[1]
 
 PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
                                 prefix_list = PREFIX_LIST,
