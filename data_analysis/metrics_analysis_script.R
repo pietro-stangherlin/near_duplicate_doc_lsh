@@ -1,6 +1,9 @@
 rm(list = ls())
 
-dir_list_all <- list.dirs(path = "../../data_near_duplicate/robust/lsh_results")
+subcollection <- "robust"
+
+dir_list_all <- list.dirs(path = paste0("../../data_near_duplicate/",subcollection,"/lsh_results",
+                                        collapse = ""))
 dir_list = dir_list_all[2:length(dir_list_all)]
 
 
@@ -12,6 +15,14 @@ SIGN_METRIC_NAME <- "metrics_signature_similarity.csv"
 
 SIGN_SIM_NAME = "signature_similarity"
 SHARED_BUCK_NAME = "shared_buckets_number"
+
+# Plotting ----------------------------
+
+plot_dir <- paste0("../../data_near_duplicate/",subcollection,"/plots",
+                                    collapse = "")
+
+HEIGHT <- 800
+WIDTH <- 1000
 
 PCH_PRECISION = 16
 PCH_RECALL = 8
@@ -200,7 +211,34 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
   
 }
 
-
+# this gives a plot the appropriate name based on which parameters 
+# are fixed and which is not (only one is not fixed)
+NamePlot <- function(params_list,
+                     prefix_list){
+  all_indexes <- 1:length(params_list)
+  
+  index_not_fixed_param <- which(length(params_list) > 1)
+  
+  if(length(index_not_fixed_param) > 1){
+    print("Error: more than one parameter has more than one value, leaving")
+    return(NULL)
+  }
+  
+  fixed_params_indexes <- setdiff(all_indexes, index_not_fixed_param)
+  fixed_params_names <- names(params_list)[fixed_params_indexes]
+  not_fixed_par_name = names(params_list)[index_not_fixed_param]
+  
+  # start name by not fixed params
+  res_name <- prefix_list[not_fixed_par_name]
+  
+  for (el in fixed_params_names){
+    res_name = paste0(res_name, prefix_list[el], params_list[el], "_", collapse = "")
+  }
+  
+  return(substr(x = res_name, start = 1, stop = nchar(res_name) - 1))
+  
+  
+}
 # compare one parameter fixing all the others
 
 
@@ -213,6 +251,13 @@ temp_param_list[[SIGL_NAME]] = SIGL[1]
 temp_param_list[[NBA_NAME]] = NBA[1]
 temp_param_list[[NBU_NAME]] = NBU[1]
 
+temp_name <- NamePlot(params_list = temp_param_list,
+         prefix_list = PREFIX_LIST)
+
+png(filename = paste0(temp_name, ".png", collapse = ""),
+    height = HEIGHT,
+    width = WIDTH)
+
 PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
                                 prefix_list = PREFIX_LIST,
                                 my_sim_name = SIGN_METRIC_NAME,
@@ -220,9 +265,11 @@ PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
                                 precision_var_name = PRECISION_NAME,
                                 recall_var_name = RECALL_NAME,
                                 my_dir_list = dir_list,
-                                my_xlim = c(0.4, 1),
-                                my_ylim = c(0.4, 1),
+                                my_xlim = c(0.8, 1),
+                                my_ylim = c(0.5, 1),
                                 my_xlab = SIGN_SIM_NAME)
+
+dev.off()
 
 # Duplicates percentage -----------------------------------------
 
