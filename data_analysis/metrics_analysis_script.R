@@ -6,7 +6,8 @@ dir_list_all <- list.dirs(path = paste0("../../data_near_duplicate/",subcollecti
                                         collapse = ""))
 dir_list = dir_list_all[2:length(dir_list_all)]
 
-
+out_folder <- paste0("../../data_near_duplicate/",subcollection, "/",
+                     collapse = "")
 
 # Constants ----------------- ----------------------------
 
@@ -100,23 +101,23 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
                                             my_xlim = c(0, 1),
                                             my_ylim = c(0.4, 1),
                                             my_xlab = ""){
-  
+
   all_indexes <- 1:length(params_list)
-  
+
   index_not_fixed_param <- which(length(params_list) > 1)
-  
+
   if(length(index_not_fixed_param) > 1){
     print("Error: more than one parameter has more than one value, leaving")
     return(NULL)
   }
-  
+
   fixed_params_indexes <- setdiff(all_indexes, index_not_fixed_param)
   fixed_params_names <- names(params_list)[fixed_params_indexes]
-  
+
   # Fixed params folders name subset
   fixed_params_values <- rep(NA, length(fixed_params_indexes))
   text_to_select = rep(NA, length(fixed_params_indexes))
-  
+
   for (i in 1:length(fixed_params_indexes)){
     actual_index <- fixed_params_indexes[i]
     par_name = names(params_list)[actual_index]
@@ -125,28 +126,28 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
                                params_list[[par_name]],
                                collapse = "")
   }
-  
+
   pattern <- paste0("(?=.*", text_to_select, "(_|$))", collapse = "")
-  
+
   selected_dirs <- my_dir_list[grep(pattern,
                                     my_dir_list,
                                     perl = TRUE)]
-  
+
   # Not Fixed param sub folders conditioned on the previuos found
   not_fixed_par_name = names(params_list)[index_not_fixed_param]
-  
+
   # first value: reference plot
-  
+
   text_to_select = paste0(prefix_list[[not_fixed_par_name]],
                           params_list[[not_fixed_par_name]][1],
                           collapse = "")
-  
+
   used_dir <- selected_dirs[grep(text_to_select,selected_dirs)]
-  
-  
+
+
   metrics_df <- read.csv(paste0(c(used_dir, my_sim_name),
                                 collapse = "/"))
-  
+
   plot(metrics_df[,x_axis_var_name],
        metrics_df[,precision_var_name],
        col = 1,
@@ -157,92 +158,94 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
        pch = PCH_PRECISION,
        type = PLOT_TYPE,
        main = not_fixed_par_name)
-  
+
   points(metrics_df[,x_axis_var_name],
          metrics_df[,recall_var_name],
-         pch = PCH_RECALL, 
+         pch = PCH_RECALL,
          col = 1,
          type = PLOT_TYPE)
-  
-  
+
+
   # other values: points on the reference plot
-  
+
   color_index = 1
   for(val in params_list[[index_not_fixed_param]][-1]){
     color_index = color_index + 1
-    
+
     text_to_select = paste0(prefix_list[[not_fixed_par_name]], val,
                                collapse = "")
-    
+
     used_dir <- my_dir_list[grep(text_to_select,selected_dirs)]
-    
+
     metrics_df <- read.csv(paste0(c(used_dir, my_sim_name),
                                      collapse = "/"))
-    
+
     points(metrics_df[,x_axis_var_name],
            metrics_df[,precision_var_name],
            col = color_index,
            pch = PCH_PRECISION,
            type = PLOT_TYPE)
-    
+
     points(metrics_df[,x_axis_var_name],
            metrics_df[,recall_var_name],
            pch = PCH_RECALL,
            col = color_index,
            type = PLOT_TYPE)
-   
+
   }
-  
+
   legend("topleft",
          legend = paste(fixed_params_names, ": ", fixed_params_values),
          bty = "n")
-  
+
   legend("bottomright",
          legend = c(PRECISION_NAME, RECALL_NAME),
          pch = c(PCH_PRECISION, PCH_RECALL),
          bty = "n")
-  
+
   legend("bottomleft",
          legend = paste(not_fixed_par_name, ": ", params_list[[index_not_fixed_param]]),
          col = 1:color_index,
          bty = "n",
          lty = 1,
          lwd = 2)
-  
+
 }
 
-# this gives a plot the appropriate name based on which parameters 
+# this gives a plot the appropriate name based on which parameters
 # are fixed and which is not (only one is not fixed)
 NamePlot <- function(params_list,
                      prefix_list){
   all_indexes <- 1:length(params_list)
-  
+
   index_not_fixed_param <- which(length(params_list) > 1)
-  
+
   if(length(index_not_fixed_param) > 1){
     print("Error: more than one parameter has more than one value, leaving")
     return(NULL)
   }
-  
+
   fixed_params_indexes <- setdiff(all_indexes, index_not_fixed_param)
   fixed_params_names <- names(params_list)[fixed_params_indexes]
   not_fixed_par_name = names(params_list)[index_not_fixed_param]
-  
+
   # start name by not fixed params
   res_name <- prefix_list[not_fixed_par_name]
-  
+
   for (el in fixed_params_names){
     res_name = paste0(res_name, prefix_list[el], params_list[el], "_", collapse = "")
   }
-  
+
   return(substr(x = res_name, start = 1, stop = nchar(res_name) - 1))
-  
-  
+
+
 }
 # compare one parameter fixing all the others
 
 
 # Noise quantity ------------------------------------------------
+
+sub_folder <- "noise/"
 
 temp_param_list = EMPTY_PARAMS_LIST
 temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT
@@ -251,10 +254,10 @@ temp_param_list[[SIGL_NAME]] = SIGL[1]
 temp_param_list[[NBA_NAME]] = NBA[1]
 temp_param_list[[NBU_NAME]] = NBU[1]
 
-temp_name <- NamePlot(params_list = temp_param_list,
+temp_name_relative_name <- NamePlot(params_list = temp_param_list,
          prefix_list = PREFIX_LIST)
 
-png(filename = paste0(temp_name, ".png", collapse = ""),
+png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
     height = HEIGHT,
     width = WIDTH)
 
