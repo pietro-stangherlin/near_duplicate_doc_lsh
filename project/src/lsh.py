@@ -194,27 +194,41 @@ class LinkedAtom:
     def __init__(self, value, next):
         self.value = value
         self.next = next
+    
+    def GetNext(self):
+        return self.next
+    
+    def GetValue(self):
+        return self.value
 
 class LinkedList:
     def __init__(self, value):
-        '''Initialize a linked list, only forward traversal is possible: A->B->C->..->None
+        '''Initialize a linked list, only forward traversal is possible: Dummy->A->B->C->..->None
         None is used to signal the last element
         '''
         if (value == None):
             print("None value, not added")
             return None
 
-        self.last = None
-        self.start = LinkedAtom(value = value, next = self.last)
+
+        self.last = LinkedAtom(value = value, next = None)
+        # dummy node
+        self.start = LinkedAtom(value = "Dummy", next = self.last)
+
         self.n_elements = 1
 
     def Concatenate(self, value):
-        self.last.next = LinkedAtom(value = value, next = None)
+        added_node = LinkedAtom(value = value, next = None)
+        # add reference
+        self.last.next = added_node
+        # update last
+        self.last = added_node
         self.n_elements += 1
 
     def ToList(self) -> list:
         '''return a list with all the values'''
         res_list = [None for i in range(self.n_elements)]
+
 
 
 
