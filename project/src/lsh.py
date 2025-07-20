@@ -190,44 +190,52 @@ def GetUniquesIdSet(pairs_sharedbukets_pd: pd.DataFrame,
 
 # ---------------- LSH bands Lists data structure ------------------- # 
 
-class LinkedAtom:
-    def __init__(self, value, next):
-        self.value = value
-        self.next = next
-    
-    def GetNext(self):
-        return self.next
-    
-    def GetValue(self):
-        return self.value
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
 
 class LinkedList:
-    def __init__(self, value):
-        '''Initialize a linked list, only forward traversal is possible: Dummy->A->B->C->..->None
+    def __init__(self, data):
+        '''Initialize a linked list with a starting dummy node,
+        only forward traversal is possible: Dummy->A->B->C->..->None
         None is used to signal the last element
         '''
-        if (value == None):
-            print("None value, not added")
-            return None
 
+        if data == None:
+            print("None data is not permitted, return None")
+            return None 
 
-        self.last = LinkedAtom(value = value, next = None)
-        # dummy node
-        self.start = LinkedAtom(value = "Dummy", next = self.last)
+        self.head = Node(data = data)
+        self.last = self.head
 
         self.n_elements = 1
 
-    def Concatenate(self, value):
-        added_node = LinkedAtom(value = value, next = None)
+    def Append(self, data):
+        new_node = Node(data = data)
+        
         # add reference
-        self.last.next = added_node
+        self.last.next = new_node
+
         # update last
-        self.last = added_node
+        self.last = new_node
+
         self.n_elements += 1
 
     def ToList(self) -> list:
-        '''return a list with all the values'''
+        '''return a list with all the data'''
         res_list = [None for i in range(self.n_elements)]
+
+        node = self.head
+
+        i = 0
+        while node != None:
+            res_list[i] = node.data
+            node = node.next
+            i += 1
+        
+        return res_list
 
 
 
