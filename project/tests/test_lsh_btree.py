@@ -19,14 +19,14 @@ class TestLSHClassBTree(unittest.TestCase):
         
         # check sets of one and sets of two by key
         # two elements set
-        result_key_value = band_instance[1].ToList()
+        result_key_value = band_instance.band[1].ToList()
         expected_key_value = [4, 5]
         
         self.assertEqual(result_key_value,
                          expected_key_value)
         
         # one element set
-        result_key_value = band_instance[3].ToList()
+        result_key_value = band_instance.band[3].ToList()
         expected_key_value = [10]
         
         self.assertEqual(result_key_value,

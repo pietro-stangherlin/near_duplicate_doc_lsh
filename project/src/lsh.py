@@ -236,6 +236,25 @@ class LinkedList:
             i += 1
         
         return res_list
+    
+    class Iterator:
+        def __init__(self, current_node):
+            self.current_node = current_node
+
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            if self.current_node:
+                data = self.current_node.data
+                self.current_node = self.current_node.next
+                return data
+            else:
+                raise StopIteration
+
+    def __iter__(self):
+        return self.Iterator(self.head)
+
 
 
 
@@ -252,7 +271,7 @@ class LSHOnebandBucket(ABC):
 
     @classmethod
     @abstractmethod
-    def AddToBuckey(self, bucket_id: int, object):
+    def AddToBucket(self, bucket_id: int, object):
         pass
 
 # --------------- General LSH many bands class ------------------------ #
@@ -413,11 +432,9 @@ class LSHManyBandsBucketLists(LSHManyBands):
 
 
 # NOT used
-# ---------------- LSH bands BTree data structure ------------------- # 
+# ---------------- LSH bands BTree data structure ------------------- #
 
-# NOTE: this still needs to be completed, after the SQL class is completed
-# --------- LSH one band buckets BTree data structure --------------- # 
-class LSHOneBandBucketsBTree(LOBTree):
+class BtreeClassHelper(LOBTree):
     '''BTree used to store buckets for one LSH band.
     The key is the bucket id, value is a linked list of document ids.
     
@@ -438,6 +455,31 @@ class LSHOneBandBucketsBTree(LOBTree):
 
         super().__init__(self)
 
+
+
+# NOTE: this still needs to be completed, after the SQL class is completed
+# --------- LSH one band buckets BTree data structure --------------- # 
+class LSHOneBandBucketsBTree():
+    '''BTree used to store buckets for one LSH band.
+    The key is the bucket id, value is a linked list of document ids.
+    
+    Inherit the IOBTree class from BTrees module: 
+    https://btrees.readthedocs.io/
+    
+    Args: 
+        - key (unsigned_integer): bucket id
+        - value (linked list): set of doc ids
+    '''
+    # change if necessary
+    # max number of elements a leaf can have
+    max_leaf_size = 500
+    # max number of children an interior node could have
+    max_internal_size = 1000
+    
+    def __init__(self):
+        
+        self.band = BtreeClassHelper()
+
         # adding an attribute to the class:
         # set of id_buckets (keys) for buckets with two or more elements
         # this way, when we search for buckets with more than one elements we already know where their indexes
@@ -457,11 +499,11 @@ class LSHOneBandBucketsBTree(LOBTree):
             - None
         '''
         
-        if bucket_id not in self:
-            self.insert(bucket_id, LinkedList(data = object))
+        if bucket_id not in self.band:
+            self.band.insert(bucket_id, LinkedList(data = object))
         
         else:
-            self[bucket_id].Append(object)
+            self.band[bucket_id].Append(object)
             
             # if the set already exists it means now has at least two elements
             self.more_than_one_index.add(bucket_id)
@@ -553,7 +595,7 @@ class LSHManyBandsBucketsBTree(LSHManyBands):
             # visit only buckets with more than one elements
             for k in band_object.more_than_one_index:
                 # Generate unique pairs using combinations
-                for doc_id1, doc_id2 in combinations(band_object[k].ToList(), 2):  # Add to the visited set
+                for doc_id1, doc_id2 in combinations(band_object.band[k], 2):  # Add to the visited set
                     # exclude same documents
                     if(doc_id1 != doc_id2):
                         temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
