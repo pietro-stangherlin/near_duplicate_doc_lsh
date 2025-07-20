@@ -419,14 +419,14 @@ class LSHManyBandsBucketLists(LSHManyBands):
 # --------- LSH one band buckets BTree data structure --------------- # 
 class LSHOneBandBucketsBTree(LOBTree):
     '''BTree used to store buckets for one LSH band.
-    The key is the bucket id, value is a set of document ids.
+    The key is the bucket id, value is a linked list of document ids.
     
     Inherit the IOBTree class from BTrees module: 
     https://btrees.readthedocs.io/
     
     Args: 
         - key (unsigned_integer): bucket id
-        - value (set): set of doc ids
+        - value (linked list): set of doc ids
     '''
     # change if necessary
     # max number of elements a leaf can have
@@ -446,8 +446,8 @@ class LSHOneBandBucketsBTree(LOBTree):
 
     def AddToBucket(self, bucket_id: int, object) -> None:
         '''Add a document id to the specific bucket.
-        If id_bucket is already in the Btree, add id_doc to its set,
-        else add id_bucket first as key and then allocate the set with id_doc as element 
+        If id_bucket is already in the Btree, add id_doc append it to the linked list,
+        else add id_bucket first as key and then initialize the linked list with id_doc as element 
     
         Args:
             - id_bucket (int): id of the bucket
@@ -458,10 +458,10 @@ class LSHOneBandBucketsBTree(LOBTree):
         '''
         
         if bucket_id not in self:
-            self.insert(bucket_id, set([object]))
+            self.insert(bucket_id, LinkedList(data = object))
         
         else:
-            self[bucket_id].add(object)
+            self[bucket_id].Append(object)
             
             # if the set already exists it means now has at least two elements
             self.more_than_two_buckets_ids_set.add(bucket_id)
@@ -559,7 +559,7 @@ class LSHManyBandsBucketsBTree(LSHManyBands):
             # visit only buckets with more than one elements
             for k in band_object.more_than_one_index:
                 # Generate unique pairs using combinations
-                for doc_id1, doc_id2 in combinations(band_object.band[k], 2):  # Add to the visited set
+                for doc_id1, doc_id2 in combinations(band_object.band[k].ToList(), 2):  # Add to the visited set
                     # exclude same documents
                     if(doc_id1 != doc_id2):
                         temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
