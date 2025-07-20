@@ -267,7 +267,7 @@ class LSHManyBands(ABC):
     
     @classmethod
     @abstractmethod
-    def AddTobands(self, bucket_ids: list, object):
+    def AddToBands(self, bucket_ids: list, object):
         pass
 
     @classmethod
@@ -464,7 +464,7 @@ class LSHOneBandBucketsBTree(LOBTree):
             self[bucket_id].Append(object)
             
             # if the set already exists it means now has at least two elements
-            self.more_than_two_buckets_ids_set.add(bucket_id)
+            self.more_than_one_index.add(bucket_id)
     
     def return_more_than_one_buckets_ids(self) -> set:
         '''Return a set of all buckets ids for buckets with at least two elements
@@ -478,29 +478,23 @@ class LSHManyBandsBucketsBTree(LSHManyBands):
     def __init__(self,
                  n_bands: int,
                  n_buckets: int,
-                 hash_functions_list: list,
-                 band_size: int) -> LSHOneBandBucketsBTree:
-        '''Generate an instance of an object containig many LSHOneBandBucketsBTree instances
-        
+                 signature_len: int,
+                 hash_function_list: list):
+        '''Data structure to store many bands, each band is made of n_buckets buckets,
+        A list of LSHOneBandBucketLists is made.
         Args:
-            - n_bands: how many bands
-            - n_buckets: unused parameter, till now only needed to ensure compatibility with other classes
-            - hash_functions_list: list of functions, each function is used to determine the hash
-            for a specific band. From this list length is inferred the number of bands
-            - band_size (int): band size, with the constraint that each band has the same size 
-        
-        Return:
-            - instance of LSHManyBandsBucketsBTree class
+            - n_bands (int): number of bands
+            - n_buckets (int): number of buckets
+            - signature_len (int): length of the signature to be hashed
+            - hash_function_list (list): list of hash function, one for each band
         '''
-        self.hash_functions_list = hash_functions_list
-        self.n_bands = n_bands
+        self.bands_list = [LSHOneBandBucketsBTree() for i in range(n_bands)]
+        self.signature_len = signature_len
+        self.break_points = GenerateBreakPoints(n = signature_len, n_bands = n_bands)
+        self.hash_function_list = hash_function_list
         
-        self.band_size = band_size
-        
-        self.signature_len = self.band_size * self.n_bands
-        
-        # initialize all the instances
-        self.bands_object_list = [LSHOneBandBucketsBTree() for i in range(self.n_bands)]
+        if n_bands != len(hash_function_list):
+            print(f"Warning: n_bands = {n_bands} != {len(hash_function_list)} = len(hash_function_list)")
 
     def AddToBands(self, bucket_ids: list, object):
         '''Add object to a bucket for each band.
@@ -559,7 +553,7 @@ class LSHManyBandsBucketsBTree(LSHManyBands):
             # visit only buckets with more than one elements
             for k in band_object.more_than_one_index:
                 # Generate unique pairs using combinations
-                for doc_id1, doc_id2 in combinations(band_object.band[k].ToList(), 2):  # Add to the visited set
+                for doc_id1, doc_id2 in combinations(band_object[k].ToList(), 2):  # Add to the visited set
                     # exclude same documents
                     if(doc_id1 != doc_id2):
                         temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)

@@ -2,11 +2,6 @@ from ..src import minhash
 from ..src import shingling
 from ..src import line_reading as lr
 
-from itertools import combinations
-from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
-
-import pickle
 import regex as re
 import numpy as np
 import time
