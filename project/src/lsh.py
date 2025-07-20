@@ -283,26 +283,80 @@ class LSHManyBands(ABC):
                  signature_len: int,
                  hash_function_list: list):
         pass
-    
-    @classmethod
-    @abstractmethod
+
+
     def AddToBands(self, bucket_ids: list, object):
-        pass
-
-    @classmethod
-    @abstractmethod
-    def AddIdBySignature(self, id, signature):
-        pass
+        '''Add object to a bucket for each band.
+        
+        Args: 
+            - bucket_ids (list of int): list of bucket ids ordered in the same way as the bands
+            - object (str): object to be placed in the bucket, usually a document id
+        '''
+        # check 
+        if len(bucket_ids) != len(self.bands_list):
+            print("Warning: number of bucket ids different from band number! Returning None")
+            return(None)
+        else:
+            for i in range(len(bucket_ids)):
+                self.bands_list[i].AddToBucket(bucket_id = bucket_ids[i], object= object)
     
-    @classmethod
-    @abstractmethod
-    def AddIter(self, iterator):
-        pass
 
-    @classmethod
-    @abstractmethod
+    def AddIdBySignature(self,
+                         id,
+                         signature):
+        '''Add id in different buckets in different bands based on signature hash.
+        Args: 
+            - id: document id
+            - signature: document signature
+        '''
+        self.AddToBands(bucket_ids = ComputeAllHashBands(signature = signature,
+                                                                    break_points = self.break_points,
+                                                                    hash_functions_list = self.hash_function_list),
+                                                                    object = id)
+    
+
+    def AddIter(self, iterator):
+        '''Add each element from the iterator to the LSH band buckets.
+        Args:
+            - iterator (iter): assuming each iteration gives the tuple (id, signature)
+        '''
+        for row in iterator:
+                    self.AddIdBySignature(id = row[0], signature = row[1])
+    
+    
     def FindAllPairs(self) -> dict:
-        pass
+        '''Assuming the LSH has all documents:
+        find all pairs of documents
+        along with the number of shared buckets
+        
+        Return:
+            dictionary (dict): with
+                key = (doc1_id, doc2_id) 
+                    (NOTE: to avoid duplicates doc1_id < doc2_id, and also doc1_id != doc2_id)
+                value = number of shared buckets
+        '''
+        temp_all_combinations = defaultdict(lambda: 0)  # 0 (shared buckets)
+
+
+        print("[INFO] Starting to process LSH bands...")
+
+        for band_index, band_object in enumerate(self.bands_list):
+            print(f"[DEBUG] Processing band {band_index + 1}/{len(self.bands_list)}...")
+            # visit only buckets with more than one elements
+            for k in band_object.more_than_one_index:
+                # Generate unique pairs using combinations
+                for doc_id1, doc_id2 in combinations(band_object.band[k], 2):  # Add to the visited set
+                    # exclude same documents
+                    if(doc_id1 != doc_id2):
+                        temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
+                        temp_all_combinations[temp_key] += 1  # Increment shared bucket count
+
+        
+        return temp_all_combinations
+    
+    def __str__(self):
+        return(f'''LSH BAND with {len(self.bands_list)} bands each with {len(self.bands_list[0])} buckets''')
+
 
 # --------- LSH one band buckets Lists data structure --------------- # 
 class LSHOneBandBucketLists:
@@ -359,76 +413,6 @@ class LSHManyBandsBucketLists(LSHManyBands):
         
         if n_bands != len(hash_function_list):
             print(f"Warning: n_bands = {n_bands} != {len(hash_function_list)} = len(hash_function_list)")
-
-    def AddToBands(self, bucket_ids: list, object):
-        '''Add object to a bucket for each band.
-        
-        Args: 
-            - bucket_ids (list of int): list of bucket ids ordered in the same way as the bands
-            - object (str): object to be placed in the bucket, usually a document id
-        '''
-        # check 
-        if len(bucket_ids) != len(self.bands_list):
-            print("Warning: number of bucket ids different from band number! Returning None")
-            return(None)
-        else:
-            for i in range(len(bucket_ids)):
-                self.bands_list[i].AddToBucket(bucket_id = bucket_ids[i], object= object)
-    
-    def AddIdBySignature(self,
-                         id,
-                         signature):
-        '''Add id in different buckets in different bands based on signature hash.
-        Args: 
-            - id: document id
-            - signature: document signature
-        '''
-        self.AddToBands(bucket_ids = ComputeAllHashBands(signature = signature,
-                                                                    break_points = self.break_points,
-                                                                    hash_functions_list = self.hash_function_list),
-                                                                    object = id)
-    
-    def AddIter(self, iterator):
-        '''Add each element from the iterator to the LSH band buckets.
-        Args:
-            - iterator (iter): assuming each iteration gives the tuple (id, signature)
-        '''
-        for row in iterator:
-                    self.AddIdBySignature(id = row[0], signature = row[1])
-    
-    
-    def FindAllPairs(self) -> dict:
-        '''Assuming the LSH has all documents:
-        find all pairs of documents
-        along with the number of shared buckets
-        
-        Return:
-            dictionary (dict): with
-                key = (doc1_id, doc2_id) 
-                    (NOTE: to avoid duplicates doc1_id < doc2_id, and also doc1_id != doc2_id)
-                value = number of shared buckets
-        '''
-        temp_all_combinations = defaultdict(lambda: 0)  # 0 (shared buckets)
-
-
-        print("[INFO] Starting to process LSH bands...")
-
-        for band_index, band_object in enumerate(self.bands_list):
-            print(f"[DEBUG] Processing band {band_index + 1}/{len(self.bands_list)}...")
-            # visit only buckets with more than one elements
-            for k in band_object.more_than_one_index:
-                # Generate unique pairs using combinations
-                for doc_id1, doc_id2 in combinations(band_object.band[k], 2):  # Add to the visited set
-                    # exclude same documents
-                    if(doc_id1 != doc_id2):
-                        temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
-                        temp_all_combinations[temp_key] += 1  # Increment shared bucket count
-
-        
-        return temp_all_combinations
-    
-    def __str__(self):
-        return(f'''LSH BAND with {len(self.bands_list)} bands each with {len(self.bands_list[0])} buckets''')
 
 
 # NOT used
@@ -537,74 +521,3 @@ class LSHManyBandsBucketsBTree(LSHManyBands):
         
         if n_bands != len(hash_function_list):
             print(f"Warning: n_bands = {n_bands} != {len(hash_function_list)} = len(hash_function_list)")
-
-    def AddToBands(self, bucket_ids: list, object):
-        '''Add object to a bucket for each band.
-        
-        Args: 
-            - bucket_ids (list of int): list of bucket ids ordered in the same way as the bands
-            - object (str): object to be placed in the bucket, usually a document id
-        '''
-        # check 
-        if len(bucket_ids) != len(self.bands_list):
-            print("Warning: number of bucket ids different from band number! Returning None")
-            return(None)
-        else:
-            for i in range(len(bucket_ids)):
-                self.bands_list[i].AddToBucket(bucket_id = bucket_ids[i], object= object)
-
-    def AddIdBySignature(self,
-                         id,
-                         signature):
-        '''Add id in different buckets in different bands based on signature hash.
-        Args: 
-            - id: document id
-            - signature: document signature
-        '''
-        self.AddToBands(bucket_ids = ComputeAllHashBands(signature = signature,
-                                                                    break_points = self.break_points,
-                                                                    hash_functions_list = self.hash_function_list),
-                                                                    object = id)
-    def AddIter(self, iterator):
-        '''Add each element from the iterator to the LSH band buckets.
-        Args:
-            - iterator (iter): assuming each iteration gives the tuple (id, signature)
-        '''
-        for row in iterator:
-                    self.AddIdBySignature(id = row[0], signature = row[1])
-
-    
-    def FindAllPairs(self) -> dict:
-        '''Assuming the LSH has all documents:
-        find all pairs of documents
-        along with the number of shared buckets
-        
-        Return:
-            dictionary (dict): with
-                key = (doc1_id, doc2_id) 
-                    (NOTE: to avoid duplicates doc1_id < doc2_id, and also doc1_id != doc2_id)
-                value = number of shared buckets
-        '''
-        temp_all_combinations = defaultdict(lambda: 0)  # 0 (shared buckets)
-
-
-        print("[INFO] Starting to process LSH bands...")
-
-        for band_index, band_object in enumerate(self.bands_list):
-            print(f"[DEBUG] Processing band {band_index + 1}/{len(self.bands_list)}...")
-            # visit only buckets with more than one elements
-            for k in band_object.more_than_one_index:
-                # Generate unique pairs using combinations
-                for doc_id1, doc_id2 in combinations(band_object.band[k], 2):  # Add to the visited set
-                    # exclude same documents
-                    if(doc_id1 != doc_id2):
-                        temp_key = (doc_id1, doc_id2) if doc_id1 < doc_id2 else (doc_id2, doc_id1)
-                        temp_all_combinations[temp_key] += 1  # Increment shared bucket count
-
-        
-        return temp_all_combinations
-
-
-    def __str__(self) -> str:
-        '''Print the number of bands'''
-        return(f"number of bands: {self.n_bands}")
