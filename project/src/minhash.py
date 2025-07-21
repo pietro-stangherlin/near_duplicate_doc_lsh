@@ -281,7 +281,11 @@ class SignaturesSQLite(sqlite_one_table.SQLiteOneTable):
         
         print(f"[INFO] Finished preloading document signatures. Cached {len(signature_cache)} signatures.")
         return signature_cache
-        
+    
+
+    def GetSignatureLen(self) -> int:
+        '''Return signature length, assuming all signatures have the same length'''
+        return len(self.fetch_first_row()[1])
 
 # NOT USED -> to USE
 # here the MinHash class stores (as it should)

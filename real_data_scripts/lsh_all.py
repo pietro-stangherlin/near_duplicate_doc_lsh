@@ -115,15 +115,6 @@ if __name__ == "__main__":
                 # Iterates over all signature database rows
                 # populate LSH band data structure
 
-                # generate hash functions for lsh bands hashing ----------------------
-                my_lsh_hash_fun_list = lsh.GenerateMotwaniHashFunctionsList(n_hash_functions = n_bands,
-                                                                            band_size = signature_len // n_bands,
-                                                                            modulo = n_buckets,
-                                                                            seed = pm.SEED_LSH)
-
-                my_break_points = lsh.GenerateBreakPoints(n = signature_len,
-                                                        n_bands = n_bands)
-
                 # initialize LSH bands list data instance
                 LshManyBands = lsh.LSHManyBandsBucketLists(n_bands = n_bands,
                                                         n_buckets = n_buckets,

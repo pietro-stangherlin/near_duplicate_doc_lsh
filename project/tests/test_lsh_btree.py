@@ -73,6 +73,11 @@ class TestLSHClassBTree(unittest.TestCase):
         lsh_instance.AddIdBySignature(id = 4, signature = np.array([2, 1, 3, 1, 5, 1]))
         lsh_instance.AddIdBySignature(id = 5, signature = np.array([3, 1, 4, 1, 1, 1]))
 
+        sig_list = [(6, np.array([2, 1, 3, 1, 5, 1])),
+                    (7,np.array([2, 1, 3, 1, 5, 1]))]
+        
+        lsh_instance.AddIter(iterator = sig_list)
+
         all_pairs = lsh_instance.FindAllPairs()
 
         print(all_pairs)
