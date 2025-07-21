@@ -378,14 +378,14 @@ class LSHOneBandBucketLists:
             - object (str): object to be place in the bucket, usually a document id
         '''
         if self.band[bucket_id] == None:
-            self.band[bucket_id] = [object]
+            self.band[bucket_id] = LinkedList(data = object)
         else:
-            self.band[bucket_id].append(object)
+            self.band[bucket_id].Append(data = object)
             # update index
             self.more_than_one_index.add(bucket_id)
     
     def __str__(self):
-        return(f'''LSH BAND with {len(self.band)} buckets and {len(self.more_than_one_index)} buckets with more than one elements''')
+        return(f'''LSH BAND with {self.band._n_elements} buckets and {len(self.more_than_one_index)} buckets with more than one elements''')
 
 
 # Used

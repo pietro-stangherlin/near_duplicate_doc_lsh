@@ -164,6 +164,26 @@ def GetSignatureSimilarityArray(pairs_sharedbukets_pd: pd.DataFrame,
     
     return(signatures_similarities_np_array)
 
+# ----------------- Get Iterator from signature db --------------------------
+def SignatureSQLIterator(signature_db_path) -> dict:
+    '''Given a SQL signature database with two columns:
+    first column is document id
+    second column is a pickled numpy array holding the signature
+
+    Return: dictionary with rows iterator, length if the signatures and the number of rows
+    '''
+    # open database connection
+    SigSQL = SignaturesSQLite(database_name = signature_db_path)
+    signature_len = SigSQL.GetSignatureLen()
+    n_rows = SigSQL.count_rows()
+
+    # define rows iterator
+    fetched_rows_iterator = SigSQL.fetch_all_rows()
+
+    return {"iterator": fetched_rows_iterator,
+            "signature_len": signature_len,
+            "n_rows": n_rows}
+
 
 
 # NOT USED

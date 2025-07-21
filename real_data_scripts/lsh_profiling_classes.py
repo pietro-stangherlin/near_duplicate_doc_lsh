@@ -1,8 +1,8 @@
 from near_duplicate_doc_lsh.project.src import lsh
 from near_duplicate_doc_lsh.project.src import minhash as mh
 from near_duplicate_doc_lsh.project.src import utils as ut
+from near_duplicate_doc_lsh.real_data_scripts.robust.params import profiling_params as pp
 
-import importlib
 import argparse
 from memory_profiler import profile
 
@@ -12,30 +12,12 @@ import json
 import time
 
 # memory profiling lsh operations
+# different LSH implementations comparaison
 # assuming a signature database is already present
 
+fp=open(pp.OUT_COMPLETE_PATH,'w+')
 
-def SQLIterator(signature_db_path) -> dict:
-    '''Given a SQL signature database with two columns:
-    first column is document id
-    second column is a pickled numpy array holding the signature
-
-    Return: dictionary with rows iterator, length if the signatures and the number of rows
-    '''
-    # open database connection
-    SigSQL = mh.SignaturesSQLite(database_name = signature_db_path)
-    signature_len = SigSQL.GetSignatureLen()
-    n_rows = SigSQL.count_rows()
-
-    # define rows iterator
-    fetched_rows_iterator = SigSQL.fetch_all_rows()
-
-    return {"iterator": fetched_rows_iterator,
-            "signature_len": signature_len,
-            "n_rows": n_rows}
-
-
-@profile
+@profile(stream = fp)
 def LSHAllGetPairs(lsh_class,
                     signatures_iterator,
                     signature_len,
@@ -73,47 +55,36 @@ def LSHAllGetPairs(lsh_class,
 
 
 
-# > python -m near_duplicate_doc_lsh.real_data_scripts.lsh_profiling --signature_db data_near_duplicate\robust\signatures_db_duplicates\sgn_shl_9_sigl_100_bit_uint32_mid_noise_per1\signature_db
+# > python -m near_duplicate_doc_lsh.real_data_scripts.lsh_profiling_classes
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-    "--signature_db",
-    type=str,
-    required=True)
 
-    args = parser.parse_args()
 
-    collection_dict = SQLIterator(args.signature_db)
+    collection_dict = mh.SignatureSQLIterator(pp.DB_PATH)
 
     print("SQL parameters extraction ended")
 
-    N_BANDS = 10
-    TIMES_BUCKET = 10
-    N_BUCKETS = collection_dict["n_rows"] * TIMES_BUCKET
-
-    # WARNING: at the moment is only possible to test one function at a time
+    N_BUCKETS = collection_dict["n_rows"] * pp.TIMES_BUCKET
 
     # list implementation
     res1 = LSHAllGetPairs(lsh_class = lsh.LSHManyBandsBucketLists,
                           signatures_iterator = collection_dict["iterator"],
                    signature_len = collection_dict["signature_len"],
-                   n_bands = N_BANDS,
+                   n_bands = pp.N_BANDS,
                    n_buckets = N_BUCKETS)
     
     print(len(res1))
 
     # reset iterator
-    collection_dict = SQLIterator(args.signature_db)
+    collection_dict = mh.SignatureSQLIterator(pp.DB_PATH)
     del res1
     
     # btree implementation
-    res2 = LSHAllGetPairs(lsh_class = lsh.LSHManyBandsBucketLists,
+    res2 = LSHAllGetPairs(lsh_class = lsh.LSHManyBandsBucketsBTree,
                                signatures_iterator = collection_dict["iterator"],
                    signature_len = collection_dict["signature_len"],
-                   n_bands = N_BANDS,
+                   n_bands = pp.N_BANDS,
                    n_buckets = N_BUCKETS)
     
     print(len(res2))
-
     
