@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2025.7.6)  30 JUL 2025 07:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2025.7.6)  2 AUG 2025 08:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -802,6 +802,254 @@ Language: italian 2024/10/10 v.1.5.01 Italian support for the babel system
 Package babel Info: Importing font and identification data for italian
 (babel)             from babel-it.ini. Reported on input line 11.
 )
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.sty
+Package: biblatex 2023/03/05 v3.19 programmable bibliographies (PK/MW)
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.sty
+Package: logreq 2010/08/04 v1.0 xml request logger
+\lrq@indent=\count339
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/logreq\logreq.def
+File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
+))
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+)
+\c@tabx@nest=\count340
+\c@listtotal=\count341
+\c@listcount=\count342
+\c@liststart=\count343
+\c@liststop=\count344
+\c@citecount=\count345
+\c@citetotal=\count346
+\c@multicitecount=\count347
+\c@multicitetotal=\count348
+\c@instcount=\count349
+\c@maxnames=\count350
+\c@minnames=\count351
+\c@maxitems=\count352
+\c@minitems=\count353
+\c@citecounter=\count354
+\c@maxcitecounter=\count355
+\c@savedcitecounter=\count356
+\c@uniquelist=\count357
+\c@uniquename=\count358
+\c@refsection=\count359
+\c@refsegment=\count360
+\c@maxextratitle=\count361
+\c@maxextratitleyear=\count362
+\c@maxextraname=\count363
+\c@maxextradate=\count364
+\c@maxextraalpha=\count365
+\c@abbrvpenalty=\count366
+\c@highnamepenalty=\count367
+\c@lownamepenalty=\count368
+\c@maxparens=\count369
+\c@parenlevel=\count370
+\blx@tempcnta=\count371
+\blx@tempcntb=\count372
+\blx@tempcntc=\count373
+\c@blx@maxsection=\count374
+\blx@maxsegment@0=\count375
+\blx@notetype=\count376
+\blx@parenlevel@text=\count377
+\blx@parenlevel@foot=\count378
+\blx@sectionciteorder@0=\count379
+\blx@sectionciteorderinternal@0=\count380
+\blx@entrysetcounter=\count381
+\blx@biblioinstance=\count382
+\labelnumberwidth=\skip65
+\labelalphawidth=\skip66
+\biblabelsep=\skip67
+\bibitemsep=\skip68
+\bibnamesep=\skip69
+\bibinitsep=\skip70
+\bibparsep=\skip71
+\bibhang=\skip72
+\blx@bcfin=\read4
+\blx@bcfout=\write5
+\blx@langwohyphens=\language80
+\c@mincomprange=\count383
+\c@maxcomprange=\count384
+\c@mincompwidth=\count385
+Package biblatex Info: Trying to load biblatex default data model...
+Package biblatex Info: ... file 'blx-dm.def' found.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-dm.def
+File: blx-dm.def 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load biblatex custom data model...
+Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
+\c@afterword=\count386
+\c@savedafterword=\count387
+\c@annotator=\count388
+\c@savedannotator=\count389
+\c@author=\count390
+\c@savedauthor=\count391
+\c@bookauthor=\count392
+\c@savedbookauthor=\count393
+\c@commentator=\count394
+\c@savedcommentator=\count395
+\c@editor=\count396
+\c@savededitor=\count397
+\c@editora=\count398
+\c@savededitora=\count399
+\c@editorb=\count400
+\c@savededitorb=\count401
+\c@editorc=\count402
+\c@savededitorc=\count403
+\c@foreword=\count404
+\c@savedforeword=\count405
+\c@holder=\count406
+\c@savedholder=\count407
+\c@introduction=\count408
+\c@savedintroduction=\count409
+\c@namea=\count410
+\c@savednamea=\count411
+\c@nameb=\count412
+\c@savednameb=\count413
+\c@namec=\count414
+\c@savednamec=\count415
+\c@translator=\count416
+\c@savedtranslator=\count417
+\c@shortauthor=\count418
+\c@savedshortauthor=\count419
+\c@shorteditor=\count420
+\c@savedshorteditor=\count421
+\c@labelname=\count422
+\c@savedlabelname=\count423
+\c@institution=\count424
+\c@savedinstitution=\count425
+\c@lista=\count426
+\c@savedlista=\count427
+\c@listb=\count428
+\c@savedlistb=\count429
+\c@listc=\count430
+\c@savedlistc=\count431
+\c@listd=\count432
+\c@savedlistd=\count433
+\c@liste=\count434
+\c@savedliste=\count435
+\c@listf=\count436
+\c@savedlistf=\count437
+\c@location=\count438
+\c@savedlocation=\count439
+\c@organization=\count440
+\c@savedorganization=\count441
+\c@origlocation=\count442
+\c@savedoriglocation=\count443
+\c@origpublisher=\count444
+\c@savedorigpublisher=\count445
+\c@publisher=\count446
+\c@savedpublisher=\count447
+\c@language=\count448
+\c@savedlanguage=\count449
+\c@origlanguage=\count450
+\c@savedoriglanguage=\count451
+\c@pageref=\count452
+\c@savedpageref=\count453
+\shorthandwidth=\skip73
+\shortjournalwidth=\skip74
+\shortserieswidth=\skip75
+\shorttitlewidth=\skip76
+\shortauthorwidth=\skip77
+\shorteditorwidth=\skip78
+\locallabelnumberwidth=\skip79
+\locallabelalphawidth=\skip80
+\localshorthandwidth=\skip81
+\localshortjournalwidth=\skip82
+\localshortserieswidth=\skip83
+\localshorttitlewidth=\skip84
+\localshortauthorwidth=\skip85
+\localshorteditorwidth=\skip86
+Package biblatex Info: Trying to load compatibility code...
+Package biblatex Info: ... file 'blx-compat.def' found.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-compat.def
+File: blx-compat.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+)
+Package biblatex Info: Trying to load generic definitions...
+Package biblatex Info: ... file 'biblatex.def' found.
+ (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.def
+File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
+\c@textcitecount=\count454
+\c@textcitetotal=\count455
+\c@textcitemaxnames=\count456
+\c@biburlbigbreakpenalty=\count457
+\c@biburlbreakpenalty=\count458
+\c@biburlnumpenalty=\count459
+\c@biburlucpenalty=\count460
+\c@biburllcpenalty=\count461
+\biburlbigskip=\muskip18
+\biburlnumskip=\muskip19
+\biburlucskip=\muskip20
+\biburllcskip=\muskip21
+\c@smartand=\count462
+)
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\numeric.bb
+x
+File: numeric.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+Package biblatex Info: Trying to load bibliography style 'standard'...
+Package biblatex Info: ... file 'standard.bbx' found.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/bbx\standard.b
+bx
+File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
+\c@bbx:relatedcount=\count463
+\c@bbx:relatedtotal=\count464
+))
+Package biblatex Info: Trying to load citation style 'numeric'...
+Package biblatex Info: ... file 'numeric.cbx' found.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/cbx\numeric.cb
+x
+File: numeric.cbx 2023/03/05 v3.19 biblatex citation style (PK/MW)
+Package biblatex Info: Redefining '\cite'.
+Package biblatex Info: Redefining '\parencite'.
+Package biblatex Info: Redefining '\footcite'.
+Package biblatex Info: Redefining '\footcitetext'.
+Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\supercite'.
+Package biblatex Info: Redefining '\textcite'.
+Package biblatex Info: Redefining '\textcites'.
+Package biblatex Info: Redefining '\cites'.
+Package biblatex Info: Redefining '\parencites'.
+Package biblatex Info: Redefining '\smartcites'.
+)
+Package biblatex Info: Trying to load configuration file...
+Package biblatex Info: ... file 'biblatex.cfg' found.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\biblatex.cfg
+File: biblatex.cfg 
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Document encoding is UTF8 ....
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2023-10-10 L3 programming layer (loader) 
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
+tex.def
+File: l3backend-pdftex.def 2023-10-10 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count465
+\l__pdf_internal_box=\box76
+))
+Package biblatex Info: ... and expl3
+(biblatex)             2023-10-10 L3 programming layer (loader) 
+(biblatex)             is new enough (at least 2020/04/06),
+(biblatex)             setting 'casechanger=expl3'.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex\blx-case-expl3
+.sty
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xpars
+e.sty
+Package: xparse 2023-10-10 L3 Experimental document command parser
+)
+Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
+))
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beamerthemeBerli
 n.sty
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/beamer\beameroutertheme
@@ -816,38 +1064,122 @@ rectangles.sty))
 beaver.sty)
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/doublestroke\dsfont.sty
 Package: dsfont 1995/08/01 v0.1 Double stroke roman fonts
-) (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/tools\multicol.sty
+)
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.
+sty
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+shapes.code.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box77
+)
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+plot.code.tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
+mp-version-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen295
+\pgf@nodesepend=\dimen296
+)
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
+mp-version-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+))
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.st
+y
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.
+code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen297
+\pgffor@skip=\dimen298
+\pgffor@stack=\toks48
+\pgffor@toks=\toks49
+))
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z\tikz.code.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
+aryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count466
+\pgfplotmarksize=\dimen299
+)
+\tikz@lastx=\dimen300
+\tikz@lasty=\dimen301
+\tikz@lastxsaved=\dimen302
+\tikz@lastysaved=\dimen303
+\tikz@lastmovetox=\dimen304
+\tikz@lastmovetoy=\dimen305
+\tikzleveldistance=\dimen306
+\tikzsiblingdistance=\dimen307
+\tikz@figbox=\box78
+\tikz@figbox@bg=\box79
+\tikz@tempbox=\box80
+\tikz@tempbox@bg=\box81
+\tikztreelevel=\count467
+\tikznumberofchildren=\count468
+\tikznumberofcurrentchild=\count469
+\tikz@fig@count=\count470
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
+matrix.code.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count471
+\pgfmatrixcurrentcolumn=\count472
+\pgf@matrix@numberofcolumns=\count473
+)
+\tikz@expandcount=\count474
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
+z/libraries\tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)))
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen308
+\ar@mcellbox=\box82
+\extrarowheight=\dimen309
+\NC@list=\toks50
+\extratabsurround=\skip87
+\backup@length=\skip88
+\ar@cellbox=\box83
+)
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip89
+\multirow@cntb=\count475
+\multirow@dima=\skip90
+\bigstrutjot=\dimen310
+)
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/tools\multicol.sty
 Package: multicol 2023/03/30 v1.9f multicolumn formatting (FMi)
-\c@tracingmulticols=\count339
-\mult@box=\box76
-\multicol@leftmargin=\dimen295
-\c@unbalance=\count340
-\c@collectmore=\count341
-\doublecol@number=\count342
-\multicoltolerance=\count343
-\multicolpretolerance=\count344
-\full@width=\dimen296
-\page@free=\dimen297
-\premulticols=\dimen298
-\postmulticols=\dimen299
-\multicolsep=\skip65
-\multicolbaselineskip=\skip66
-\partial@page=\box77
-\last@line=\box78
-\mc@boxedresult=\box79
-\maxbalancingoverflow=\dimen300
-\mult@rightbox=\box80
-\mult@grightbox=\box81
-\mult@firstbox=\box82
-\mult@gfirstbox=\box83
-\@tempa=\box84
-\@tempa=\box85
-\@tempa=\box86
-\@tempa=\box87
-\@tempa=\box88
-\@tempa=\box89
-\@tempa=\box90
-\@tempa=\box91
+\c@tracingmulticols=\count476
+\mult@box=\box84
+\multicol@leftmargin=\dimen311
+\c@unbalance=\count477
+\c@collectmore=\count478
+\doublecol@number=\count479
+\multicoltolerance=\count480
+\multicolpretolerance=\count481
+\full@width=\dimen312
+\page@free=\dimen313
+\premulticols=\dimen314
+\postmulticols=\dimen315
+\multicolsep=\skip91
+\multicolbaselineskip=\skip92
+\partial@page=\box85
+\last@line=\box86
+\mc@boxedresult=\box87
+\maxbalancingoverflow=\dimen316
+\mult@rightbox=\box88
+\mult@grightbox=\box89
+\mult@firstbox=\box90
+\mult@gfirstbox=\box91
 \@tempa=\box92
 \@tempa=\box93
 \@tempa=\box94
@@ -876,68 +1208,77 @@ Package: multicol 2023/03/30 v1.9f multicolumn formatting (FMi)
 \@tempa=\box117
 \@tempa=\box118
 \@tempa=\box119
-\c@minrows=\count345
-\c@columnbadness=\count346
-\c@finalcolumnbadness=\count347
-\last@try=\dimen301
-\multicolovershoot=\dimen302
-\multicolundershoot=\dimen303
-\mult@nat@firstbox=\box120
-\colbreak@box=\box121
-\mc@col@check@num=\count348
+\@tempa=\box120
+\@tempa=\box121
+\@tempa=\box122
+\@tempa=\box123
+\@tempa=\box124
+\@tempa=\box125
+\@tempa=\box126
+\@tempa=\box127
+\c@minrows=\count482
+\c@columnbadness=\count483
+\c@finalcolumnbadness=\count484
+\last@try=\dimen317
+\multicolovershoot=\dimen318
+\multicolundershoot=\dimen319
+\mult@nat@firstbox=\box128
+\colbreak@box=\box129
+\mc@col@check@num=\count485
 )
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/changepage\changepage.s
 ty
 Package: changepage 2009/10/20 v1.0c check page and change page layout
-\c@cp@cntr=\count349
-\cp@tempcnt=\count350
+\c@cp@cntr=\count486
+\cp@tempcnt=\count487
 )
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen304
-\lightrulewidth=\dimen305
-\cmidrulewidth=\dimen306
-\belowrulesep=\dimen307
-\belowbottomsep=\dimen308
-\aboverulesep=\dimen309
-\abovetopsep=\dimen310
-\cmidrulesep=\dimen311
-\cmidrulekern=\dimen312
-\defaultaddspace=\dimen313
-\@cmidla=\count351
-\@cmidlb=\count352
-\@aboverulesep=\dimen314
-\@belowrulesep=\dimen315
-\@thisruleclass=\count353
-\@lastruleclass=\count354
-\@thisrulewidth=\dimen316
+\heavyrulewidth=\dimen320
+\lightrulewidth=\dimen321
+\cmidrulewidth=\dimen322
+\belowrulesep=\dimen323
+\belowbottomsep=\dimen324
+\aboverulesep=\dimen325
+\abovetopsep=\dimen326
+\cmidrulesep=\dimen327
+\cmidrulekern=\dimen328
+\defaultaddspace=\dimen329
+\@cmidla=\count488
+\@cmidlb=\count489
+\@aboverulesep=\dimen330
+\@belowrulesep=\dimen331
+\@thisruleclass=\count490
+\@lastruleclass=\count491
+\@thisrulewidth=\dimen332
 )
-(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
-tex.def
-File: l3backend-pdftex.def 2023-10-10 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count355
-\l__pdf_internal_box=\box122
-) (main.aux)
+
+Package biblatex Warning: 'babel/polyglossia' detected but 'csquotes' missing.
+(biblatex)                Loading 'csquotes' recommended.
+
+\@quotelevel=\count492
+\@quotereset=\count493
+(main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -977,17 +1318,17 @@ LaTeX Font Info:    ... okay on input line 24.
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count356
-\scratchdimen=\dimen317
-\scratchbox=\box123
-\nofMPsegments=\count357
-\nofMParguments=\count358
-\everyMPshowfont=\toks48
-\MPscratchCnt=\count359
-\MPscratchDim=\dimen318
-\MPnumerator=\count360
-\makeMPintoPDFobject=\count361
-\everyMPtoPDFconversion=\toks49
+\scratchcounter=\count494
+\scratchdimen=\dimen333
+\scratchbox=\box130
+\nofMPsegments=\count495
+\nofMParguments=\count496
+\everyMPshowfont=\toks51
+\MPscratchCnt=\count497
+\MPscratchDim=\dimen334
+\MPnumerator=\count498
+\makeMPintoPDFobject=\count499
+\everyMPtoPDFconversion=\toks52
 )
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
@@ -999,68 +1340,68 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 24.
+Package hyperref Info: Link coloring OFF on input line 29.
  (main.out) (main.out)
-\@outlinefile=\write5
-\openout5 = `main.out'.
+\@outlinefile=\write6
+\openout6 = `main.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 24.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 29.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 24.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 29.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 24.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 24.
+(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 29.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 24.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 24.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 24.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 29.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 24.
+(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 24.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 24.
+(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 29.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 24.
+(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 24.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 24.
+(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 29.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 24.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 24.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 29.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 24.
+(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 29.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 24.
+(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/b/n --> T1/cmr/b/n on input line 24.
+(Font)                  OT1/cmss/b/n --> T1/cmr/b/n on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  T1/cmss/b/n --> T1/cmss/b/n on input line 24.
+(Font)                  T1/cmss/b/n --> T1/cmss/b/n on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 24.
+(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 24.
+(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 29.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  T1/cmtt/m/n --> T1/cmtt/b/n on input line 24.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 24.
+(Font)                  T1/cmtt/m/n --> T1/cmtt/b/n on input line 29.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 29.
 LaTeX Font Info:    Encoding `T1' has changed to `OT1' for symbol font
-(Font)              `pureletters' in the math version `normal' on input line 24
+(Font)              `pureletters' in the math version `normal' on input line 29
 .
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  T1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 24
+(Font)                  T1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 29
 .
 LaTeX Font Info:    Encoding `T1' has changed to `OT1' for symbol font
-(Font)              `pureletters' in the math version `bold' on input line 24.
+(Font)              `pureletters' in the math version `bold' on input line 29.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 24
+(Font)                  T1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 29
 .
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 24.
+ut line 29.
 
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/translator\translator-b
 asic-dictionary-English.dict
@@ -1086,59 +1427,1131 @@ Dictionary: translator-numbers-dictionary, Language: English
 heorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \it@ocap on input line 24.
-LaTeX Info: Redefining \it@ccap on input line 24.
- (main.nav) [1
+LaTeX Info: Redefining \it@ocap on input line 29.
+LaTeX Info: Redefining \it@ccap on input line 29.
+Package biblatex Info: Trying to load language 'italian'...
+Package biblatex Info: ... file 'italian.lbx' found.
+
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\italian.lb
+x
+File: italian.lbx 2023/03/05 v3.19 biblatex localization (PK/MW)
+)
+Package biblatex Info: Input encoding 'utf8' detected.
+Package biblatex Info: Automatic encoding selection.
+(biblatex)             Assuming data encoding 'utf8'.
+\openout5 = `main.bcf'.
+
+Package biblatex Info: Trying to load bibliographic data...
+Package biblatex Info: ... file 'main.bbl' not found.
+
+No file main.bbl.
+Package biblatex Info: Reference section=0 on input line 29.
+Package biblatex Info: Reference segment=0 on input line 29.
+(main.nav) [1
 
 {C:/Users/pietr/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2
 
 ] [3
 
+] [4
+
+] [5
+
 ]
-\tf@nav=\write6
-\openout6 = `main.nav'.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 130
+.
 
-\tf@toc=\write7
-\openout7 = `main.toc'.
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 130
+.
 
-\tf@snm=\write8
-\openout8 = `main.snm'.
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
+ut line 130.
 
- (main.aux)
- ***********
-LaTeX2e <2023-06-01> patch level 1
-L3 programming layer <2023-10-10>
- ***********
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/sansmathaccent\ot1mathk
+erncmss.fd
+File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
+thkerncmss.
+)
+Overfull \vbox (8.7296pt too high) detected at line 130
+ []
 
+[6
 
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+]
+! Undefined control sequence.
+\beamer@doifinframe ...lle shingles: w = 9 \citep 
+                                                  {leskovec2014mining} (para...
+l.142 \end{frame}
+                 
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: AC62930CC3F3F69B9CC224579C6BFE89;264
-(rerunfilecheck)             After:  30EA8C1E71C73D05C6D69420091A4125;191.
- ) 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ... \displaystyle \f@size {#1}}
+                                                  {\textdef@ \textstyle \f@s...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  {\textdef@ \textstyle \sf@...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  {\textdef@ \textstyle \ssf...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  \check@mathfonts }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...false #1}}\check@mathfonts }
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\text@ ...t in math text}}\beamer@orig@text@ {#1}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ... \displaystyle \f@size {#1}}
+                                                  {\textdef@ \textstyle \f@s...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  {\textdef@ \textstyle \sf@...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  {\textdef@ \textstyle \ssf...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  \check@mathfonts }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...false #1}}\check@mathfonts }
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\text@ ...t in math text}}\beamer@orig@text@ {#1}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ... \displaystyle \f@size {#1}}
+                                                  {\textdef@ \textstyle \f@s...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  {\textdef@ \textstyle \sf@...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  {\textdef@ \textstyle \ssf...
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\textdef@ ...th {#1}\let \f@size #2\selectfont #3}
+                                                  }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\textdef@ ...h {#1}\let \f@size #2\selectfont #3}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...ize {\firstchoice@false #1}}
+                                                  \check@mathfonts }
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\beamer@orig@text@ ...false #1}}\check@mathfonts }
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\text@ ...t in math text}}\beamer@orig@text@ {#1}}
+                                                  
+l.142 \end{frame}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing { inserted.
+<to be read again> 
+                   \endgroup 
+l.142 \end{frame}
+                 
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing { inserted.
+<to be read again> 
+                   \endgroup 
+l.142 \end{frame}
+                 
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing { inserted.
+<to be read again> 
+                   \endgroup 
+l.142 \end{frame}
+                 
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing { inserted.
+<to be read again> 
+                   \endgroup 
+l.142 \end{frame}
+                 
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing { inserted.
+<to be read again> 
+                   \endgroup 
+l.142 \end{frame}
+                 
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing { inserted.
+<to be read again> 
+                   \endgroup 
+l.142 \end{frame}
+                 
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.142 \end{frame}
+                 
+(That makes 100 errors; please try again.) 
 Here is how much of TeX's memory you used:
- 23116 strings out of 474823
- 449366 string characters out of 5750957
- 1928043 words of memory out of 5000000
- 44577 multiletter control sequences out of 15000+600000
- 562999 words of font info for 43 fonts, out of 8000000 for 9000
+ 33362 strings out of 474823
+ 667434 string characters out of 5750957
+ 1942043 words of memory out of 5000000
+ 54699 multiletter control sequences out of 15000+600000
+ 568016 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 128i,19n,123p,408b,789s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,43n,123p,679b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-pdfTeX warning (dest): name{Outline0.3} has been referenced but does not exist,
- replaced by a fixed one
-
- <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss14
-40.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\
-ecss0500.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/d
-pi600\ecss1000.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappe
-n/ec/dpi600\ecsx1440.pk>
-Output written on main.pdf (3 pages, 32196 bytes).
-PDF statistics:
- 163 PDF objects out of 1000 (max. 8388607)
- 10 named destinations out of 1000 (max. 500000)
- 67 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+!  ==> Fatal error occurred, no output PDF file produced!

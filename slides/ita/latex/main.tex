@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[italian]{babel}
+\usepackage{biblatex}
 \usepackage{xcolor}
 \usetheme{Berlin}
 \usecolortheme{beaver}
@@ -10,6 +11,9 @@
 \usepackage{dsfont}
 \usepackage{graphicx}
 \usepackage{graphics}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{multirow}
 \usepackage{multicol}
 \usepackage{changepage}
 \usepackage{booktabs}
@@ -17,6 +21,7 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamerfont{itemize/enumerate subbody}{size=\normalsize} 
 
+\addbibresource{biblio.bib}
 
 \title{\textbf{LSH Near Duplicate Document Detection}}
 \date{}
@@ -32,18 +37,116 @@
 \end{frame}
 
 
+
+\section{Indice}
+\begin{frame}{Indice}
+\begin{itemize}
+  \item Background
+ \item Obiettivi
+ \item Metodi utilizzati
+ \item Esperimenti
+ \item Conclusioni
+\end{itemize}
+\end{frame}
+
 \section{Background}
 \begin{frame}{Background}
 \begin{itemize}
- \item Problema
+ \item Problema:in grandi raccolte di documenti (in particolare testuali) è possibile che vi siano dei documenti duplicati o quasi uguali; è inoltre possibile che tali documenti abbiano identificativi diversi o comunque non direttamente riconducibili tra loro.
  \item Esempi
+ \begin{itemize}
+ \item medesimi documenti scannerizzati più volte da entità diverse
+ \item un’organizzazione che mantiene versioni diverse, ovvero con lievi modifiche, di uno stesso documento
+ \end{itemize}
 \end{itemize}
+\end{frame}
+
+\section{Obiettivi}
+\begin{frame}{Obiettivi}
+Implementare un metodo basato su MinHash e LSH per identificare i documenti duplicati e quasi-duplicati.\\
+
+Valutarne l’efficacia e ed effettuare considerazioni sull’efficienza.
+\end{frame}
+
+\section{Metodi utilizzati}
+\begin{frame}{Metodi utilizzati}
+\begin{itemize}
+	\item Creazione della collezione sperimentale
+	\item Shingling
+	\item MinHash
+	\item LSH
+\end{itemize}
+\end{frame}
+
+\section{Creazione della collezione sperimentale}
+\begin{frame}{Creazione della collezione sperimentale}
+\begin{enumerate}
+	\item Si assume di avere una collezione iniziale senza duplicati e quasi – duplicati. Ogni documento presenta un codice identificativo (id).
+	\item Si seleziona (ad esempio tramite un generatore di numeri casuali) un sottoinsieme di documenti da cui generare i duplicati e i quasi duplicati.
+	\item Quasi duplicati: sostituzione di alcuni caratteri con altri (casuali), per simulare un risultato di un programma di riconoscimento ottico di testo. Il parametro relativo alla frequenza di sostituzione è la percentuale sul numero totale di caratteri nel testo
+	\item A ogni quasi–duplicato si assegna un id univoco (id2) e l’id del documento da cui è stato generato (id3). Viene creata una nuova collezione con i quasi-duplicati e i documenti originali (per questi ultimi il campo l’id3 è posto uguale a None)
+\end{enumerate}
+
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}
+% First Table (left)
+\node (table1) at (0,0) {
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Id} & \textbf{text} \\
+\hline
+1 & hello world \\
+\hline
+2 & Bob, Alice and Ulm \\
+\hline
+3 & nosce te ipsum \\
+\hline
+\end{tabular}
+};
+
+% Second Table (right)
+\node (table2) at (8,0) {
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id2} & \textbf{id3} & \textbf{text} \\
+\hline
+1 & None & hello world \\
+\hline
+2 & None & Bob, Alice and Ulm \\
+\hline
+3 & None & nosce te ipsum \\
+\hline
+4 & 3 & n@sCe t3 ipsuN \\
+\hline
+\end{tabular}
+};
+
+% Arrow
+\draw[->, thick] (2.5,0) -- (5,0);
+\end{tikzpicture}
+}
+\end{center}
+\end{frame}
+
+\section{MinHash}
+\begin{frame}{MinHash}
+Dimensione delle shingles: w = 9 \citep{leskovec2014mining} (parametro fissato, seguendo le indicazioni sul libro di testo)\\
+Salvataggio signatures
+\begin{itemize}
+	\item scrittura su disco (database sql) (scelta impiegata)
+	\item memoria centrale (es. btree) (non considerata, possibile per piccole collezioni)
+\end{itemize}
+Stima della memoria occupata dalle signatures (ms):
+$$\text{ms} =  \text{dim_int} \times \text{n_perm} \times \text{n_doc}$$
 \end{frame}
 
 
 \section{Conclusioni}
 \begin{frame}{Conclusioni}
 \end{frame}
+
+\printbibliography
 
 
 \end{document}

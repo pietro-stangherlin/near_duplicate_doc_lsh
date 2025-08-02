@@ -1,4 +1,9 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\beamer@sectionintoc {1}{Background}{2}{0}{1}
-\beamer@sectionintoc {2}{Conclusioni}{3}{0}{2}
+\beamer@sectionintoc {1}{Indice}{2}{0}{1}
+\beamer@sectionintoc {2}{Background}{3}{0}{2}
+\beamer@sectionintoc {3}{Obiettivi}{4}{0}{3}
+\beamer@sectionintoc {4}{Metodi utilizzati}{5}{0}{4}
+\beamer@sectionintoc {5}{Creazione della collezione sperimentale}{6}{0}{5}
+\beamer@sectionintoc {6}{MinHash}{7}{0}{6}
+\beamer@sectionintoc {7}{Conclusioni}{8}{0}{7}
