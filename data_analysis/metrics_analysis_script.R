@@ -245,6 +245,7 @@ NamePlot <- function(params_list,
 
 # Noise quantity ------------------------------------------------
 
+# WARNING make folders with names!!!!
 sub_folder <- "noise/"
 
 temp_param_list = EMPTY_PARAMS_LIST
@@ -257,10 +258,12 @@ temp_param_list[[NBU_NAME]] = NBU[1]
 temp_name_relative_name <- NamePlot(params_list = temp_param_list,
          prefix_list = PREFIX_LIST)
 
+
 png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
     height = HEIGHT,
     width = WIDTH)
 
+# signature
 PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
                                 prefix_list = PREFIX_LIST,
                                 my_sim_name = SIGN_METRIC_NAME,
@@ -274,6 +277,24 @@ PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
 
 dev.off()
 
+# WARNING: CHANGE NAME!!!!!
+png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+    height = HEIGHT,
+    width = WIDTH)
+
+# bucket
+PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+                                prefix_list = PREFIX_LIST,
+                                my_sim_name = SHARED_BUCK_METRIC_NAME,
+                                x_axis_var_name = SHARED_BUCK_NAME,
+                                precision_var_name = PRECISION_NAME,
+                                recall_var_name = RECALL_NAME,
+                                my_dir_list = dir_list,
+                                my_xlim = c(1, 10),
+                                my_ylim = c(0.5, 1),
+                                my_xlab = SHARED_BUCK_NAME)
+
+dev.off()
 # Duplicates percentage -----------------------------------------
 
 # Signature Length ----------------------------------------------

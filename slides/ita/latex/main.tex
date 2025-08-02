@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[italian]{babel}
-\usepackage{biblatex}
+\usepackage[style=authoryear]{biblatex}
 \usepackage{xcolor}
 \usetheme{Berlin}
 \usecolortheme{beaver}
@@ -131,16 +131,83 @@ Valutarne l’efficacia e ed effettuare considerazioni sull’efficienza.
 
 \section{MinHash}
 \begin{frame}{MinHash}
-Dimensione delle shingles: w = 9 \citep{leskovec2014mining} (parametro fissato, seguendo le indicazioni sul libro di testo)\\
+Dimensione delle shingles: w = 9 \cite{leskovec2014mining} (parametro fissato, seguendo le indicazioni sul libro di testo)\\
 Salvataggio signatures
 \begin{itemize}
 	\item scrittura su disco (database sql) (scelta impiegata)
 	\item memoria centrale (es. btree) (non considerata, possibile per piccole collezioni)
 \end{itemize}
-Stima della memoria occupata dalle signatures (ms):
-$$\text{ms} =  \text{dim_int} \times \text{n_perm} \times \text{n_doc}$$
+Stima della memoria occupata dalle signatures $y$:
+\[ y =  d \times p \times n \]
+Con
+\begin{itemize}
+	\item $d$: bit occupati da ciascun elemento della signature
+	\item $p$ = n° di permutazioni
+	\item $s$ = n° di documenti nella collezione
+\end{itemize}
+Esempio: con 100 permutazioni, interi a 32 bit e $10^6$ documenti: ms = 400 megabyte.
 \end{frame}
 
+\section{SignatureHash}
+\begin{frame}{SignatureHash}
+Come descritto in \cite{BroderMin-wise}, alla base di molti schemi di hashing, tra cui quello considerato, vi è che ogni funzione hash $h:U \rightarrow [m]$ (adottata per ogni elemento della signature) sia casuale. Tale assunzione non può ovviamente essere soddisfatta e si ricorre dunque a delle approssimazioni. Si dice che una famiglia di funzioni hash $H = \left\{h | h:U \rightarrow [m] \right\}$ è (debolmente) universale se $\forall x_1 \neq x_2 \in U$ e estraendo $h$ 
+uniformemente da $H$ si ha $\text{Pr}\left\{h(x_1) = h(x_2)\right\} \leq \frac{1}{m}$. Una semplice implementazione di una famiglia di funzioni hash universale è
+$h(x) = [(a * x + b) \text{mod p}] \text{mod} m$,
+con
+\begin{itemize}
+	\item $a,b$ interi estratti casualmente
+	\item $p$ numero primo (maggiore di $m$)
+\end{itemize}
+\end{frame}
+
+\section{LSH}
+\begin{frame}{LSH}
+Implementazioni
+\begin{itemize}
+	\item in memoria di massa (non considerata)
+	\item in memoria centrale: ogni bucket è implementato come una linked list
+	\begin{itemize}
+		\item Lista: ogni banda ha $P * N$ bucket con $N$ numero di documenti e $p$ fattore di scala $>1$, il tempo di accesso ad ogni bucket è $O(1)$, al costo di memoria occupata dai bucket vuoti.
+		\item Btree: non sono presenti bucket vuoti, il tempo di accesso a ogni bucket è $O(\log_2[N*P])$
+	\end{itemize}
+\end{itemize}
+In tutti i casi è conveniente salvare gli indirizzi dei bucket con almeno due elementi (evita inutili controlli successivi).\\
+Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega la funzione hash $h(x) = \left( \sum^d_{j = 1}v_j a_j \right) \text{modulo } N*P$  con $a = (a_1,a_2,..,a_d)^\top$ vettore di numeri casuali.
+\end{frame}
+
+\section{Misure di similarità}
+\begin{frame}{Misure di similarità}
+\begin{itemize}
+	\item numero di bucket condivisi tra due documenti: ottenuta da LSH
+	\item similarità delle signature: l’accesso ai record del database per ogni confronto è molto lento, si è quindi ricorsi ad un caching delle signatures: per tutti i documenti presenti in almeno una coppia si popola un dizionario di signature. Popolare il dizionario ha un costo di $O(N)$ (lettura dei record del database), ma ogni confronto richiederà $O(1)$ per leggere le signature.
+\end{itemize}
+\end{frame}
+
+\section{Esperimenti}
+\begin{frame}{Esperimenti}
+\begin{itemize}
+	\item Prima esecuzione della procedura sulla collezione originale (senza semi-duplicati artificiali) per tarare i parametri e valutare il massimo grado di similarità presente tra documenti della collezione originale. Rimozione dei documenti con similarità alta per migliorare le valutazioni sui dati semi-artificiali. 
+	\item Esecuzioni successive con diversi livelli di modifica dei documenti semi-duplicati artificiali
+	\item Problemi:
+	\begin{itemize}
+		\item lo spazio dei parametri è grande
+		\item gli articoli non forniscono molte indicazioni
+		\item ottenere i risultati di una singola configurazione è costoso
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Parametri degli esperimenti}
+\begin{frame}{Parametri degli esperimenti}
+\begin{itemize}
+	\item Rumore nei semi-duplicati: nessuno (0\%), “piccolo” (2\%), “medio” (5\%)
+	\item Percentuale di duplicati relativo alla dimensione della collezione: 1\%, 5\%, 10\%, 25\%.
+	\item Lunghezza signature: 100, 200
+	\item Numero di bande: 10, 20
+	\item Numero di bucket relativo alla dimensione della collezione: 2, 5, 10
+\end{itemize}
+Combinazioni totali per collezione: 192.
+\end{frame}
 
 \section{Conclusioni}
 \begin{frame}{Conclusioni}
