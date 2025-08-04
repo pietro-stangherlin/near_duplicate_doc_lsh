@@ -150,7 +150,8 @@ Esempio: con 100 permutazioni, interi a 32 bit e $10^6$ documenti: ms = 400 mega
 
 \section{SignatureHash}
 \begin{frame}{SignatureHash}
-Come descritto in \cite{BroderMin-wise}, alla base di molti schemi di hashing, tra cui quello considerato, vi è che ogni funzione hash $h:U \rightarrow [m]$ (adottata per ogni elemento della signature) sia casuale. Tale assunzione non può ovviamente essere soddisfatta e si ricorre dunque a delle approssimazioni. Si dice che una famiglia di funzioni hash $H = \left\{h | h:U \rightarrow [m] \right\}$ è (debolmente) universale se $\forall x_1 \neq x_2 \in U$ e estraendo $h$ 
+Per approssimare ciascuna permutazione in ogni elemento delle signature si impiegano delle funzioni hash.
+Come descritto in \cite{BroderMin-wise}, alla base di molti schemi di hashing, tra cui quello considerato, vi è che ogni funzione hash $h:U \rightarrow [m]$ sia casuale. Tale assunzione non può ovviamente essere soddisfatta e si ricorre dunque a delle approssimazioni. Si dice che una famiglia di funzioni hash $H = \left\{h | h:U \rightarrow [m] \right\}$ è (debolmente) universale se $\forall x_1 \neq x_2 \in U$ e estraendo $h$ 
 uniformemente da $H$ si ha $\text{Pr}\left\{h(x_1) = h(x_2)\right\} \leq \frac{1}{m}$. Una semplice implementazione di una famiglia di funzioni hash universale è
 $h(x) = [(a * x + b) \text{mod p}] \text{mod} m$,
 con
