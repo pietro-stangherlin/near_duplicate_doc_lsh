@@ -104,7 +104,7 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
 
   all_indexes <- 1:length(params_list)
 
-  index_not_fixed_param <- which(length(params_list) > 1)
+  index_not_fixed_param <- which(sapply(params_list, length) > 1)
 
   if(length(index_not_fixed_param) > 1){
     print("Error: more than one parameter has more than one value, leaving")
@@ -142,11 +142,30 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
                           params_list[[not_fixed_par_name]][1],
                           collapse = "")
 
-  used_dir <- selected_dirs[grep(text_to_select,selected_dirs)]
+  used_dir <- selected_dirs[grep(paste0(text_to_select, "(_|$)",collapse = ""),
+                                 selected_dirs)]
+  
+  # DEBUG
+  
+  print("DEBUG: pattern")
+  print(pattern)
+  
+  print("DEBUG: text_to_select")
+  print(text_to_select)
+  
+  print("DEBUG: used_dir")
+  print(used_dir)
+  
+  print("DEBUG: my_sim_name")
+  print(my_sim_name)
+  
+  print("DEBUG: paste0")
+  print(paste0(used_dir,"/", my_sim_name,
+               collapse = ""))
 
 
-  metrics_df <- read.csv(paste0(c(used_dir, my_sim_name),
-                                collapse = "/"))
+  metrics_df <- read.csv(paste0(used_dir, "/", my_sim_name,
+                                collapse = ""))
 
   plot(metrics_df[,x_axis_var_name],
        metrics_df[,precision_var_name],
@@ -170,15 +189,17 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
 
   color_index = 1
   for(val in params_list[[index_not_fixed_param]][-1]){
+    print("DEBUG: inside for loop")
     color_index = color_index + 1
 
     text_to_select = paste0(prefix_list[[not_fixed_par_name]], val,
                                collapse = "")
 
-    used_dir <- my_dir_list[grep(text_to_select,selected_dirs)]
+    used_dir <- my_dir_list[grep(paste0(text_to_select, "(_|$)",collapse = ""),
+                                 selected_dirs)]
 
-    metrics_df <- read.csv(paste0(c(used_dir, my_sim_name),
-                                     collapse = "/"))
+    metrics_df <- read.csv(paste0(used_dir, "/", my_sim_name,
+                                     collapse = ""))
 
     points(metrics_df[,x_axis_var_name],
            metrics_df[,precision_var_name],
@@ -213,12 +234,13 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
 }
 
 # this gives a plot the appropriate name based on which parameters
-# are fixed and which is not (only one is not fixed)
+# are fixed and which are not (only one is not fixed)
 NamePlot <- function(params_list,
                      prefix_list){
+  
   all_indexes <- 1:length(params_list)
 
-  index_not_fixed_param <- which(length(params_list) > 1)
+  index_not_fixed_param <- which(sapply(params_list, length) > 1)
 
   if(length(index_not_fixed_param) > 1){
     print("Error: more than one parameter has more than one value, leaving")
@@ -302,6 +324,55 @@ dev.off()
 # Number of bands -----------------------------------------------
 
 # Number of buckets ---------------------------------------------
+sub_folder <- "nbu/"
+
+temp_param_list = EMPTY_PARAMS_LIST
+temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[1]
+temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[1]
+temp_param_list[[SIGL_NAME]] = SIGL[1]
+temp_param_list[[NBA_NAME]] = NBA[1]
+temp_param_list[[NBU_NAME]] = NBU
+
+temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+                                    prefix_list = PREFIX_LIST)
+
+
+png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+    height = HEIGHT,
+    width = WIDTH)
+
+# signature
+PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+                                prefix_list = PREFIX_LIST,
+                                my_sim_name = SIGN_METRIC_NAME,
+                                x_axis_var_name = SIGN_SIM_NAME,
+                                precision_var_name = PRECISION_NAME,
+                                recall_var_name = RECALL_NAME,
+                                my_dir_list = dir_list,
+                                my_xlim = c(0.8, 1),
+                                my_ylim = c(0.5, 1),
+                                my_xlab = SIGN_SIM_NAME)
+
+dev.off()
+
+# WARNING: CHANGE NAME!!!!!
+png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+    height = HEIGHT,
+    width = WIDTH)
+
+# bucket
+PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+                                prefix_list = PREFIX_LIST,
+                                my_sim_name = SHARED_BUCK_METRIC_NAME,
+                                x_axis_var_name = SHARED_BUCK_NAME,
+                                precision_var_name = PRECISION_NAME,
+                                recall_var_name = RECALL_NAME,
+                                my_dir_list = dir_list,
+                                my_xlim = c(1, 10),
+                                my_ylim = c(0.5, 1),
+                                my_xlab = SHARED_BUCK_NAME)
+
+dev.off()
 
 
 
