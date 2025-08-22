@@ -270,9 +270,20 @@ Combinazioni totali per collezione: 192.
 
 \section{Conclusioni}
 \begin{frame}{Conclusioni}
+Difficoltà emerse:
 \begin{itemize}
-\item Non è facile identificare i parametri ottimali: il numero di combinazioni cresce velocemente.
-\item Si dovrebbe considerare anche la diversità tra collezioni diverse.
+\item La creazione della collezione per la valutazione dell'effetto dei parametri ha richiesto delle scelte arbitrarie.
+\item Lo spazio dei parametri è vasto.
+\item Python non permette una accurata gestione della memoria (a differenza ad esempio di C), questo può essere sia un pro che un contro, nel nostro caso ciò ha reso difficilmente interpretabile l'impiego di memoria tramite profiling.
+\end{itemize}
+Cosa si è imparato:
+\begin{itemize}
+\item Documentare le funzioni può richiedere più tempo della scrittura del codice stesso
+\item Scalare il metodo senza sacrificare eccessiva velocità richiede investimenti in termini di memoria centrale (eventualmente noleggiando dei server)
+\end{itemize}
+Sviluppi futuri
+\begin{itemize}
+\item Valutare le differenze con diverse tipologie di collezioni 
 \end{itemize}
 \end{frame}
 
