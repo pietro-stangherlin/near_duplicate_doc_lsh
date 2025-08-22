@@ -9,6 +9,8 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{dsfont}
+\usepackage{float}
+\usepackage{subcaption}
 \usepackage{graphicx}
 \usepackage{graphics}
 \usepackage{tikz}
@@ -20,6 +22,8 @@
 \setbeamertemplate{footline}[frame number]
 \setbeamertemplate{navigation symbols}{}
 \setbeamerfont{itemize/enumerate subbody}{size=\normalsize} 
+
+\graphicspath{ {robust/plots/} }
 
 \addbibresource{biblio.bib}
 
@@ -169,11 +173,12 @@ Implementazioni
 	\item in memoria centrale: ogni bucket è implementato come una linked list
 	\begin{itemize}
 		\item Lista: ogni banda ha $P * N$ bucket con $N$ numero di documenti e $p$ fattore di scala $>1$, il tempo di accesso ad ogni bucket è $O(1)$, al costo di memoria occupata dai bucket vuoti.
-		\item Btree: non sono presenti bucket vuoti, il tempo di accesso a ogni bucket è $O(\log_2[N*P])$
+		\item Btree: non sono presenti bucket vuoti, il tempo di accesso a ogni bucket è $O(\log_2[N])$
 	\end{itemize}
+	\item in memoria centrale in un cluster (ad esempio via MapReduce)
 \end{itemize}
 In tutti i casi è conveniente salvare gli indirizzi dei bucket con almeno due elementi (evita inutili controlli successivi).\\
-Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega la funzione hash $h(x) = \left( \sum^d_{j = 1}v_j a_j \right) \text{modulo } N*P$  con $a = (a_1,a_2,..,a_d)^\top$ vettore di numeri casuali.
+Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega la funzione hash $h(x) = \left( \sum^d_{j = 1}v_j a_j \right) \text{modulo } N*P$  con $a = (a_1,a_2,..,a_d)^\top$ vettore di numeri (pseudo)casuali.
 \end{frame}
 
 \section{Misure di similarità}
@@ -191,7 +196,7 @@ Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega
 	\item Esecuzioni successive con diversi livelli di modifica dei documenti semi-duplicati artificiali
 	\item Problemi:
 	\begin{itemize}
-		\item lo spazio dei parametri è grande
+		\item lo spazio dei parametri è vasto
 		\item gli articoli non forniscono molte indicazioni
 		\item ottenere i risultati di una singola configurazione è costoso
 	\end{itemize}
@@ -210,9 +215,56 @@ Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega
 Combinazioni totali per collezione: 192.
 \end{frame}
 
+\section{Risultati}
+\begin{frame}{Risultati Low}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png}
+        \caption{low 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png}
+        \caption{low 2}
+    \end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Risultati Mid}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{mid/noise_per_5_sigl_100_nba_20_nbu_5.png}
+        \caption{mid 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{mid/per_noise_small_sigl_100_nba_20_nbu_5.png}
+        \caption{mid 2}
+    \end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Risultati High}
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png}
+        \caption{high 1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png}
+        \caption{high 2}
+    \end{subfigure}
+\end{figure}
+\end{frame}
+
 \section{Conclusioni}
 \begin{frame}{Conclusioni}
 \end{frame}
+
 
 \printbibliography
 
