@@ -98,7 +98,7 @@ MINHASH_BIT_TYPE_FIELD_NAME = "minhash_bit_type"
 # Parameters values  -------------------
 # list of signature lengths
 SHINGLE_LENGTHS = [9] # 9 is the suggested length
-SIGNATURE_LENGTHS = [100, 200]
+SIGNATURE_LENGTHS = [100]
 
 # Idea: 
 # with 32 bit shingle -> use 32 bit signature hash
@@ -117,11 +117,11 @@ BANDS_NUMBER_FIELD_NAME = "bands_numbers"
 BUCKETS_NUMBER_FIELD_NAME = "bucket_numbers"
 
 # list of signature lengths
-BANDS_NUMBERS = [10, 20]
+BANDS_NUMBERS = [10]
 # NOTE: those number multiply the total observation number in the collection
 # so if a collection has 1000 documents
 # and the first number is 5 then the bucket number would be 5 * 1000
-BUCKET_NUMBERS = [2,5,10,25]
+BUCKET_NUMBERS = [10]
 
 SIGNATURE_SIMILARITY_NAME_CSV = "signature_sim.csv"
 

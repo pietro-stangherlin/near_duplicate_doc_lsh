@@ -7,6 +7,8 @@ from near_duplicate_doc_lsh.project.src import utils as ut
 import importlib
 import argparse
 
+import time 
+
 import numpy as np
 import os
 import json
@@ -19,7 +21,7 @@ import json
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original --collection arxiv
+# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_original --collection robust
 
 # MinHash load function
 def LoadMinhashParamsFile(file_path,
@@ -107,6 +109,8 @@ if __name__ == "__main__":
         # actual procedure
         # Add original data (no clones) to Signature database
 
+        start = time.time()
+
         # here take always the original
         macro.MinHashPopulateSignatureSQL(file_in_full_path = pm.ORIGINAL_PATH,
                                     signature_db_full_path = signature_db_full_path,
@@ -121,4 +125,4 @@ if __name__ == "__main__":
                                     match_string = r'\{(.*)\}')
         
         counter += 1
-        print(f"File {counter} written!")
+        print(f"File {counter} written!; time taken: {time.time() - start}")

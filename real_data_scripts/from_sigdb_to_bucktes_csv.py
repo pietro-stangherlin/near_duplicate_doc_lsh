@@ -90,6 +90,8 @@ def WriteSignatureDbToBandBucketCsv(in_db_file_name: str,
             
     SigSQL.close_database()
 
+# python -m near_duplicate_doc_lsh.real_data_scripts.from_sigdb_to_bucktes_csv --db_name_in data_near_duplicate\arxiv\signatures_db_duplicates\sgn_shl_9_sigl_100_bit_uint32_no_noise_per0\signature_db --csv_name_out data_near_duplicate\arxiv\buckets.csv
+
 if __name__ == "__main__":
 
     # python -m near_duplicate_doc_lsh.real_data_scripts.from_sigdb_to_bucktes_csv --db_name_in near_duplicate_doc_lsh\test_data\arxiv_duplicates\sig_config1\signature_db --csv_name_out near_duplicate_doc_lsh\test_data\arxiv_duplicates\sig_config1\bucktes.csv

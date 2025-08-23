@@ -13,7 +13,7 @@ import os
 
 # instructions:
 # execute from LSH folder with:
-# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_duplicates --collection arxiv
+# > python -m near_duplicate_doc_lsh.real_data_scripts.minhash_duplicates --collection robust
 
 # cycle for all minhash parameters files
 # for each combination if the folder already exists: do nothing
