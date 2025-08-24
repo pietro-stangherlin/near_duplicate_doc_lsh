@@ -38,7 +38,6 @@ class LSH_MR_SIG(MRJob):
             
     def reducer_to_bucket(self, key, value):
         t = tuple(value)
-        yield (key, t)
 
         # resources wise
         if len(t) > 1:
