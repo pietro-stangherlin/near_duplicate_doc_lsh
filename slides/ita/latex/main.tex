@@ -6,6 +6,8 @@
 \usepackage{xcolor}
 \usetheme{Berlin}
 \usecolortheme{beaver}
+\setbeamertemplate{section in head/foot}{}
+\setbeamertemplate{subsection in head/foot}{}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{dsfont}
@@ -27,7 +29,10 @@
 
 \addbibresource{biblio.bib}
 
-\title{\textbf{LSH Near Duplicate Document Detection}}
+
+\title{%
+  \textbf{LSH Near Duplicate Document Detection} \\
+  \large Metodi informatici per la Statistica e il Data Science}
 \date{}
 
 \begin{document}
@@ -135,7 +140,7 @@ Valutarne l’efficacia e ed effettuare considerazioni sull’efficienza.
 
 \section{MinHash}
 \begin{frame}{MinHash}
-Dimensione delle shingles: w = 9 \cite{leskovec2014mining} (parametro fissato, seguendo le indicazioni sul libro di testo)\\
+Dimensione delle shingles: w = 9 (\cite{leskovec2014mining}) (parametro fissato, seguendo le indicazioni sul libro di testo)\\
 Salvataggio signatures
 \begin{itemize}
 	\item scrittura su disco (database sql) (scelta impiegata)
@@ -316,8 +321,8 @@ Sviluppi futuri
 \end{frame}
 
 
-\section*{Bibliografia}
-\begin{frame}[allowframebreaks]{Riferimenti}
+\section{Bibliografia}
+\begin{frame}[allowframebreaks]{Bibliografia}
     \printbibliography
 \end{frame}
 
