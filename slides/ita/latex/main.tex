@@ -173,13 +173,25 @@ Implementazioni
 	\item in memoria centrale: ogni bucket è implementato come una linked list
 	\begin{itemize}
 		\item Lista: ogni banda ha $P * N$ bucket con $N$ numero di documenti e $p$ fattore di scala $>1$, il tempo di accesso ad ogni bucket è $O(1)$, al costo di memoria occupata dai bucket vuoti.
-		\item Btree: non sono presenti bucket vuoti, il tempo di accesso a ogni bucket è $O(\log_2[N])$
+		\item Btree (libreria Btrees): non sono presenti bucket vuoti, il tempo di accesso a ogni bucket è $O(\log_2[N])$
 	\end{itemize}
 	\item in memoria centrale in un cluster (ad esempio via MapReduce)
 \end{itemize}
 In tutti i casi è conveniente salvare gli indirizzi dei bucket con almeno due elementi (evita inutili controlli successivi).\\
 Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega la funzione hash $h(x) = \left( \sum^d_{j = 1}v_j a_j \right) \text{modulo } N*P$  con $a = (a_1,a_2,..,a_d)^\top$ vettore di numeri (pseudo)casuali.
 \end{frame}
+
+\section{Scalabilità}
+\begin{frame}{Scalabilità}
+La procedura di minhash è scalabile in quanto la creazione di ciascuna signature è indipendente dalle altre ed è effettuata in batch di documenti. LSH invece richiede soluzioni alternative: qui si è scelta una procedura basata su MapReduce che è stata testata su dei casi isolati ma non impiegata per tutta la procedura per l'analisi dell'effetto dei parametri in quanto avrebbe richiesto la spesa di risorse economiche su servizi online (si è considerato Azure).
+Per l'implementazione in MapReduce:
+\begin{itemize}
+ \item La chiave considerata è la coppia id della banda e id del bucket, il valore l'id del documento.
+ \item Si è fatto ricorso a una doppia procedura in cui nella prima fase si sono ottenuti gli elementi con gli insiemi di documenti nella stessa banda e bucket; nella seconda fase per ogni coppia di documenti si è effettuato il conteggio di bucket in comune.
+\end{itemize}
+
+\end{frame}
+
 
 \section{Misure di similarità}
 \begin{frame}{Misure di similarità}
@@ -192,12 +204,13 @@ Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega
 \section{Esperimenti}
 \begin{frame}{Esperimenti}
 \begin{itemize}
+	\item Collezione impiegata per la valutazione dell'effetto dei parametri: Robust (dimensione iniziale 1.45 GB).
 	\item Prima esecuzione della procedura sulla collezione originale (senza semi-duplicati artificiali) per tarare i parametri e valutare il massimo grado di similarità presente tra documenti della collezione originale. Rimozione dei documenti con similarità alta per migliorare le valutazioni sui dati semi-artificiali. 
 	\item Esecuzioni successive con diversi livelli di modifica dei documenti semi-duplicati artificiali
 	\item Problemi:
 	\begin{itemize}
 		\item lo spazio dei parametri è vasto
-		\item gli articoli non forniscono molte indicazioni
+		\item negli articoli di riferimento non sono considerati gli effetti delle diverse combinazioni di parametri
 		\item ottenere i risultati di una singola configurazione è costoso
 	\end{itemize}
 \end{itemize}
@@ -268,6 +281,20 @@ Combinazioni totali per collezione: 192.
 \end{figure}
 \end{frame}
 
+\section{Memory Profiling}
+\begin{frame}{Memory Profiling}
+Benché Python non permetta una precisa gestione della memoria si è eseguito un memory profiler (libreria memory-profiler) per le implementazioni di LSH (non map-reduce) tramite liste e btree fissando i parametri:
+\begin{itemize}
+ \item lunghezza della signature: 200
+ \item numero di bande: 20
+ \item numero di bucket relativo alla dimensione della collezione: 25
+ \item numero di documenti 645613
+\end{itemize}
+
+L'implementazione tramite liste ha occupato circa 4700 Mb, mentre quella tramite btree circa 2600 Mb.
+
+\end{frame}
+
 \section{Conclusioni}
 \begin{frame}{Conclusioni}
 Difficoltà emerse:
@@ -279,11 +306,12 @@ Difficoltà emerse:
 Cosa si è imparato:
 \begin{itemize}
 \item Documentare le funzioni può richiedere più tempo della scrittura del codice stesso
-\item Scalare il metodo senza sacrificare eccessiva velocità richiede investimenti in termini di memoria centrale (eventualmente noleggiando dei server)
+\item Scalare il metodo senza sacrificare eccessiva velocità richiede investimenti in termini di memoria centrale (eventualmente noleggiando dei server).
 \end{itemize}
 Sviluppi futuri
 \begin{itemize}
-\item Valutare le differenze con diverse tipologie di collezioni 
+\item Valutare le differenze con diverse tipologie di collezioni.
+\item Considerare implementazioni in C/C++.
 \end{itemize}
 \end{frame}
 
