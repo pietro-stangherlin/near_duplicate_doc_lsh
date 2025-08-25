@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2025.7.6)  25 AUG 2025 09:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2025.7.6)  25 AUG 2025 09:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1482,9 +1482,8 @@ Package biblatex Info: Automatic encoding selection.
 \openout5 = `main.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'main.bbl' not found.
-
-No file main.bbl.
+Package biblatex Info: ... file 'main.bbl' found.
+ (main.bbl)
 Package biblatex Info: Reference section=0 on input line 33.
 Package biblatex Info: Reference segment=0 on input line 33.
 Package caption Info: Begin \AtBeginDocument code.
@@ -1492,80 +1491,80 @@ Package caption Info: changepage package is loaded.
 \caption@adjustwidth@hsize=\dimen343
 \caption@adjustwidth@linewidth=\dimen344
 Package caption Info: End \AtBeginDocument code.
-(main.nav)
-Overfull \hbox (284.64075pt too wide) detected at line 33
+ (main.nav)
+Overfull \hbox (385.16553pt too wide) detected at line 33
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) detected at line 41
+Overfull \hbox (385.16553pt too wide) detected at line 41
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [1
 
 {C:/Users/pietr/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Overfull \hbox (284.64075pt too wide) detected at line 54
+Overfull \hbox (385.16553pt too wide) detected at line 54
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [2
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 66
+Overfull \hbox (385.16553pt too wide) detected at line 66
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [3
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 73
+Overfull \hbox (385.16553pt too wide) detected at line 73
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [4
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 83
+Overfull \hbox (385.16553pt too wide) detected at line 83
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [5
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 134
+Overfull \hbox (385.16553pt too wide) detected at line 134
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 LaTeX Font Info:    Trying to load font information for U+msa on input line 134
@@ -1591,130 +1590,122 @@ Overfull \vbox (8.7296pt too high) detected at line 134
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [6
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 153
+Overfull \hbox (385.16553pt too wide) detected at line 153
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
-
-
-LaTeX Warning: Citation 'leskovec2014mining' on page 7 undefined on input line 
-153.
 
 LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 
 153.
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmss.fd
 File: ts1cmss.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [7
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 166
+Overfull \hbox (385.16553pt too wide) detected at line 166
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-LaTeX Warning: Citation 'BroderMin-wise' on page 8 undefined on input line 166.
-
-
-
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [8
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 182
+Overfull \hbox (385.16553pt too wide) detected at line 182
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [9
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 193
+Overfull \hbox (385.16553pt too wide) detected at line 193
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [10
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 202
+Overfull \hbox (385.16553pt too wide) detected at line 202
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [11
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 217
+Overfull \hbox (385.16553pt too wide) detected at line 217
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [12
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 229
+Overfull \hbox (385.16553pt too wide) detected at line 229
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [13
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 245
+Overfull \hbox (385.16553pt too wide) detected at line 245
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
-<robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png, id=1052, 1003.
+<robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png, id=1119, 1003.
 75pt x 803.0pt>
 File: robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png Graphic fi
 le (type png)
@@ -1722,7 +1713,7 @@ le (type png)
 Package pdftex.def Info: robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_n
 bu_2.png  used on input line 245.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
-<robust/plots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png, id=1053, 1
+<robust/plots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png, id=1120, 1
 003.75pt x 803.0pt>
 File: robust/plots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png Graphi
 c file (type png)
@@ -1731,21 +1722,21 @@ Package pdftex.def Info: robust/plots/low_extreme/per_noise_small_sigl_100_nba_
 10_nbu_2.png  used on input line 245.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [14
 
  <./robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png> <./robust/p
 lots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png>]
-Overfull \hbox (284.64075pt too wide) detected at line 260
+Overfull \hbox (385.16553pt too wide) detected at line 260
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
-<robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png, id=1127, 1003.75pt x 8
+<robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png, id=1198, 1003.75pt x 8
 03.0pt>
 File: robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png Graphic file (type
  png)
@@ -1753,7 +1744,7 @@ File: robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png Graphic file (type
 Package pdftex.def Info: robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png
   used on input line 260.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
-<robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5.png, id=1128, 1003.75pt
+<robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5.png, id=1199, 1003.75pt
  x 803.0pt>
 File: robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5.png Graphic file (
 type png)
@@ -1762,21 +1753,21 @@ Package pdftex.def Info: robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5
 .png  used on input line 260.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [15
 
  <./robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png> <./robust/plots/mid
 /per_noise_small_sigl_100_nba_20_nbu_5.png>]
-Overfull \hbox (284.64075pt too wide) detected at line 275
+Overfull \hbox (385.16553pt too wide) detected at line 275
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
-<robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png, id=1201, 100
+<robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png, id=1276, 100
 3.75pt x 803.0pt>
 File: robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png Graphic 
 file (type png)
@@ -1784,7 +1775,7 @@ file (type png)
 Package pdftex.def Info: robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_
 nbu_10.png  used on input line 275.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
-<robust/plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png, id=1202,
+<robust/plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png, id=1277,
  1003.75pt x 803.0pt>
 File: robust/plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png Grap
 hic file (type png)
@@ -1793,22 +1784,22 @@ Package pdftex.def Info: robust/plots/high_extreme/per_noise_small_sigl_200_nba
 _20_nbu_10.png  used on input line 275.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [16
 
  <./robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png> <./robust
 /plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png>]
-Overfull \hbox (284.64075pt too wide) detected at line 282
+Overfull \hbox (385.16553pt too wide) detected at line 282
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
-<robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png, id=127
-5, 1003.75pt x 803.0pt>
+<robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png, id=135
+4, 1003.75pt x 803.0pt>
 File: robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png Gr
 aphic file (type png)
 <use robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png>
@@ -1820,45 +1811,61 @@ Overfull \vbox (20.27745pt too high) detected at line 282
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [17
 
  <./robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png>]
-Overfull \hbox (284.64075pt too wide) detected at line 296
+Overfull \hbox (385.16553pt too wide) detected at line 296
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [18
 
 ]
-Overfull \hbox (284.64075pt too wide) detected at line 316
+Overfull \hbox (385.16553pt too wide) detected at line 316
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 
-Overfull \hbox (284.64075pt too wide) has occurred while \output is active
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
   [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
-] [][]  
+] [][] [] []  
  []
 
 [19
 
 ]
+Overfull \hbox (385.16553pt too wide) detected at line 322
+  [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
+] [][] [] []  
+ []
 
-LaTeX Warning: Empty bibliography on input line 319.
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3
+22.
+(C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+Overfull \hbox (385.16553pt too wide) has occurred while \output is active
+  [] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][] [][][][][] [][
+] [][] [] []  
+ []
 
+[20
+
+ <C:/Users/pietr/AppData/Local/Programs/MiKTeX/tex/latex/beamer/beamericonartic
+le.pdf>]
 \tf@nav=\write7
 \openout7 = `main.nav'.
 
@@ -1868,55 +1875,48 @@ LaTeX Warning: Empty bibliography on input line 319.
 \tf@snm=\write9
 \openout9 = `main.snm'.
 
-(main.aux)
+ (main.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 209A0CD014253F8D4F6B38568268E611;1735.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                main
-(biblatex)                and rerun LaTeX afterwards.
-
+(rerunfilecheck)             Checksum: 44637B36AD246B579D25D7580E86FD2F;2013.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 35273 strings out of 474823
- 707331 string characters out of 5750957
+ 35400 strings out of 474823
+ 711031 string characters out of 5750957
  1950043 words of memory out of 5000000
- 56548 multiletter control sequences out of 15000+600000
- 569116 words of font info for 60 fonts, out of 8000000 for 9000
+ 56662 multiletter control sequences out of 15000+600000
+ 570245 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 128i,19n,123p,679b,1312s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss
-0800.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
-0\tcss1000.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
-/dpi600\ecsx1000.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
-pen/ec/dpi600\ecss0700.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour
-/jknappen/ec/dpi600\ecss1440.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/
-ljfour/jknappen/ec/dpi600\ecss0500.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fon
-ts/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\pietr\AppData\Local\MiKT
-eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk><C:/Users/pietr/AppData/Local
-/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/pietr/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/p
-ietr/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss10.pfb><C
-:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmss
-8.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmssi10.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts/type1/publi
-c/amsfonts/cm/cmssi8.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts/ty
-pe1/public/amsfonts/cm/cmsy10.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on main.pdf (19 pages, 395084 bytes).
+ 128i,19n,123p,679b,1482s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsi
+1000.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
+0\ectt1000.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec
+/dpi600\ecss0800.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour/jknap
+pen/ec/dpi600\tcss1000.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/ljfour
+/jknappen/ec/dpi600\ecsx1000.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fonts/pk/
+ljfour/jknappen/ec/dpi600\ecss0700.pk> <C:\Users\pietr\AppData\Local\MiKTeX\fon
+ts/pk/ljfour/jknappen/ec/dpi600\ecss1440.pk> <C:\Users\pietr\AppData\Local\MiKT
+eX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss0500.pk> <C:\Users\pietr\AppData\Loca
+l\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss1000.pk> <C:\Users\pietr\AppDat
+a\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk><C:/Users/pietr/A
+ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/User
+s/pietr/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb
+><C:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
+mss10.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmss8.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts/type1/pub
+lic/amsfonts/cm/cmssi10.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmssi8.pfb><C:/Users/pietr/AppData/Local/Programs/MiK
+TeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/pietr/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on main.pdf (20 pages, 425564 bytes).
 PDF statistics:
- 1745 PDF objects out of 2073 (max. 8388607)
- 54 named destinations out of 1000 (max. 500000)
- 198 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1948 PDF objects out of 2073 (max. 8388607)
+ 60 named destinations out of 1000 (max. 500000)
+ 214 words of extra memory for PDF output out of 10000 (max. 10000000)
 
