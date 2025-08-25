@@ -288,16 +288,16 @@ Combinazioni totali per collezione: 192.
 
 \section{Memory Profiling}
 \begin{frame}{Memory Profiling}
-Benché Python non permetta una precisa gestione della memoria si è eseguito un memory profiler (libreria memory-profiler) per le implementazioni di LSH (non map-reduce) tramite liste e btree fissando i parametri:
-\begin{itemize}
- \item lunghezza della signature: 200
- \item numero di bande: 20
- \item numero di bucket relativo alla dimensione della collezione: 25
- \item numero di documenti 645613
-\end{itemize}
+Benché Python non permetta una precisa gestione della memoria si è eseguito un memory profiler (libreria memory-profiler) per le implementazioni di LSH (non map-reduce) tramite liste e btree fissando i parametri.
 
-L'implementazione tramite liste ha occupato circa 4700 Mb, mentre quella tramite btree circa 2600 Mb.
-
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+nba & nbu & sigl & ndoc & List (Mb) & Btree (Mb) \\ \hline
+10 & 25 & 200 & 645613 & 2500 & 1400 \\ \hline
+20 & 10 & 200 & 645613 & 3300 & 2600 \\ \hline
+20 & 25 & 100 & 645613 & 4600 & 2550 \\ \hline
+20 & 25 & 200 & 645613 & 4750 & 2600 \\ \hline
+\end{tabular}
 \end{frame}
 
 \section{Conclusioni}
