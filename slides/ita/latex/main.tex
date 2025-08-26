@@ -80,63 +80,12 @@ Valutarne l’efficacia e ed effettuare considerazioni sull’efficienza.
 \section{Metodi utilizzati}
 \begin{frame}{Metodi utilizzati}
 \begin{itemize}
-	\item Creazione della collezione sperimentale
 	\item Shingling
 	\item MinHash
 	\item LSH
 \end{itemize}
 \end{frame}
 
-\section{Creazione della collezione sperimentale}
-\begin{frame}{Creazione della collezione sperimentale}
-\begin{enumerate}
-	\item Si assume di avere una collezione iniziale senza duplicati e quasi – duplicati. Ogni documento presenta un codice identificativo (id).
-	\item Si seleziona (ad esempio tramite un generatore di numeri casuali) un sottoinsieme di documenti da cui generare i duplicati e i quasi duplicati.
-	\item Quasi duplicati: sostituzione di alcuni caratteri con altri (casuali), per simulare un risultato di un programma di riconoscimento ottico di testo. Il parametro relativo alla frequenza di sostituzione è la percentuale sul numero totale di caratteri nel testo
-	\item A ogni quasi–duplicato si assegna un id univoco (id2) e l’id del documento da cui è stato generato (id3). Viene creata una nuova collezione con i quasi-duplicati e i documenti originali (per questi ultimi il campo l’id3 è posto uguale a None)
-\end{enumerate}
-
-\begin{center}
-\resizebox{0.9\textwidth}{!}{
-\begin{tikzpicture}
-% First Table (left)
-\node (table1) at (0,0) {
-\begin{tabular}{|c|c|}
-\hline
-\textbf{Id} & \textbf{text} \\
-\hline
-1 & hello world \\
-\hline
-2 & Bob, Alice and Ulm \\
-\hline
-3 & nosce te ipsum \\
-\hline
-\end{tabular}
-};
-
-% Second Table (right)
-\node (table2) at (8,0) {
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{id2} & \textbf{id3} & \textbf{text} \\
-\hline
-1 & None & hello world \\
-\hline
-2 & None & Bob, Alice and Ulm \\
-\hline
-3 & None & nosce te ipsum \\
-\hline
-4 & 3 & n@sCe t3 ipsuN \\
-\hline
-\end{tabular}
-};
-
-% Arrow
-\draw[->, thick] (2.5,0) -- (5,0);
-\end{tikzpicture}
-}
-\end{center}
-\end{frame}
 
 \section{MinHash}
 \begin{frame}{MinHash}
@@ -219,6 +168,57 @@ Per l'implementazione in MapReduce:
 		\item ottenere i risultati di una singola configurazione è costoso
 	\end{itemize}
 \end{itemize}
+\end{frame}
+
+\section{Creazione della collezione sperimentale}
+\begin{frame}{Creazione della collezione sperimentale}
+\begin{enumerate}
+	\item Si assume di avere una collezione iniziale senza duplicati e quasi – duplicati. Ogni documento presenta un codice identificativo (id).
+	\item Si seleziona (ad esempio tramite un generatore di numeri casuali) un sottoinsieme di documenti da cui generare i duplicati e i quasi duplicati.
+	\item Quasi duplicati: sostituzione di alcuni caratteri con altri (casuali), per simulare un risultato di un programma di riconoscimento ottico di testo. Il parametro relativo alla frequenza di sostituzione è la percentuale sul numero totale di caratteri nel testo
+	\item A ogni quasi–duplicato si assegna un id univoco (id2) e l’id del documento da cui è stato generato (id3). Viene creata una nuova collezione con i quasi-duplicati e i documenti originali (per questi ultimi il campo l’id3 è posto uguale a None)
+\end{enumerate}
+
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}
+% First Table (left)
+\node (table1) at (0,0) {
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Id} & \textbf{text} \\
+\hline
+1 & hello world \\
+\hline
+2 & Bob, Alice and Ulm \\
+\hline
+3 & nosce te ipsum \\
+\hline
+\end{tabular}
+};
+
+% Second Table (right)
+\node (table2) at (8,0) {
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{id2} & \textbf{id3} & \textbf{text} \\
+\hline
+1 & None & hello world \\
+\hline
+2 & None & Bob, Alice and Ulm \\
+\hline
+3 & None & nosce te ipsum \\
+\hline
+4 & 3 & n@sCe t3 ipsuN \\
+\hline
+\end{tabular}
+};
+
+% Arrow
+\draw[->, thick] (2.5,0) -- (5,0);
+\end{tikzpicture}
+}
+\end{center}
 \end{frame}
 
 \section{Parametri degli esperimenti}
