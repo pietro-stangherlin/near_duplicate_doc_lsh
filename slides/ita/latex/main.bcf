@@ -2364,6 +2364,8 @@
   <bcf:section number="0">
     <bcf:citekey order="1" intorder="1">leskovec2014mining</bcf:citekey>
     <bcf:citekey order="2" intorder="1">BroderMin-wise</bcf:citekey>
+    <bcf:citekey order="3" intorder="1">IndykApproximate</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">IndykApproximate</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

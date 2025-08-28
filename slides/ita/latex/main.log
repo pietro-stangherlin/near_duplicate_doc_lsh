@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2025.7.6)  26 AUG 2025 09:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2025.7.6)  28 AUG 2025 15:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1549,7 +1549,7 @@ Overfull \vbox (8.7296pt too high) detected at line 222
 ] [13
 
 ]
-<robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png, id=1120, 1003.
+<robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png, id=1182, 1003.
 75pt x 803.0pt>
 File: robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png Graphic fi
 le (type png)
@@ -1557,7 +1557,7 @@ le (type png)
 Package pdftex.def Info: robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_n
 bu_2.png  used on input line 250.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
-<robust/plots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png, id=1121, 1
+<robust/plots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png, id=1183, 1
 003.75pt x 803.0pt>
 File: robust/plots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png Graphi
 c file (type png)
@@ -1569,7 +1569,7 @@ Package pdftex.def Info: robust/plots/low_extreme/per_noise_small_sigl_100_nba_
 
  <./robust/plots/low_extreme/noise_per_5_sigl_100_nba_10_nbu_2.png> <./robust/p
 lots/low_extreme/per_noise_small_sigl_100_nba_10_nbu_2.png>]
-<robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png, id=1199, 1003.75pt x 8
+<robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png, id=1265, 1003.75pt x 8
 03.0pt>
 File: robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png Graphic file (type
  png)
@@ -1577,7 +1577,7 @@ File: robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png Graphic file (type
 Package pdftex.def Info: robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png
   used on input line 265.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
-<robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5.png, id=1200, 1003.75pt
+<robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5.png, id=1266, 1003.75pt
  x 803.0pt>
 File: robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5.png Graphic file (
 type png)
@@ -1590,7 +1590,7 @@ Package pdftex.def Info: robust/plots/mid/per_noise_small_sigl_100_nba_20_nbu_5
 
  <./robust/plots/mid/noise_per_5_sigl_100_nba_20_nbu_5.png> <./robust/plots/mid
 /per_noise_small_sigl_100_nba_20_nbu_5.png>]
-<robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png, id=1277, 100
+<robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png, id=1347, 100
 3.75pt x 803.0pt>
 File: robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png Graphic 
 file (type png)
@@ -1598,7 +1598,7 @@ file (type png)
 Package pdftex.def Info: robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_
 nbu_10.png  used on input line 280.
 (pdftex.def)             Requested size: 138.2795pt x 110.61807pt.
-<robust/plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png, id=1278,
+<robust/plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png, id=1348,
  1003.75pt x 803.0pt>
 File: robust/plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png Grap
 hic file (type png)
@@ -1610,8 +1610,8 @@ _20_nbu_10.png  used on input line 280.
 
  <./robust/plots/high_extreme/noise_per_5_sigl_200_nba_20_nbu_10.png> <./robust
 /plots/high_extreme/per_noise_small_sigl_200_nba_20_nbu_10.png>]
-<robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png, id=135
-5, 1003.75pt x 803.0pt>
+<robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png, id=142
+9, 1003.75pt x 803.0pt>
 File: robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png Gr
 aphic file (type png)
 <use robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png>
@@ -1627,16 +1627,29 @@ Overfull \vbox (20.27745pt too high) detected at line 287
  <./robust/plots/buck_sig_sim_noise_small_per_5_sigl_100_nba_10_nbu_10.png>] [1
 8
 
-] [19
+]
+<robust/plots/arxiv_signature_sim.png, id=1587, 543.2295pt x 359.54324pt>
+File: robust/plots/arxiv_signature_sim.png Graphic file (type png)
+<use robust/plots/arxiv_signature_sim.png>
+Package pdftex.def Info: robust/plots/arxiv_signature_sim.png  used on input li
+ne 317.
+(pdftex.def)             Requested size: 199.73653pt x 132.195pt.
+
+Overfull \vbox (16.22406pt too high) detected at line 317
+ []
+
+[19
+
+ <./robust/plots/arxiv_signature_sim.png>] [20
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3
-27.
+43.
 
 (C:\Users\pietr\AppData\Local\Programs\MiKTeX\tex/latex/base\t1cmtt.fd
 File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-[20
+[21
 
  <C:/Users/pietr/AppData/Local/Programs/MiKTeX/tex/latex/beamer/beamericonartic
 le.pdf>]
@@ -1655,16 +1668,16 @@ LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 9A5971314C6914944F27B220C6C522B7;2013.
+(rerunfilecheck)             Checksum: D985940BEC09E4A52B51C9A2DFB3C044;2194.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 35404 strings out of 474823
- 711126 string characters out of 5750957
+ 35431 strings out of 474823
+ 711799 string characters out of 5750957
  1951043 words of memory out of 5000000
- 56665 multiletter control sequences out of 15000+600000
+ 56688 multiletter control sequences out of 15000+600000
  571015 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,19n,123p,679b,1482s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1689,9 +1702,9 @@ e1/public/amsfonts/cm/cmssi10.pfb><C:/Users/pietr/AppData/Local/Programs/MiKTeX
 /fonts/type1/public/amsfonts/cm/cmssi8.pfb><C:/Users/pietr/AppData/Local/Progra
 ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/pietr/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on main.pdf (20 pages, 412645 bytes).
+Output written on main.pdf (21 pages, 439245 bytes).
 PDF statistics:
- 1933 PDF objects out of 2073 (max. 8388607)
- 60 named destinations out of 1000 (max. 500000)
- 214 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2107 PDF objects out of 2487 (max. 8388607)
+ 64 named destinations out of 1000 (max. 500000)
+ 227 words of extra memory for PDF output out of 10000 (max. 10000000)
 

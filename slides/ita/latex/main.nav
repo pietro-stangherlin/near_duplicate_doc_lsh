@@ -78,19 +78,24 @@
 \headcommand {\beamer@framepages {18}{18}}
 \headcommand {\beamer@sectionpages {18}{18}}
 \headcommand {\beamer@subsectionpages {18}{18}}
-\headcommand {\sectionentry {15}{Conclusioni}{19}{Conclusioni}{0}}
+\headcommand {\sectionentry {15}{Collezione Arxiv Abstracts}{19}{Collezione Arxiv Abstracts}{0}}
 \headcommand {\slideentry {15}{0}{1}{19/19}{}{0}}
 \headcommand {\beamer@framepages {19}{19}}
 \headcommand {\beamer@sectionpages {19}{19}}
 \headcommand {\beamer@subsectionpages {19}{19}}
-\headcommand {\sectionentry {16}{Bibliografia}{20}{Bibliografia}{0}}
-\headcommand {\beamer@sectionpages {20}{19}}
-\headcommand {\beamer@subsectionpages {20}{19}}
-\headcommand {\sectionentry {17}{Riferimenti bibliografici}{20}{Riferimenti bibliografici}{0}}
-\headcommand {\slideentry {17}{0}{0}{20/20}{}{0}}
+\headcommand {\sectionentry {16}{Conclusioni}{20}{Conclusioni}{0}}
+\headcommand {\slideentry {16}{0}{1}{20/20}{}{0}}
 \headcommand {\beamer@framepages {20}{20}}
-\headcommand {\beamer@partpages {1}{20}}
-\headcommand {\beamer@subsectionpages {20}{20}}
 \headcommand {\beamer@sectionpages {20}{20}}
-\headcommand {\beamer@documentpages {20}}
-\headcommand {\gdef \inserttotalframenumber {20}}
+\headcommand {\beamer@subsectionpages {20}{20}}
+\headcommand {\sectionentry {17}{Bibliografia}{21}{Bibliografia}{0}}
+\headcommand {\beamer@sectionpages {21}{20}}
+\headcommand {\beamer@subsectionpages {21}{20}}
+\headcommand {\sectionentry {18}{Riferimenti bibliografici}{21}{Riferimenti bibliografici}{0}}
+\headcommand {\slideentry {18}{0}{0}{21/21}{}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\beamer@partpages {1}{21}}
+\headcommand {\beamer@subsectionpages {21}{21}}
+\headcommand {\beamer@sectionpages {21}{21}}
+\headcommand {\beamer@documentpages {21}}
+\headcommand {\gdef \inserttotalframenumber {21}}

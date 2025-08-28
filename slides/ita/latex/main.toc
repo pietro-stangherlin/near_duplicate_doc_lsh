@@ -14,5 +14,6 @@
 \beamer@sectionintoc {12}{Parametri degli esperimenti}{13}{0}{12}
 \beamer@sectionintoc {13}{Risultati}{14}{0}{13}
 \beamer@sectionintoc {14}{Memory Profiling}{18}{0}{14}
-\beamer@sectionintoc {15}{Conclusioni}{19}{0}{15}
-\beamer@sectionintoc {16}{Bibliografia}{20}{0}{16}
+\beamer@sectionintoc {15}{Collezione Arxiv Abstracts}{19}{0}{15}
+\beamer@sectionintoc {16}{Conclusioni}{20}{0}{16}
+\beamer@sectionintoc {17}{Bibliografia}{21}{0}{17}

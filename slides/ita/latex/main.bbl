@@ -77,6 +77,55 @@
       \verb 10.1145/276698.276781
       \endverb
     \endentry
+    \entry{IndykApproximate}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=82a47611accc6ebb689ddd28fb6dbf1b}{%
+           family={Indyk},
+           familyi={I\bibinitperiod},
+           given={Piotr},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2f555526320a1c4028ad0f6328953999}{%
+           family={Motwani},
+           familyi={M\bibinitperiod},
+           given={Rajeev},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{location}{1}{%
+        {Dallas, Texas, USA}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computing Machinery}%
+      }
+      \strng{namehash}{7c7fb95209082c642bb5a3282aed771d}
+      \strng{fullhash}{7c7fb95209082c642bb5a3282aed771d}
+      \strng{bibnamehash}{7c7fb95209082c642bb5a3282aed771d}
+      \strng{authorbibnamehash}{7c7fb95209082c642bb5a3282aed771d}
+      \strng{authornamehash}{7c7fb95209082c642bb5a3282aed771d}
+      \strng{authorfullhash}{7c7fb95209082c642bb5a3282aed771d}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the Thirtieth Annual ACM Symposium on Theory of Computing}
+      \field{series}{STOC '98}
+      \field{title}{Approximate nearest neighbors: towards removing the curse of dimensionality}
+      \field{year}{1998}
+      \field{pages}{604\bibrangedash 613}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1145/276698.276876
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/276698.276876
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/276698.276876
+      \endverb
+    \endentry
     \entry{leskovec2014mining}{book}{}
       \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=900d107125ff0ca84698cb909e4f6c51}{%

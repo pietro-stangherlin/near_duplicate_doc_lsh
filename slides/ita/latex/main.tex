@@ -74,7 +74,7 @@
 \begin{frame}{Obiettivi}
 Implementare un metodo basato su MinHash e LSH per identificare i documenti duplicati e quasi-duplicati.\\
 
-Valutarne l’efficacia e ed effettuare considerazioni sull’efficienza.
+Valutarne l’efficacia ed effettuare considerazioni sull’efficienza.
 \end{frame}
 
 \section{Metodi utilizzati}
@@ -100,17 +100,17 @@ Stima della memoria occupata dalle signatures $y$:
 Con
 \begin{itemize}
 	\item $d$: bit occupati da ciascun elemento della signature
-	\item $p$ = n° di permutazioni
-	\item $s$ = n° di documenti nella collezione
+	\item $p$: n° di permutazioni
+	\item $s$: n° di documenti nella collezione
 \end{itemize}
-Esempio: con 100 permutazioni, interi a 32 bit e $10^6$ documenti: ms = 400 megabyte.
+Esempio: con 100 permutazioni, interi a 32 bit e $10^6$ documenti: $y$ = 400 megabyte.
 \end{frame}
 
 \section{SignatureHash}
 \begin{frame}{SignatureHash}
 Per approssimare ciascuna permutazione in ogni elemento delle signature si impiegano delle funzioni hash.
 Come descritto in \cite{BroderMin-wise}, alla base di molti schemi di hashing, tra cui quello considerato, vi è che ogni funzione hash $h:U \rightarrow [m]$ sia casuale. Tale assunzione non può ovviamente essere soddisfatta e si ricorre dunque a delle approssimazioni. Si dice che una famiglia di funzioni hash $H = \left\{h | h:U \rightarrow [m] \right\}$ è (debolmente) universale se $\forall x_1 \neq x_2 \in U$ e estraendo $h$ 
-uniformemente da $H$ si ha $\text{Pr}\left\{h(x_1) = h(x_2)\right\} \leq \frac{1}{m}$. Una semplice implementazione di una famiglia di funzioni hash universale è
+uniformemente da $H$ si ha $\text{Pr}\left\{h(x_1) = h(x_2)\right\} \leq \frac{1}{m}$. Una semplice implementazione di una famiglia di funzioni hash universale è (\cite{IndykApproximate})
 $h(x) = [(a * x + b) \text{mod p}] \text{mod} m$,
 con
 \begin{itemize}
@@ -132,7 +132,7 @@ Implementazioni
 	\item in memoria centrale in un cluster (ad esempio via MapReduce)
 \end{itemize}
 In tutti i casi è conveniente salvare gli indirizzi dei bucket con almeno due elementi (evita inutili controlli successivi).\\
-Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega la funzione hash $h(x) = \left( \sum^d_{j = 1}v_j a_j \right) \text{modulo } N*P$  con $a = (a_1,a_2,..,a_d)^\top$ vettore di numeri (pseudo)casuali.
+Per ogni banda, considerata una signature $v = (v_1,v_2,..,v_d)^\top$ si impiega la funzione hash $h(x) = \left( \sum^d_{j = 1}v_j a_j \right) \text{mod} N*P$  con $a = (a_1,a_2,..,a_d)^\top$ vettore di numeri (pseudo)casuali (\cite{IndykApproximate}).
 \end{frame}
 
 \section{Scalabilità}
@@ -298,6 +298,22 @@ nba & nbu & sigl & ndoc & List (Mb) & Btree (Mb) \\ \hline
 20 & 25 & 100 & 645613 & 4600 & 2550 \\ \hline
 20 & 25 & 200 & 645613 & 4750 & 2600 \\ \hline
 \end{tabular}
+\end{frame}
+
+
+\section{Collezione Arxiv Abstracts}
+\begin{frame}{Collezione Arxiv Abstracts}
+Si è provato ad applicare il metodo sulla collezione di abstract di arxiv (https://www.kaggle.com/datasets/Cornell-University/arxiv) con più di 1.7 milioni di documenti (circa 2.8 GB dopo preprocessing). I parametri fissati a:
+\begin{itemize}
+\item lunghezza della signature: 100
+\item numero di bande: 10
+\item numero di bucket relativo alla dimensione della collezione: 10
+\end{itemize}
+
+\begin{figure}
+\includegraphics[width=0.65 \textwidth]{arxiv_signature_sim.png}
+\end{figure}
+
 \end{frame}
 
 \section{Conclusioni}
