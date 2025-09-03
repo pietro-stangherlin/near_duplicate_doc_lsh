@@ -116,22 +116,32 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
 
   # Fixed params folders name subset
   fixed_params_values <- rep(NA, length(fixed_params_indexes))
-  text_to_select = rep(NA, length(fixed_params_indexes))
+  text_to_select_fixed = rep(NA, length(fixed_params_indexes))
+  
+  # do a cycle to iteratively get the fixed parameters wanted subset
+  
+  selected_dirs <- my_dir_list
 
   for (i in 1:length(fixed_params_indexes)){
     actual_index <- fixed_params_indexes[i]
     par_name = names(params_list)[actual_index]
     fixed_params_values[i] <- params_list[[par_name]]
-    text_to_select[i] = paste0(prefix_list[[par_name]],
+    text_to_select_fixed[i] = paste0(prefix_list[[par_name]],
                                params_list[[par_name]],
                                collapse = "")
+    
+    pattern <- paste0("(?=.*", text_to_select_fixed[i], "(_|$))", collapse = "")
+    
+    print("DEBUG: pattern")
+    print(pattern)
+    
+    selected_dirs <- selected_dirs[grep(pattern, selected_dirs, perl = TRUE)]
   }
 
-  pattern <- paste0("(?=.*", text_to_select, "(_|$))", collapse = "")
-
-  selected_dirs <- my_dir_list[grep(pattern,
-                                    my_dir_list,
-                                    perl = TRUE)]
+  
+  
+  print("DEBUG: selected_dirs")
+  print(selected_dirs)
 
   # Not Fixed param sub folders conditioned on the previuos found
   not_fixed_par_name = names(params_list)[index_not_fixed_param]
@@ -188,15 +198,25 @@ PlotSimMetricsVSPrecRecOneParam <- function(params_list,
   # other values: points on the reference plot
 
   color_index = 1
+  
+  
+  
   for(val in params_list[[index_not_fixed_param]][-1]){
     print("DEBUG: inside for loop")
     color_index = color_index + 1
+    
+    temp_not_fixed_pattern <- paste0(prefix_list[[not_fixed_par_name]], val,
+                                     collapse = "")
+    pattern = paste0("(?=.*", temp_not_fixed_pattern, "(_|$))", collapse = "")
+    
+    print("DEBUG: text_to_select")
+    print(text_to_select)
 
-    text_to_select = paste0(prefix_list[[not_fixed_par_name]], val,
-                               collapse = "")
-
-    used_dir <- my_dir_list[grep(paste0(text_to_select, "(_|$)",collapse = ""),
-                                 selected_dirs)]
+    used_dir <- selected_dirs[grep(pattern,
+                                 selected_dirs, perl = TRUE)]
+    
+    print("DEBUG: used_dir")
+    print(used_dir)
 
     metrics_df <- read.csv(paste0(used_dir, "/", my_sim_name,
                                      collapse = ""))
@@ -270,9 +290,11 @@ NamePlot <- function(params_list,
 # WARNING make folders with names!!!!
 sub_folder <- "noise/"
 
+# Low ----------------------------------------
+
 temp_param_list = EMPTY_PARAMS_LIST
 temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT
-temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[1]
+temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[2]
 temp_param_list[[SIGL_NAME]] = SIGL[1]
 temp_param_list[[NBA_NAME]] = NBA[1]
 temp_param_list[[NBU_NAME]] = NBU[1]
@@ -299,39 +321,15 @@ PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
 
 dev.off()
 
-# WARNING: CHANGE NAME!!!!!
-png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
-    height = HEIGHT,
-    width = WIDTH)
 
-# bucket
-PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
-                                prefix_list = PREFIX_LIST,
-                                my_sim_name = SHARED_BUCK_METRIC_NAME,
-                                x_axis_var_name = SHARED_BUCK_NAME,
-                                precision_var_name = PRECISION_NAME,
-                                recall_var_name = RECALL_NAME,
-                                my_dir_list = dir_list,
-                                my_xlim = c(1, 10),
-                                my_ylim = c(0.5, 1),
-                                my_xlab = SHARED_BUCK_NAME)
-
-dev.off()
-# Duplicates percentage -----------------------------------------
-
-# Signature Length ----------------------------------------------
-
-# Number of bands -----------------------------------------------
-
-# Number of buckets ---------------------------------------------
-sub_folder <- "nbu/"
+# Mid ----------------------------------------
 
 temp_param_list = EMPTY_PARAMS_LIST
-temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[1]
-temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[1]
+temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT
+temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[2]
 temp_param_list[[SIGL_NAME]] = SIGL[1]
-temp_param_list[[NBA_NAME]] = NBA[1]
-temp_param_list[[NBU_NAME]] = NBU
+temp_param_list[[NBA_NAME]] = NBA[2]
+temp_param_list[[NBU_NAME]] = NBU[2]
 
 temp_name_relative_name <- NamePlot(params_list = temp_param_list,
                                     prefix_list = PREFIX_LIST)
@@ -355,24 +353,238 @@ PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
 
 dev.off()
 
-# WARNING: CHANGE NAME!!!!!
+
+# High ----------------------------------------
+
+temp_param_list = EMPTY_PARAMS_LIST
+temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT
+temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[2]
+temp_param_list[[SIGL_NAME]] = SIGL[2]
+temp_param_list[[NBA_NAME]] = NBA[2]
+temp_param_list[[NBU_NAME]] = NBU[3]
+
+temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+                                    prefix_list = PREFIX_LIST)
+
+
 png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
     height = HEIGHT,
     width = WIDTH)
 
-# bucket
+# signature
 PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
                                 prefix_list = PREFIX_LIST,
-                                my_sim_name = SHARED_BUCK_METRIC_NAME,
-                                x_axis_var_name = SHARED_BUCK_NAME,
+                                my_sim_name = SIGN_METRIC_NAME,
+                                x_axis_var_name = SIGN_SIM_NAME,
                                 precision_var_name = PRECISION_NAME,
                                 recall_var_name = RECALL_NAME,
                                 my_dir_list = dir_list,
-                                my_xlim = c(1, 10),
+                                my_xlim = c(0.8, 1),
                                 my_ylim = c(0.5, 1),
-                                my_xlab = SHARED_BUCK_NAME)
+                                my_xlab = SIGN_SIM_NAME)
 
 dev.off()
+
+
+# Duplicates percentage -----------------------------------------
+# Low ----------------------------------------
+
+temp_param_list = EMPTY_PARAMS_LIST
+temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[2]
+temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT
+temp_param_list[[SIGL_NAME]] = SIGL[1]
+temp_param_list[[NBA_NAME]] = NBA[1]
+temp_param_list[[NBU_NAME]] = NBU[1]
+
+temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+                                    prefix_list = PREFIX_LIST)
+
+
+png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+    height = HEIGHT,
+    width = WIDTH)
+
+# signature
+PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+                                prefix_list = PREFIX_LIST,
+                                my_sim_name = SIGN_METRIC_NAME,
+                                x_axis_var_name = SIGN_SIM_NAME,
+                                precision_var_name = PRECISION_NAME,
+                                recall_var_name = RECALL_NAME,
+                                my_dir_list = dir_list,
+                                my_xlim = c(0.8, 1),
+                                my_ylim = c(0.5, 1),
+                                my_xlab = SIGN_SIM_NAME)
+
+dev.off()
+
+
+# Mid ----------------------------------------
+
+temp_param_list = EMPTY_PARAMS_LIST
+temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[2]
+temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT
+temp_param_list[[SIGL_NAME]] = SIGL[1]
+temp_param_list[[NBA_NAME]] = NBA[2]
+temp_param_list[[NBU_NAME]] = NBU[2]
+
+temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+                                    prefix_list = PREFIX_LIST)
+
+
+png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+    height = HEIGHT,
+    width = WIDTH)
+
+# signature
+PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+                                prefix_list = PREFIX_LIST,
+                                my_sim_name = SIGN_METRIC_NAME,
+                                x_axis_var_name = SIGN_SIM_NAME,
+                                precision_var_name = PRECISION_NAME,
+                                recall_var_name = RECALL_NAME,
+                                my_dir_list = dir_list,
+                                my_xlim = c(0.8, 1),
+                                my_ylim = c(0.5, 1),
+                                my_xlab = SIGN_SIM_NAME)
+
+dev.off()
+
+
+# High ----------------------------------------
+
+temp_param_list = EMPTY_PARAMS_LIST
+temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[2]
+temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT
+temp_param_list[[SIGL_NAME]] = SIGL[2]
+temp_param_list[[NBA_NAME]] = NBA[2]
+temp_param_list[[NBU_NAME]] = NBU[3]
+
+temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+                                    prefix_list = PREFIX_LIST)
+
+
+png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+    height = HEIGHT,
+    width = WIDTH)
+
+# signature
+PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+                                prefix_list = PREFIX_LIST,
+                                my_sim_name = SIGN_METRIC_NAME,
+                                x_axis_var_name = SIGN_SIM_NAME,
+                                precision_var_name = PRECISION_NAME,
+                                recall_var_name = RECALL_NAME,
+                                my_dir_list = dir_list,
+                                my_xlim = c(0.8, 1),
+                                my_ylim = c(0.5, 1),
+                                my_xlab = SIGN_SIM_NAME)
+
+dev.off()
+
+
+# Signature Length ----------------------------------------------
+
+# Number of bands -----------------------------------------------
+
+# # Number of buckets ---------------------------------------------
+# sub_folder <- "nbu/"
+# 
+# 
+# # Low ----------------------------------------
+# 
+# temp_param_list = EMPTY_PARAMS_LIST
+# temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[2]
+# temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[2]
+# temp_param_list[[SIGL_NAME]] = SIGL[1]
+# temp_param_list[[NBA_NAME]] = NBA[1]
+# temp_param_list[[NBU_NAME]] = NBU
+# 
+# temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+#                                     prefix_list = PREFIX_LIST)
+# 
+# 
+# png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+#     height = HEIGHT,
+#     width = WIDTH)
+# 
+# # signature
+# PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+#                                 prefix_list = PREFIX_LIST,
+#                                 my_sim_name = SIGN_METRIC_NAME,
+#                                 x_axis_var_name = SIGN_SIM_NAME,
+#                                 precision_var_name = PRECISION_NAME,
+#                                 recall_var_name = RECALL_NAME,
+#                                 my_dir_list = dir_list,
+#                                 my_xlim = c(0.8, 1),
+#                                 my_ylim = c(0.5, 1),
+#                                 my_xlab = SIGN_SIM_NAME)
+# 
+# dev.off()
+# 
+# 
+# # Mid ----------------------------------------
+# 
+# temp_param_list = EMPTY_PARAMS_LIST
+# temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[2]
+# temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[2]
+# temp_param_list[[SIGL_NAME]] = SIGL[1]
+# temp_param_list[[NBA_NAME]] = NBA[2]
+# temp_param_list[[NBU_NAME]] = NBU
+# 
+# temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+#                                     prefix_list = PREFIX_LIST)
+# 
+# 
+# png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+#     height = HEIGHT,
+#     width = WIDTH)
+# 
+# # signature
+# PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+#                                 prefix_list = PREFIX_LIST,
+#                                 my_sim_name = SIGN_METRIC_NAME,
+#                                 x_axis_var_name = SIGN_SIM_NAME,
+#                                 precision_var_name = PRECISION_NAME,
+#                                 recall_var_name = RECALL_NAME,
+#                                 my_dir_list = dir_list,
+#                                 my_xlim = c(0.8, 1),
+#                                 my_ylim = c(0.5, 1),
+#                                 my_xlab = SIGN_SIM_NAME)
+# 
+# dev.off()
+# 
+# 
+# # High ----------------------------------------
+# 
+# temp_param_list = EMPTY_PARAMS_LIST
+# temp_param_list[[NOISE_QUANT_NAME]] = NOISE_QUANT[2]
+# temp_param_list[[DUPLICATES_PERCENT_NAME]] = DUPLICATES_PERCENT[2]
+# temp_param_list[[SIGL_NAME]] = SIGL[2]
+# temp_param_list[[NBA_NAME]] = NBA[2]
+# temp_param_list[[NBU_NAME]] = NBU
+# 
+# temp_name_relative_name <- NamePlot(params_list = temp_param_list,
+#                                     prefix_list = PREFIX_LIST)
+# 
+# 
+# png(filename = paste0(out_folder,temp_name_relative_name, ".png", collapse = ""),
+#     height = HEIGHT,
+#     width = WIDTH)
+# 
+# # signature
+# PlotSimMetricsVSPrecRecOneParam(params_list = temp_param_list,
+#                                 prefix_list = PREFIX_LIST,
+#                                 my_sim_name = SIGN_METRIC_NAME,
+#                                 x_axis_var_name = SIGN_SIM_NAME,
+#                                 precision_var_name = PRECISION_NAME,
+#                                 recall_var_name = RECALL_NAME,
+#                                 my_dir_list = dir_list,
+#                                 my_xlim = c(0.8, 1),
+#                                 my_ylim = c(0.5, 1),
+#                                 my_xlab = SIGN_SIM_NAME)
+# 
+# dev.off()
 
 
 

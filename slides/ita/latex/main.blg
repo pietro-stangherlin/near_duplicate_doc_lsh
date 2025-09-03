@@ -1,20 +1,20 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is 'main.blg'
-[294] biber-MSWIN64:340> INFO - === 
-[411] Biber.pm:419> INFO - Reading 'main.bcf'
-[557] Biber.pm:979> INFO - Found 3 citekeys in bib section 0
-[576] Biber.pm:4419> INFO - Processing section 0
-[616] Biber.pm:4610> INFO - Looking for bibtex file 'biblio.bib' for section 0
-[707] bibtex.pm:1713> INFO - LaTeX decoding ...
-[733] bibtex.pm:1519> INFO - Found BibTeX data source 'biblio.bib'
-[847] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'variable = shifted' with 'variable = non-ignorable'
-[848] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[849] Biber.pm:4239> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'it-IT'
-[850] Biber.pm:4245> INFO - No sort tailoring available for locale 'it-IT'
-[905] bbl.pm:660> INFO - Writing 'main.bbl' with encoding 'UTF-8'
-[909] bbl.pm:763> INFO - Output to main.bbl
-[910] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
-[911] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
-[911] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
-[912] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
-[912] Biber.pm:133> INFO - WARNINGS: 4
+[154] biber-MSWIN64:340> INFO - === 
+[222] Biber.pm:419> INFO - Reading 'main.bcf'
+[381] Biber.pm:979> INFO - Found 3 citekeys in bib section 0
+[400] Biber.pm:4419> INFO - Processing section 0
+[418] Biber.pm:4610> INFO - Looking for bibtex file 'biblio.bib' for section 0
+[516] bibtex.pm:1713> INFO - LaTeX decoding ...
+[533] bibtex.pm:1519> INFO - Found BibTeX data source 'biblio.bib'
+[607] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'variable = shifted' with 'variable = non-ignorable'
+[607] UCollate.pm:68> INFO - Overriding locale 'it-IT' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[608] Biber.pm:4239> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'it-IT'
+[609] Biber.pm:4245> INFO - No sort tailoring available for locale 'it-IT'
+[621] bbl.pm:660> INFO - Writing 'main.bbl' with encoding 'UTF-8'
+[625] bbl.pm:763> INFO - Output to main.bbl
+[626] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
+[626] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
+[627] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
+[627] Biber.pm:131> WARN - BibTeX subsystem: warning: comma(s) at end of name (removing)
+[628] Biber.pm:133> INFO - WARNINGS: 4
